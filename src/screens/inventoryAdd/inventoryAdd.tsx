@@ -62,6 +62,7 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
                     value={value}
                     onChange={onChange}
                     options={options}
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-ignore
                     error={errors?.items?.[index]?.[`${head.accessor}`]?.message}
                   />
@@ -81,6 +82,7 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
                   required: head.accessor !== 'description' ? 'Ovo polje je obavezno' : false,
                 })}
                 disabled={isDisabled}
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore
                 error={errors?.items?.[index]?.[`${head.accessor}`]?.message}
               />
@@ -195,12 +197,12 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
               isOrderListSelected
                 ? []
                 : [
-                  {
-                    name: 'delete',
-                    onClick: (item: TableItemValues) => remove(fields.findIndex(field => field.id === item.id)),
-                    icon: <TrashIcon stroke={Theme?.palette?.gray800} />,
-                  },
-                ]
+                    {
+                      name: 'delete',
+                      onClick: (item: TableItemValues) => remove(fields.findIndex(field => field.id === item.id)),
+                      icon: <TrashIcon stroke={Theme?.palette?.gray800} />,
+                    },
+                  ]
             }
             style={{marginBottom: '20px'}}
           />

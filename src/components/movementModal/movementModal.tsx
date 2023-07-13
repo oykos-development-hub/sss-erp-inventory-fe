@@ -70,9 +70,7 @@ const MovementModal = ({
   const {options: locationOptions} = useOrganizationUnits();
   const {options: userOptions} = useUserProfiles({page: 1, size: 1000, organization_unit_id: orgUnitId});
 
-  const returnReversOption: DropdownDataString[] = [
-    {id: orgUnit, title: orgUnit},
-  ];
+  const returnReversOption: DropdownDataString[] = [{id: orgUnit, title: orgUnit}];
 
   const {mutate} = useDispatchInsert();
 
@@ -125,8 +123,8 @@ const MovementModal = ({
       inventoryType === 'movable'
         ? movableTransactionOptions
         : inventoryType === 'immovable'
-          ? immovableTransactionOptions
-          : smallTransactionOptions;
+        ? immovableTransactionOptions
+        : smallTransactionOptions;
 
     return options.filter(option => {
       const optionsToRemove = [];
@@ -188,7 +186,7 @@ const MovementModal = ({
               />
             )}
           />
-          {(transactionType === 'revers') && (
+          {transactionType === 'revers' && (
             <Controller
               name="target_organization_unit_id"
               control={control}
@@ -205,7 +203,7 @@ const MovementModal = ({
               )}
             />
           )}
-          {(transactionType === 'return-revers') && (
+          {transactionType === 'return-revers' && (
             <Controller
               name="target_organization_unit_id.title"
               control={control}

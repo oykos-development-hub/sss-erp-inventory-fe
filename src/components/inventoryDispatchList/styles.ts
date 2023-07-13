@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import {Dropdown,Input} from 'client-library';
+import {Dropdown, Input} from 'client-library';
 
 export const Filters = styled.div`
   display: flex;

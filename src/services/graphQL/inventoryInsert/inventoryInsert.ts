@@ -16,8 +16,8 @@ const inventoryInsert = async (
       supplier_id: ${data.supplier_id},
       ${data.organization_unit_id ? `organization_unit_id: ${data.organization_unit_id},` : ''},
       ${
-  data.real_estate
-    ? `
+        data.real_estate
+          ? `
         real_estate: {
           id: ${data.real_estate.id},
           square_area: ${data.real_estate.square_area},
@@ -34,8 +34,8 @@ const inventoryInsert = async (
           type_id: "${data.real_estate.type_id}"
         }
       `
-    : 'real_estate: {}'
-},
+          : 'real_estate: {}'
+      },
       serial_number: "${data.serial_number}",
       inventory_number: "${data.inventory_number}",
       title: "${data.title}",
