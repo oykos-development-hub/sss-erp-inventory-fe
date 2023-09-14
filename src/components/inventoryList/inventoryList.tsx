@@ -41,7 +41,7 @@ const InventoryList = ({context, filters, tableData, onFilter, filterValues, typ
   const [sourceType, setSourceType] = useState<SourceType | `${SourceType}`>();
   const [returnOrgUnitId, setReturnOrgUnitId] = useState<number>();
   const prevStateRef = useRef<number[]>(selectedRows);
-  const orgUnitId = context.contextMain.organization_unit.id;
+  const orgUnitId = context?.contextMain?.organization_unit?.id;
 
   const {options: officeOptions} = useOrgUnitOfficesGet({page: 1, size: 1000, id: orgUnitId});
   const {options: amortizationGroupOptions} = useDepreciationTypesGet({page: 1, size: 1000});

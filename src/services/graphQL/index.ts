@@ -22,11 +22,11 @@ export const BFF_URL = {
 };
 
 export const GraphQL = {
-  fetch: (query: string): Promise<any> => {
+  fetch: (query: string, variables?: any): Promise<any> => {
     return fetch(BFF_URL[getEnvironment()], {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({query}),
+      body: JSON.stringify({query, variables}),
     })
       .then(response => response.json())
       .catch(error => console.error(error));
