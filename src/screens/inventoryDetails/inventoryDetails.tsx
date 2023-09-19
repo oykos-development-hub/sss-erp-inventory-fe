@@ -14,26 +14,26 @@ import {estimationTableHeads, movementsTableHeads} from './constants';
 import {InventoryDetailsWrapper, TableHeader} from './style';
 import MovementModal from '../../components/movementModal/movementModal';
 import {InventoryAssessment} from '../../types/graphQL/inventoryAssessment';
-import useDepreciationTypesGet from '../../services/graphQL/depreciationTypes/useDepreciationTypesGet';
-import {DepreciationType} from '../../types/graphQL/depreciationTypes';
+import useSettingsDropdownOverview from '../../services/graphQL/settingsDorpdown/useSettingsDorpdown';
+import {SettingsDropdownOverview} from '../../types/graphQL/classTypes';
 
 const InventoryDetails = ({context, type}: InventoryProps) => {
   const [assessmentModal, setAssessmentModal] = useState(false);
   const [movementModal, setMovementModal] = useState(false);
 
-  const {data: depreciationTypes} = useDepreciationTypesGet({page: 1, size: 1000});
+  const {settingsTypes: depreciationTypes, fetch} = useSettingsDropdownOverview('', 0, 'deprecation_types');
 
   const id = context.navigation.location.pathname.split('/').pop();
 
   const {data, refetch} = useInventoryDetails(id);
 
   const getDepreciationRate = (item: InventoryAssessment) => {
-    const depreciationType = depreciationTypes.items.find(
-      (type: DepreciationType) => item.depreciation_type?.id === type.id,
+    const depreciationType = depreciationTypes?.find(
+      (type: SettingsDropdownOverview) => item.depreciation_type?.id === type.id,
     );
 
     if (depreciationType) {
-      return 100 / depreciationType.lifetime_in_months;
+      return 100 / Number(depreciationType.value);
     } else {
       return 0;
     }

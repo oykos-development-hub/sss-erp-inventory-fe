@@ -114,7 +114,6 @@ const MovableAddForm = ({onFormSubmit}: AddInventoryFormProps) => {
             {...register('invoice_number', {required: 'Ovo polje je obavezno'})}
             label="BROJ RAČUNA NABAVKE:"
             error={errors.invoice_number?.message}
-            type="number"
           />
           <Controller
             name="date_of_purchase"

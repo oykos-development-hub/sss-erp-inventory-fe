@@ -15,7 +15,7 @@ export const initialValues: SmallDetailsFormProps = {
   office_id: 1,
   source: null,
   donor_title: '',
-  invoice_number: 1,
+  invoice_number: '',
   date_of_purchase: '',
   gross_price: 1,
   amount: 1,
@@ -31,7 +31,7 @@ export const initialValues: SmallDetailsFormProps = {
   property_document: '',
   limitations_description: '',
   lifetime_of_assessment_in_months: 1,
-  file_id: '',
+  file_id: 0,
   document: '',
   unit: null,
 };

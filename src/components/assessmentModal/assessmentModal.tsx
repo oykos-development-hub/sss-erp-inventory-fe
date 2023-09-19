@@ -2,11 +2,11 @@ import {Datepicker, Dropdown, Input, Modal} from 'client-library';
 import {Controller, useForm} from 'react-hook-form';
 import {estimationTypeOptions} from '../../constants';
 import useAssessmentInsert from '../../services/graphQL/assessmentInsert/useAssessmentInsert';
-import useDepreciationTypesGet from '../../services/graphQL/depreciationTypes/useDepreciationTypesGet';
 import {DropdownDataNumber} from '../../types/dropdownData';
 import {MicroserviceProps} from '../../types/micro-service-props';
 import {parseDate} from '../../utils/dateUtils';
 import {EstimationForm} from './styles';
+import useSettingsDropdownOverview from '../../services/graphQL/settingsDorpdown/useSettingsDorpdown';
 
 interface AssessmentModalProps {
   context: MicroserviceProps;
@@ -36,7 +36,7 @@ const AssessmentModal = ({context, onClose, id, refetch}: AssessmentModalProps) 
 
   console.log(id, 'od');
 
-  const {options: depreciationTypeOptions} = useDepreciationTypesGet({page: 1, size: 1000});
+  const {settingsTypes: depreciationTypeOptions, fetch} = useSettingsDropdownOverview('', 0, 'deprecation_types');
 
   const {mutate} = useAssessmentInsert();
 

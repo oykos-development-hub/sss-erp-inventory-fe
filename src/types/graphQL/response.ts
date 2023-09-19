@@ -1,5 +1,4 @@
-import {ClassType} from './classTypes';
-import {DepreciationType} from './depreciationTypes';
+import {ClassType, SettingsDropdownOverview} from './classTypes';
 import {InventoryAssessment} from './inventoryAssessment';
 import {InventoryDetails} from './inventoryDetails';
 import {InventoryDispatch} from './inventoryDispatch';
@@ -33,8 +32,7 @@ export interface GraphQLResponse {
     basicInventory_Insert: InsertResponse<InventoryItem>;
     basicInventoryRealEstates_Overview: OverviewResponse<RealEstate>;
     officesOfOrganizationUnits_Overview: OverviewResponse<Office>;
-    basicInventoryDepreciationTypes_Overview: OverviewResponse<DepreciationType>;
-    settingsDropdown_Overview: OverviewResponse<ClassType>;
+    settingsDropdown_Overview: OverviewResponse<SettingsDropdownOverview>;
     basicInventoryAssessments_Insert: InsertResponse<InventoryAssessment>;
     basicInventoryDispatch_Insert: InsertResponse<InventoryDispatch>;
     basicInventory_Details: {

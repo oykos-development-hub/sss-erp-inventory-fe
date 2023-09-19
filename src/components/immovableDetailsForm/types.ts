@@ -23,13 +23,13 @@ export interface ImmovableDetailsFormProps {
   date_of_purchase: string;
   source: string;
   donor_title: string;
-  invoice_number: number;
+  invoice_number: string;
   price_of_assessment: number;
   date_of_assessment: string;
   lifetime_of_assessment_in_months: number;
   active: boolean;
   deactivation_description: number;
-  invoice_file_id: string;
+  invoice_file_id: number;
   square_area: number;
   land_serial_number: string;
   estate_serial_number: string;
@@ -37,7 +37,7 @@ export interface ImmovableDetailsFormProps {
   ownership_scope: DropdownDataString | null;
   ownership_investment_scope: string;
   limitations_description: string;
-  file_id: string;
+  file_id: number;
   type: DropdownDataString | null;
   property_document: string;
   limitation: DropdownDataString | null;

@@ -30,6 +30,6 @@ export interface MovableDetailsFormProps {
   active: boolean;
   deactivation_description: number;
   invoice_file_id: string;
-  file_id: string;
+  file_id?: number;
   land_serial_number: string;
 }

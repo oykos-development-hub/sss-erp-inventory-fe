@@ -9,7 +9,6 @@ import {
 } from '../../screens/inventoryOverview/constants';
 import {InventoryFilters, InventoryFiltersEnum} from '../../screens/inventoryOverview/types';
 import useClassTypesGet from '../../services/graphQL/classTypes/useClassTypesGet';
-import useDepreciationTypesGet from '../../services/graphQL/depreciationTypes/useDepreciationTypesGet';
 import useOrgUnitOfficesGet from '../../services/graphQL/organizationUnitOffices/useOrganizationUnitOfficesGet';
 import {DispatchType} from '../../types/graphQL/inventoryDispatch';
 import {InventoryItem, SourceType} from '../../types/graphQL/inventoryOverview';
@@ -19,6 +18,7 @@ import AssessmentModal from '../assessmentModal/assessmentModal';
 import DeactivateModal from '../deactivateModal/deactivateModal';
 import MovementModal from '../movementModal/movementModal';
 import {FilterDropdown, FilterInput, Filters, ReversButtonContainer} from './styles';
+import useSettingsDropdownOverview from '../../services/graphQL/settingsDorpdown/useSettingsDorpdown';
 
 interface InventoryListProps {
   context: MicroserviceProps;
@@ -44,7 +44,9 @@ const InventoryList = ({context, filters, tableData, onFilter, filterValues, typ
   const orgUnitId = context?.contextMain?.organization_unit?.id;
 
   const {options: officeOptions} = useOrgUnitOfficesGet({page: 1, size: 1000, id: orgUnitId});
-  const {options: amortizationGroupOptions} = useDepreciationTypesGet({page: 1, size: 1000});
+
+  const {settingsTypes: amortizationGroupOptions, fetch} = useSettingsDropdownOverview('', 0, 'deprecation_types');
+
   const {options: classTypeOptions} = useClassTypesGet({});
 
   const {

@@ -15,11 +15,11 @@ const InventoryOverview = ({context, type}: InventoryProps) => {
     page,
     size: PAGE_SIZE,
     type,
-    source_type: filterValues.source_type?.id ?? '',
-    class_type_id: filterValues.class_type_id?.id ?? 0,
+    source_type: filterValues.source_type?.id,
+    class_type_id: filterValues.class_type_id?.id,
     search: debouncedSearch,
-    office_id: filterValues.office_id?.id ?? 0,
-    depreciation_type_id: filterValues.depreciation_type_id?.id ?? 0,
+    office_id: filterValues.office_id?.id,
+    depreciation_type_id: filterValues.depreciation_type_id?.id,
   });
 
   const onPageChange = (page: number) => {

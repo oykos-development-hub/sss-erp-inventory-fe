@@ -7,6 +7,7 @@ import {parseDate} from '../../utils/dateUtils';
 import {initialValues, optionsOne, optionsThree, optionsTwo, supplierOptions} from './constants';
 import {ButtonWrapper, FormWrapper, InputWrapper, OfficeDropdown, SupplierDropdown} from './style';
 import {MovableDetailsFormProps} from './types';
+import {InventoryInsertData} from '../../types/graphQL/inventoryOverview';
 
 const MovableDetailsForm = ({data, context, inventoryType, refetch, inventoryId}: DetailsFormProps) => {
   const {
@@ -31,14 +32,13 @@ const MovableDetailsForm = ({data, context, inventoryType, refetch, inventoryId}
   }, [data]);
 
   const onSubmit = async (values: MovableDetailsFormProps) => {
-    const movableDetailsValues = [
+    const movableDetailsValues: InventoryInsertData[] = [
       {
         id: inventoryId,
         type: inventoryType,
         class_type_id: values?.class_type?.id || 0,
         depreciation_type_id: values?.depreciation_type?.id || 0,
         supplier_id: values?.supplier?.id || 0,
-        real_estate: null,
         serial_number: values?.serial_number || '',
         inventory_number: values?.inventory_number || '',
         title: values?.title || '',
@@ -55,19 +55,18 @@ const MovableDetailsForm = ({data, context, inventoryType, refetch, inventoryId}
         date_of_purchase: parseDate(values?.date_of_purchase, true) || '',
         source: '',
         donor_title: '',
-        invoice_number: 0,
+        invoice_number: '',
         price_of_assessment: 0,
         date_of_assessment: '',
         lifetime_of_assessment_in_months: values?.lifetime_of_assessment_in_months || 0,
         active: true,
         deactivation_description: 0,
-        invoice_file_id: '',
-        file_id: '',
+        invoice_file_id: 0,
+        file_id: 0,
       },
     ];
     await mutate(
       movableDetailsValues,
-
       () => {
         alert.success('Sredstvo uspješno sačuvano');
         refetch && refetch();

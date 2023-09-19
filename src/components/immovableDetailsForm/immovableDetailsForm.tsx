@@ -10,7 +10,7 @@ import {ButtonWrapper} from '../movableDetailsForm/style';
 import {depreciationTypeOptions, initialValues, ownershipTypeOptions} from './constants';
 import {ImmovableDetailsFormWrapper, ImmovableDetailsInputWrapper} from './style';
 import {ImmovableDetailsFormProps} from './types';
-import useDepreciationTypesGet from '../../services/graphQL/depreciationTypes/useDepreciationTypesGet';
+import useSettingsDropdownOverview from '../../services/graphQL/settingsDorpdown/useSettingsDorpdown';
 
 const ImmovableDetailsForm = ({context, data, refetch, inventoryId}: DetailsFormProps) => {
   const {
@@ -27,11 +27,11 @@ const ImmovableDetailsForm = ({context, data, refetch, inventoryId}: DetailsForm
   } = context;
   const {mutate} = useInventoryInsert();
 
-  const {data: depreciationTypes} = useDepreciationTypesGet({page: 1, size: 1000});
+  const {settingsTypes: depreciationTypes, fetch} = useSettingsDropdownOverview('', 0, 'deprecation_types');
 
   useEffect(() => {
     if (data) {
-      const depreciationType = depreciationTypes.items.find(option => option.id === data?.depreciation_type?.id);
+      const depreciationType = depreciationTypes?.find(option => option.id === data?.depreciation_type?.id);
 
       const currentValues = {
         ...data,
@@ -44,7 +44,7 @@ const ImmovableDetailsForm = ({context, data, refetch, inventoryId}: DetailsForm
         limitation: restrictionOptions.find(option => option.id === data?.real_estate?.limitation_id),
         limitations_description: data?.real_estate?.limitations_description,
         square_area: data.real_estate?.square_area,
-        depreciation_rate: depreciationType ? 100 / depreciationType.lifetime_in_months : 0,
+        depreciation_rate: depreciationType ? 100 / Number(depreciationType.value) : 0,
       };
 
       reset(currentValues as any);
@@ -75,12 +75,12 @@ const ImmovableDetailsForm = ({context, data, refetch, inventoryId}: DetailsForm
         date_of_purchase: parseDate(values?.date_of_purchase, true) || '',
         source: '',
         donor_title: '',
-        invoice_number: 0,
+        invoice_number: '',
         price_of_assessment: 0,
         date_of_assessment: '',
         active: true,
         deactivation_description: 0,
-        invoice_file_id: values?.invoice_file_id || '',
+        invoice_file_id: values?.invoice_file_id || 0,
         real_estate: {
           id: 0,
           square_area: values?.square_area || 0,
@@ -97,7 +97,7 @@ const ImmovableDetailsForm = ({context, data, refetch, inventoryId}: DetailsForm
           document: values?.document || '',
         },
         depreciation_type_id: values?.depreciation_type?.id || 0,
-        file_id: '',
+        file_id: 0,
       },
     ];
 

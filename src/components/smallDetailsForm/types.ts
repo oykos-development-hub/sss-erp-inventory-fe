@@ -20,7 +20,7 @@ export interface SmallDetailsFormProps {
   office?: DropdownDataNumber | null;
   source: DropdownDataString | null;
   donor_title: string;
-  invoice_number: number;
+  invoice_number: string;
   date_of_purchase: string;
   gross_price: number;
   amount: number;
@@ -36,7 +36,7 @@ export interface SmallDetailsFormProps {
   property_document: string;
   limitations_description: string;
   lifetime_of_assessment_in_months: number;
-  file_id: string;
+  file_id: number;
   document: string;
   unit: DropdownDataString | null;
 }

@@ -1,7 +1,6 @@
 import {getEnvironment} from '../get-environment';
 import assessmentInsert from './assessmentInsert/assessmentInsert';
 import classTypesGet from './classTypes/classTypesGet';
-import depreciationTypesGet from './depreciationTypes/depreciationTypesGet';
 import dispatchInsert from './dispatchInsert/dispatchInsert';
 import inventoryDetailsGet from './inventoryDetails/inventoryDetailsGet';
 import inventoryDispatchAccept from './inventoryDispatchAccept/inventoryDispatchAccept';
@@ -12,6 +11,7 @@ import inventoryOverview from './inventoryOverview/inventoryOverview';
 import organizationUnitOfficesGet from './organizationUnitOffices/organizationUnitOfficesGet';
 import organizationUnitsGet from './organizationUnits/oganizatonUnitsGet';
 import realEstateGet from './realEstate/realEstateGet';
+import getSettingsDropdownOverview from './settingsDorpdown/settingsDorpdown';
 import userProfileOverview from './userProfileOverview/userProfileOverview';
 
 export const BFF_URL = {
@@ -25,6 +25,7 @@ export const GraphQL = {
   fetch: (query: string, variables?: any): Promise<any> => {
     return fetch(BFF_URL[getEnvironment()], {
       method: 'POST',
+      credentials: 'include',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({query, variables}),
     })
@@ -33,7 +34,6 @@ export const GraphQL = {
   },
   inventoryOverview: inventoryOverview,
   inventoryInsert: inventoryInsert,
-  depreciationTypesGet: depreciationTypesGet,
   realEstateGet: realEstateGet,
   organizationUnitOfficesGet: organizationUnitOfficesGet,
   classTypesGet: classTypesGet,
@@ -45,4 +45,5 @@ export const GraphQL = {
   inventoryDispatchDelete: inventoryDispatchDelete,
   inventoryDispatchAccept: inventoryDispatchAccept,
   userProfileOverview: userProfileOverview,
+  getSettingsDropdownOverview: getSettingsDropdownOverview,
 };

@@ -31,5 +31,5 @@ export interface InventoryInsertData {
   active: boolean;
   deactivation_description: number;
   invoice_file_id: string | undefined;
-  file_id: string;
+  file_id?: number;
 }

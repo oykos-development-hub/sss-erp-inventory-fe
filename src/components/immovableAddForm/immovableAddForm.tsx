@@ -2,7 +2,7 @@ import {Button, Dropdown, Input} from 'client-library';
 import {Controller, useForm} from 'react-hook-form';
 import {realEstateTypeOptions, restrictionOptions, rightPropertyOptions} from '../../screens/inventoryAdd/constants';
 import {ButtonContainer} from '../../screens/inventoryAdd/styles';
-import useDepreciationTypesGet from '../../services/graphQL/depreciationTypes/useDepreciationTypesGet';
+import useSettingsDropdownOverview from '../../services/graphQL/settingsDorpdown/useSettingsDorpdown';
 import useInventoryInsert from '../../services/graphQL/inventoryInsert/useInventoryInsert';
 import {FieldsContainer, Form, FormRow} from '../../shared/formStyles';
 import {InventoryTypeEnum} from '../../types/inventoryType';
@@ -24,7 +24,7 @@ const ImmovableAddForm = ({context}: {context: MicroserviceProps}) => {
     navigation: {navigate},
   } = context;
 
-  const {options: amortizationGroupOptions} = useDepreciationTypesGet({page: 1, size: 10});
+  const {settingsTypes: amortizationGroupOptions, fetch} = useSettingsDropdownOverview('', 0, 'deprecation_types');
   const {mutate} = useInventoryInsert();
 
   const myOrgUnitId = context.contextMain?.organization_unit.id ?? 0;
@@ -39,7 +39,7 @@ const ImmovableAddForm = ({context}: {context: MicroserviceProps}) => {
           date_of_purchase: '',
           source: '',
           office_id: 0,
-          invoice_number: 0,
+          invoice_number: '',
           supplier_id: 0,
           depreciation_type_id: values.depreciation_type?.id ?? 0,
           class_type_id: 0,
@@ -62,8 +62,8 @@ const ImmovableAddForm = ({context}: {context: MicroserviceProps}) => {
           lifetime_of_assessment_in_months: 0,
           active: true,
           deactivation_description: 0,
-          invoice_file_id: undefined,
-          file_id: '',
+          invoice_file_id: 0,
+          file_id: 0,
           real_estate: {
             id: 0,
             square_area: Number(values.square_area) ?? 0,

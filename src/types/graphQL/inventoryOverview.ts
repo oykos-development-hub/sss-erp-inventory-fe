@@ -29,10 +29,10 @@ export enum SourceType {
 }
 
 export interface InventoryOverviewParams {
-  page: number;
-  size: number;
-  type: InventoryTypeEnum | `${InventoryTypeEnum}`;
-  source_type: string;
+  page?: number;
+  size?: number;
+  type?: InventoryTypeEnum | `${InventoryTypeEnum}`;
+  source_type?: string;
   depreciation_type_id?: number;
   id?: number;
   class_type_id?: number;
@@ -46,7 +46,7 @@ export interface InventoryInsertData {
   class_type_id: number;
   depreciation_type_id: number;
   supplier_id: number;
-  real_estate: RealEstate | null;
+  real_estate?: RealEstate;
   serial_number: string;
   inventory_number: string;
   title: string;
@@ -63,13 +63,13 @@ export interface InventoryInsertData {
   date_of_purchase: string;
   source: string;
   donor_title: string;
-  invoice_number: number;
+  invoice_number: string;
   price_of_assessment: number;
   date_of_assessment: string;
   lifetime_of_assessment_in_months: number;
   active: boolean;
   deactivation_description: number;
-  invoice_file_id: string | undefined;
-  file_id: string;
+  invoice_file_id?: number;
+  file_id?: number;
   organization_unit_id?: number;
 }

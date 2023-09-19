@@ -5,10 +5,10 @@ import ImmovableAddForm from '../../components/immovableAddForm/immovableAddForm
 import MovableAddForm from '../../components/movableAddForm/movableAddForm';
 import SmallInventoryForm from '../../components/smallInventoryForm/smallInventoryForm';
 import useClassTypesGet from '../../services/graphQL/classTypes/useClassTypesGet';
-import useDepreciationTypesGet from '../../services/graphQL/depreciationTypes/useDepreciationTypesGet';
 import useInventoryInsert from '../../services/graphQL/inventoryInsert/useInventoryInsert';
+import useSettingsDropdownOverview from '../../services/graphQL/settingsDorpdown/useSettingsDorpdown';
 import {InventoryProps} from '../../types/inventoryProps';
-import {parseDate} from '../../utils/dateUtils';
+import {parseDateForBackend} from '../../utils/dateUtils';
 import {newTableItem, tableHeads} from './constants';
 import {mockTableData} from './mockData';
 import {ButtonContainer, StyledTable} from './styles';
@@ -37,8 +37,8 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
     control,
     name: 'items',
   });
+  const {settingsTypes: amortizationGroupOptions, fetch} = useSettingsDropdownOverview('', 0, 'deprecation_types');
 
-  const {options: amortizationGroupOptions} = useDepreciationTypesGet({page: 1, size: 10});
   const {options: classOptions} = useClassTypesGet({search: '', id: 0});
   const {mutate} = useInventoryInsert();
 
@@ -100,7 +100,7 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
       const data = values.items.map((item: any) => ({
         // form data
         id: 0,
-        date_of_purchase: parseDate(values.date_of_purchase, true) || '',
+        date_of_purchase: parseDateForBackend(values.date_of_purchase) || '',
         source: values.source.id,
         office_id: values.office.id,
         invoice_number: Number(values.invoice_number),
@@ -127,12 +127,12 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
         net_price: 1,
         donor_title: '',
         price_of_assessment: 0,
-        date_of_assessment: '',
+        date_of_assessment: null,
         lifetime_of_assessment_in_months: 0,
         active: false,
         deactivation_description: '',
-        invoice_file_id: undefined,
-        file_id: '',
+        invoice_file_id: 0,
+        file_id: 0,
       }));
 
       await mutate(
