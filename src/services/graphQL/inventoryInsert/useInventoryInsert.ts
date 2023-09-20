@@ -1,14 +1,15 @@
 import {useState} from 'react';
 import {GraphQL} from '..';
 import {InventoryInsertData} from '../../../types/graphQL/inventoryOverview';
+import {MicroserviceProps} from '../../../types/micro-service-props';
 
-const useInventoryInsert = () => {
+const useInventoryInsert = (context: MicroserviceProps) => {
   const [loading, setLoading] = useState(false);
 
   const insertInventory = async (data: InventoryInsertData[], onSuccess?: () => void, onError?: () => void) => {
     setLoading(true);
-    const response = await GraphQL.inventoryInsert(data);
-    if (response.status === 'success') {
+    const response = await context.fetch(GraphQL.inventoryInsert, {data});
+    if (response.basicInventory_Insert.status === 'success') {
       onSuccess && onSuccess();
     } else {
       onError && onError();

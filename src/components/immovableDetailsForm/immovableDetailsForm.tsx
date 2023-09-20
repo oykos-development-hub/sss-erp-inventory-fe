@@ -10,7 +10,7 @@ import {ButtonWrapper} from '../movableDetailsForm/style';
 import {depreciationTypeOptions, initialValues, ownershipTypeOptions} from './constants';
 import {ImmovableDetailsFormWrapper, ImmovableDetailsInputWrapper} from './style';
 import {ImmovableDetailsFormProps} from './types';
-import useSettingsDropdownOverview from '../../services/graphQL/settingsDorpdown/useSettingsDorpdown';
+import useGetSettings from '../../services/graphQL/getSettings/useGetSettings';
 
 const ImmovableDetailsForm = ({context, data, refetch, inventoryId}: DetailsFormProps) => {
   const {
@@ -25,9 +25,9 @@ const ImmovableDetailsForm = ({context, data, refetch, inventoryId}: DetailsForm
     alert,
     navigation: {navigate},
   } = context;
-  const {mutate} = useInventoryInsert();
+  const {mutate} = useInventoryInsert(context);
 
-  const {settingsTypes: depreciationTypes, fetch} = useSettingsDropdownOverview('', 0, 'deprecation_types');
+  const {options: depreciationTypes} = useGetSettings({context: context, entity: 'deprecation_types'});
 
   useEffect(() => {
     if (data) {
@@ -44,7 +44,7 @@ const ImmovableDetailsForm = ({context, data, refetch, inventoryId}: DetailsForm
         limitation: restrictionOptions.find(option => option.id === data?.real_estate?.limitation_id),
         limitations_description: data?.real_estate?.limitations_description,
         square_area: data.real_estate?.square_area,
-        depreciation_rate: depreciationType ? 100 / Number(depreciationType.value) : 0,
+        depreciation_rate: depreciationType ? 100 / Number(depreciationType) : 0,
       };
 
       reset(currentValues as any);

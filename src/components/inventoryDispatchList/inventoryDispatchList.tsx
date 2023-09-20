@@ -20,7 +20,7 @@ interface InventoryDispatchList {
 const InventoryDispatchList = ({context, tableData, filterValues, onFilter, refetch}: InventoryDispatchList) => {
   const [receiveModal, setReceiveModal] = useState(false);
   const [currentId, setCurrentId] = useState<number>();
-  const {options: locationOptions} = useOrganizationUnits();
+  const {options: locationOptions} = useOrganizationUnits(context);
 
   const receiveInventoryTableHeads: TableHead[] = [
     {

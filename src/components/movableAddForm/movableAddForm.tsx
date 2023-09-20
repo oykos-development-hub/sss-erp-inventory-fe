@@ -11,7 +11,7 @@ import useOrgUnitOfficesGet from '../../services/graphQL/organizationUnitOffices
 import {inventorySourceOptions} from '../../screens/inventoryAdd/constants';
 import {Tooltip} from 'client-library';
 import {TooltipWrapper} from './styles';
-const MovableAddForm = ({onFormSubmit}: AddInventoryFormProps) => {
+const MovableAddForm = ({onFormSubmit, context}: AddInventoryFormProps) => {
   const {
     register,
     handleSubmit,
@@ -25,7 +25,7 @@ const MovableAddForm = ({onFormSubmit}: AddInventoryFormProps) => {
   const onSubmit = (values: MovableAddFormProps) => {
     isValid && onFormSubmit(values);
   };
-  const {options: locationOptions} = useOrgUnitOfficesGet({page: 1, size: 10, id: 0});
+  const {options: locationOptions} = useOrgUnitOfficesGet({page: 1, size: 10, id: 0, context});
   const handleOrderListChange = (selectedOrderList: DropdownDataString) => {
     // When order list is selected:
     // reset the form

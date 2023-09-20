@@ -1,13 +1,14 @@
 import {useState} from 'react';
 import {GraphQL} from '..';
+import {MicroserviceProps} from '../../../types/micro-service-props';
 
-const UseDispatchDelete = () => {
+const UseDispatchDelete = (context: MicroserviceProps) => {
   const [loading, setLoading] = useState(false);
 
   const deleteDispatch = async (id: number, onSuccess?: () => void, onError?: () => void) => {
     setLoading(true);
-    const response = await GraphQL.inventoryDispatchDelete(id);
-    if (response.status === 'success') {
+    const response = await context.fetch(GraphQL.inventoryDispatchDelete, {id});
+    if (response.basicInventoryDispatch_Delete.status === 'success') {
       onSuccess && onSuccess();
     } else {
       onError && onError();

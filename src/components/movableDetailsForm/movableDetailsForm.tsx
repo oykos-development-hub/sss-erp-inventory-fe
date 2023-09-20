@@ -23,7 +23,7 @@ const MovableDetailsForm = ({data, context, inventoryType, refetch, inventoryId}
     navigation: {navigate},
   } = context;
 
-  const {mutate} = useInventoryInsert();
+  const {mutate} = useInventoryInsert(context);
 
   useEffect(() => {
     if (data) {

@@ -4,19 +4,23 @@ import {initialOverviewData} from '../../constants';
 import {OrganizationUnit} from '../../../types/graphQL/organizationUnits';
 import {GraphQLResponse} from '../../../types/graphQL/response';
 import {DropdownDataNumber} from '../../../types/dropdownData';
+import {MicroserviceProps} from '../../../types/micro-service-props';
 
-const useOrganizationUnits = (props?: any) => {
+const useOrganizationUnits = (context: MicroserviceProps) => {
   const [data, setData] = useState<GraphQLResponse['data']['organizationUnits']>(initialOverviewData);
   const [options, setOptions] = useState<DropdownDataNumber[]>([]);
 
   const fetchOrganizationUnits = async () => {
     try {
-      const response = await GraphQL.organizationUnitsGet();
+      const response = await context.fetch(context.graphQl.getOrganizationUnits);
 
-      const options = response.items.map((item: OrganizationUnit) => ({id: item.id, title: item.title}));
+      const options = response?.organizationUnits?.items.map((item: OrganizationUnit) => ({
+        id: item.id,
+        title: item.title,
+      }));
       setOptions(options);
 
-      setData(response);
+      setData(response?.organizationUnits);
     } catch (e) {
       console.log(e);
     }
@@ -24,7 +28,7 @@ const useOrganizationUnits = (props?: any) => {
 
   useEffect(() => {
     fetchOrganizationUnits();
-  }, [props]);
+  }, []);
 
   return {data, fetch: fetchOrganizationUnits, options};
 };

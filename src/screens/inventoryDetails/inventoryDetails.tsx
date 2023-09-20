@@ -14,21 +14,21 @@ import {estimationTableHeads, movementsTableHeads} from './constants';
 import {InventoryDetailsWrapper, TableHeader} from './style';
 import MovementModal from '../../components/movementModal/movementModal';
 import {InventoryAssessment} from '../../types/graphQL/inventoryAssessment';
-import useSettingsDropdownOverview from '../../services/graphQL/settingsDorpdown/useSettingsDorpdown';
 import {SettingsDropdownOverview} from '../../types/graphQL/classTypes';
+import useGetSettings from '../../services/graphQL/getSettings/useGetSettings';
 
 const InventoryDetails = ({context, type}: InventoryProps) => {
   const [assessmentModal, setAssessmentModal] = useState(false);
   const [movementModal, setMovementModal] = useState(false);
 
-  const {settingsTypes: depreciationTypes, fetch} = useSettingsDropdownOverview('', 0, 'deprecation_types');
+  const {data: depreciationTypes} = useGetSettings({context: context, entity: 'deprecation_types'});
 
   const id = context.navigation.location.pathname.split('/').pop();
 
-  const {data, refetch} = useInventoryDetails(id);
+  const {data, refetch} = useInventoryDetails(context, id);
 
   const getDepreciationRate = (item: InventoryAssessment) => {
-    const depreciationType = depreciationTypes?.find(
+    const depreciationType = depreciationTypes?.items?.find(
       (type: SettingsDropdownOverview) => item.depreciation_type?.id === type.id,
     );
 

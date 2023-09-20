@@ -9,7 +9,7 @@ import PlusButton from '../../shared/plusButton';
 import {parseDate} from '../../utils/dateUtils';
 import {SmallInventoryAddFormProps} from './types';
 
-const SmallInventoryForm = ({onFormSubmit}: AddInventoryFormProps) => {
+const SmallInventoryForm = ({onFormSubmit, context}: AddInventoryFormProps) => {
   const {
     register,
     handleSubmit,
@@ -17,7 +17,7 @@ const SmallInventoryForm = ({onFormSubmit}: AddInventoryFormProps) => {
     formState: {errors},
   } = useFormContext<SmallInventoryAddFormProps>();
 
-  const {options: locationOptions} = useOrgUnitOfficesGet({page: 1, size: 10, id: 0});
+  const {options: locationOptions} = useOrgUnitOfficesGet({page: 1, size: 10, id: 0, context});
 
   const onSubmit = (values: SmallInventoryAddFormProps) => {
     onFormSubmit(values);

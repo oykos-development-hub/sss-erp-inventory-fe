@@ -2,13 +2,13 @@ import {Button, Dropdown, Input} from 'client-library';
 import {Controller, useForm} from 'react-hook-form';
 import {realEstateTypeOptions, restrictionOptions, rightPropertyOptions} from '../../screens/inventoryAdd/constants';
 import {ButtonContainer} from '../../screens/inventoryAdd/styles';
-import useSettingsDropdownOverview from '../../services/graphQL/settingsDorpdown/useSettingsDorpdown';
 import useInventoryInsert from '../../services/graphQL/inventoryInsert/useInventoryInsert';
 import {FieldsContainer, Form, FormRow} from '../../shared/formStyles';
 import {InventoryTypeEnum} from '../../types/inventoryType';
 import {MicroserviceProps} from '../../types/micro-service-props';
 import {initialValues} from './constants';
 import {ImmovableAddFormProps} from './types';
+import useGetSettings from '../../services/graphQL/getSettings/useGetSettings';
 
 const ImmovableAddForm = ({context}: {context: MicroserviceProps}) => {
   const {
@@ -24,8 +24,8 @@ const ImmovableAddForm = ({context}: {context: MicroserviceProps}) => {
     navigation: {navigate},
   } = context;
 
-  const {settingsTypes: amortizationGroupOptions, fetch} = useSettingsDropdownOverview('', 0, 'deprecation_types');
-  const {mutate} = useInventoryInsert();
+  const {options: amortizationGroupOptions} = useGetSettings({context: context, entity: 'deprecation_types'});
+  const {mutate} = useInventoryInsert(context);
 
   const myOrgUnitId = context.contextMain?.organization_unit.id ?? 0;
   //handlers

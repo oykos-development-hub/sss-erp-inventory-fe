@@ -12,6 +12,7 @@ const InventoryOverview = ({context, type}: InventoryProps) => {
   const [filterValues, setFilterValues] = useState(initialInventoryFilters[type]);
 
   const {data, refetch} = useInventoryOverview({
+    context,
     page,
     size: PAGE_SIZE,
     type,
@@ -41,7 +42,7 @@ const InventoryOverview = ({context, type}: InventoryProps) => {
       <InventoryList
         context={context}
         filters={inventoryFilters[type]}
-        tableData={data.items}
+        tableData={data.items || []}
         filterValues={filterValues}
         onFilter={onFilter}
         type={type}

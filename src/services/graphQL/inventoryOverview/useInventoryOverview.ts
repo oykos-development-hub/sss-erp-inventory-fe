@@ -5,6 +5,7 @@ import {initialOverviewData} from '../../constants';
 import {GraphQLResponse} from '../../../types/graphQL/response';
 
 const useInventoryOverview = ({
+  context,
   page,
   size,
   class_type_id,
@@ -21,7 +22,7 @@ const useInventoryOverview = ({
     setLoading(true);
 
     try {
-      const response = await GraphQL.inventoryOverview({
+      const response = await context.fetch(GraphQL.inventoryOverview, {
         page,
         size,
         class_type_id,
@@ -32,7 +33,7 @@ const useInventoryOverview = ({
         source_type,
       });
 
-      setData(response);
+      setData(response?.basicInventory_Overview);
       setLoading(false);
     } catch (err) {
       console.log(err);

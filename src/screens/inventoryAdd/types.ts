@@ -1,6 +1,7 @@
 import {MovableAddFormProps} from '../../components/movableAddForm/types';
 import {SmallInventoryAddFormProps} from '../../components/smallInventoryForm/types';
 import {DropdownDataNumber} from '../../types/dropdownData';
+import {MicroserviceProps} from '../../types/micro-service-props';
 
 export interface TableItemValues {
   id: any;
@@ -19,6 +20,7 @@ export type TableValues = {
 
 export interface AddInventoryFormProps {
   onFormSubmit: any;
+  context: MicroserviceProps;
 }
 export type valuesType = MovableAddFormProps | SmallInventoryAddFormProps | null;
 export type DropdownName = `items.${number}.${'class_type' | 'depreciation_type'}`;

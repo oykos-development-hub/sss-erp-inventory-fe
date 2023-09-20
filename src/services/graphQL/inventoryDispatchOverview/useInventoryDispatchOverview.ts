@@ -4,12 +4,15 @@ import {initialOverviewData} from '../../constants';
 import {GraphQLResponse} from '../../../types/graphQL/response';
 import {PaginationProps} from '../../../types/paginationParams';
 import {InventoryDispatchFilters} from '../../../screens/inventoryDispatch/types';
+import {MicroserviceProps} from '../../../types/micro-service-props';
 
 interface InventoryDispatchHookParams extends InventoryDispatchFilters, PaginationProps {
   id: number;
+  context: MicroserviceProps;
 }
 
 const useInventoryDispatchOverview = ({
+  context,
   page,
   size,
   id,
@@ -24,16 +27,16 @@ const useInventoryDispatchOverview = ({
     setLoading(true);
 
     try {
-      const response = await GraphQL.inventoryDispatchOverview({
+      const response = await context.fetch(GraphQL.inventoryDispatchOverview, {
         page,
         size,
-        id: id ?? 0,
-        source_organization_unit_id: source_organization_unit ? source_organization_unit.id : 0,
-        type: type ? type.id : '',
-        accepted: accepted ? accepted.id : null,
+        id,
+        source_organization_unit_id: source_organization_unit?.id,
+        type,
+        accepted,
       });
 
-      setData(response);
+      setData(response?.basicInventoryDispatch_Overview);
       setLoading(false);
     } catch (err) {
       console.log(err);

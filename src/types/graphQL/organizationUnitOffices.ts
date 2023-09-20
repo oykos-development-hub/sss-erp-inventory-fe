@@ -1,4 +1,5 @@
 import {DropdownDataNumber} from '../dropdownData';
+import {MicroserviceProps} from '../micro-service-props';
 
 export interface Office {
   id: number;
@@ -11,6 +12,7 @@ export interface Office {
 }
 
 export interface OfficeParams {
+  context: MicroserviceProps;
   page: number;
   size: number;
   id: number;

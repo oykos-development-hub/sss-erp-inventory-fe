@@ -1,20 +1,10 @@
-import {GraphQL} from '..';
-import {GraphQLResponse} from '../../../types/graphQL/response';
-
-const InventoryDispatchAccept = async (
-  id: number,
-  userId: number,
-): Promise<GraphQLResponse['data']['basicInventoryDispatch_Accept']> => {
-  const response = await GraphQL.fetch(`mutation {
-    basicInventoryDispatch_Accept(
-        dispatch_id: ${id}, 
-        target_user_id: ${userId}) {
-            message
-            status
-    }
-  }`);
-
-  return response?.data?.basicInventoryDispatch_Accept || {};
-};
+const InventoryDispatchAccept = `mutation($dispatch_id: Int!,$target_user_id: Int!) {
+  basicInventoryDispatch_Accept(
+      dispatch_id: $dispatch_id, 
+      target_user_id: $target_user_id) {
+          message
+          status
+  }
+}`;
 
 export default InventoryDispatchAccept;

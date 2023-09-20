@@ -1,33 +1,21 @@
-import {GraphQL} from '..';
-import {OfficeParams} from '../../../types/graphQL/organizationUnitOffices';
-import {GraphQLResponse} from '../../../types/graphQL/response';
-
-const organizationUnitOfficesGet = async ({
-  page,
-  size,
-  id = 0,
-}: OfficeParams): Promise<GraphQLResponse['data']['officesOfOrganizationUnits_Overview']> => {
-  const response = await GraphQL.fetch(`query {
-    officesOfOrganizationUnits_Overview(page: ${page}, size: ${size}, id: ${id}) {
-        status 
-        message
-        total 
-        items {
-            id
-            title
-            organization_unit {
-                id
-                title
-            }
-            abbreviation
-            description
-            color
-            icon
-        }
-    }
-  }`);
-
-  return response?.data?.officesOfOrganizationUnits_Overview || {};
-};
+const organizationUnitOfficesGet = `query OfficesOfOrganizationUnitsOverview( $id: Int, $organization_unit_id: Int, $search: String) {
+  officesOfOrganizationUnits_Overview( id: $id, organization_unit_id: $organization_unit_id, search: $search) {
+      status 
+      message
+      total 
+      items {
+          id
+          title
+          organization_unit {
+              id
+              title
+          }
+          abbreviation
+          description
+          color
+          icon
+      }
+  }
+}`;
 
 export default organizationUnitOfficesGet;

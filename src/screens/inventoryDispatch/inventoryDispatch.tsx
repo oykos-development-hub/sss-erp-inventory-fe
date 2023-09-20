@@ -15,7 +15,7 @@ const InventoryDispatch = ({context}: InventoryProps) => {
     setFilterValues({...filterValues, [name]: value});
   };
 
-  const {data, refetch} = useInventoryDispatchOverview({page, size: PAGE_SIZE, ...filterValues, id: 0});
+  const {data, refetch} = useInventoryDispatchOverview({page, size: PAGE_SIZE, ...filterValues, id: 0, context});
 
   const onPageChange = (page: number) => {
     setPage(page);

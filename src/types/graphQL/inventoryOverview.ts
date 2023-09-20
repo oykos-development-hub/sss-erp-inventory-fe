@@ -1,5 +1,6 @@
 import {DropdownDataNumber} from '../dropdownData';
 import {InventoryTypeEnum} from '../inventoryType';
+import {MicroserviceProps} from '../micro-service-props';
 import {RealEstate} from './realEstateOverview';
 
 export interface InventoryItem {
@@ -29,6 +30,7 @@ export enum SourceType {
 }
 
 export interface InventoryOverviewParams {
+  context: MicroserviceProps;
   page?: number;
   size?: number;
   type?: InventoryTypeEnum | `${InventoryTypeEnum}`;

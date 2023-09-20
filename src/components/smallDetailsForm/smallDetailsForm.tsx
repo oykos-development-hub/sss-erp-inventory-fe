@@ -32,7 +32,7 @@ const SmallDetailsForm = ({context, data, inventoryType, refetch, inventoryId}: 
     navigation: {navigate},
   } = context;
 
-  const {mutate} = useInventoryInsert();
+  const {mutate} = useInventoryInsert(context);
 
   useEffect(() => {
     if (data) {

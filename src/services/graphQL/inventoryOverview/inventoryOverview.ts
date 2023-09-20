@@ -1,19 +1,4 @@
-import {GraphQL} from '..';
-import {InventoryOverviewParams} from '../../../types/graphQL/inventoryOverview';
-import {GraphQLResponse} from '../../../types/graphQL/response';
-
-const inventoryOverview = async ({
-  page = 1,
-  size = 10,
-  id,
-  type,
-  source_type,
-  class_type_id,
-  office_id,
-  search,
-  depreciation_type_id,
-}: InventoryOverviewParams): Promise<GraphQLResponse['data']['basicInventory_Overview']> => {
-  const query = `query BasicInventoryOverview(
+const inventoryOverview = `query BasicInventoryOverview(
     $page: Int, 
     $size: Int, 
     $organization_unit_id: Int,
@@ -92,19 +77,5 @@ const inventoryOverview = async ({
         }
     }
 }`;
-  const response = await GraphQL.fetch(query, {
-    page,
-    size,
-    id,
-    type,
-    source_type,
-    class_type_id,
-    office_id,
-    search,
-    depreciation_type_id,
-  });
-
-  return response?.data?.basicInventory_Overview || {};
-};
 
 export default inventoryOverview;

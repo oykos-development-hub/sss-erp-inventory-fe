@@ -8,7 +8,7 @@ import {
   smallInventoryTableHeads,
 } from '../../screens/inventoryOverview/constants';
 import {InventoryFilters, InventoryFiltersEnum} from '../../screens/inventoryOverview/types';
-import useClassTypesGet from '../../services/graphQL/classTypes/useClassTypesGet';
+import useGetSettings from '../../services/graphQL/getSettings/useGetSettings';
 import useOrgUnitOfficesGet from '../../services/graphQL/organizationUnitOffices/useOrganizationUnitOfficesGet';
 import {DispatchType} from '../../types/graphQL/inventoryDispatch';
 import {InventoryItem, SourceType} from '../../types/graphQL/inventoryOverview';
@@ -18,7 +18,6 @@ import AssessmentModal from '../assessmentModal/assessmentModal';
 import DeactivateModal from '../deactivateModal/deactivateModal';
 import MovementModal from '../movementModal/movementModal';
 import {FilterDropdown, FilterInput, Filters, ReversButtonContainer} from './styles';
-import useSettingsDropdownOverview from '../../services/graphQL/settingsDorpdown/useSettingsDorpdown';
 
 interface InventoryListProps {
   context: MicroserviceProps;
@@ -43,11 +42,14 @@ const InventoryList = ({context, filters, tableData, onFilter, filterValues, typ
   const prevStateRef = useRef<number[]>(selectedRows);
   const orgUnitId = context?.contextMain?.organization_unit?.id;
 
-  const {options: officeOptions} = useOrgUnitOfficesGet({page: 1, size: 1000, id: orgUnitId});
+  const {options: officeOptions} = useOrgUnitOfficesGet({page: 1, size: 1000, id: Number(orgUnitId), context});
 
-  const {settingsTypes: amortizationGroupOptions, fetch} = useSettingsDropdownOverview('', 0, 'deprecation_types');
+  const {options: amortizationGroupOptions} = useGetSettings({
+    context: context,
+    entity: 'deprecation_types',
+  });
 
-  const {options: classTypeOptions} = useClassTypesGet({});
+  const {options: classTypeOptions} = useGetSettings({context: context, entity: 'inventory_class_type'});
 
   const {
     navigation: {navigate},
@@ -157,8 +159,8 @@ const InventoryList = ({context, filters, tableData, onFilter, filterValues, typ
       type === 'movable'
         ? movableInventoryTableHeads
         : type === 'immovable'
-        ? immovableInventoryTableHeads
-        : smallInventoryTableHeads;
+          ? immovableInventoryTableHeads
+          : smallInventoryTableHeads;
 
     return [
       ...heads,
@@ -235,40 +237,40 @@ const InventoryList = ({context, filters, tableData, onFilter, filterValues, typ
         tableActions={
           type !== 'small'
             ? [
-                {
-                  name: 'print',
-                  onClick: row => console.log('print'),
-                  icon: <PrinterIcon stroke={Theme.palette.gray600} />,
-                },
-                {
-                  name: 'Alokacija',
-                  onClick: row => onAddMovement(row),
-                },
-                {
-                  name: 'Dodaj procjenu',
-                  onClick: row => onAddEstimation(row),
-                  shouldRender: (item: any) => item.source_type?.includes('1'),
-                },
-                {
-                  name: 'Deaktivacija',
-                  onClick: row => console.log('Deaktivacija'),
-                },
-              ]
+              {
+                name: 'print',
+                onClick: row => console.log('print'),
+                icon: <PrinterIcon stroke={Theme.palette.gray600} />,
+              },
+              {
+                name: 'Alokacija',
+                onClick: row => onAddMovement(row),
+              },
+              {
+                name: 'Dodaj procjenu',
+                onClick: row => onAddEstimation(row),
+                shouldRender: (item: any) => item.source_type?.includes('1'),
+              },
+              {
+                name: 'Deaktivacija',
+                onClick: row => console.log('Deaktivacija'),
+              },
+            ]
             : [
-                {
-                  name: 'print',
-                  onClick: row => console.log('print'),
-                  icon: <PrinterIcon stroke={Theme.palette.gray600} />,
-                },
-                {
-                  name: 'Alokacija',
-                  onClick: row => onAddMovement(row),
-                },
-                {
-                  name: 'Deaktivacija',
-                  onClick: row => console.log('Deaktivacija'),
-                },
-              ]
+              {
+                name: 'print',
+                onClick: row => console.log('print'),
+                icon: <PrinterIcon stroke={Theme.palette.gray600} />,
+              },
+              {
+                name: 'Alokacija',
+                onClick: row => onAddMovement(row),
+              },
+              {
+                name: 'Deaktivacija',
+                onClick: row => console.log('Deaktivacija'),
+              },
+            ]
         }
         onRowClick={(item: any) => navigate(`/inventory/${type}-inventory/${item.id}`)}
         disabledCheckbox={isCheckboxDisabled}

@@ -6,7 +6,7 @@ import {DropdownDataNumber} from '../../types/dropdownData';
 import {MicroserviceProps} from '../../types/micro-service-props';
 import {parseDate} from '../../utils/dateUtils';
 import {EstimationForm} from './styles';
-import useSettingsDropdownOverview from '../../services/graphQL/settingsDorpdown/useSettingsDorpdown';
+import useGetSettings from '../../services/graphQL/getSettings/useGetSettings';
 
 interface AssessmentModalProps {
   context: MicroserviceProps;
@@ -36,9 +36,9 @@ const AssessmentModal = ({context, onClose, id, refetch}: AssessmentModalProps) 
 
   console.log(id, 'od');
 
-  const {settingsTypes: depreciationTypeOptions, fetch} = useSettingsDropdownOverview('', 0, 'deprecation_types');
+  const {options: depreciationTypeOptions} = useGetSettings({context: context, entity: 'deprecation_types'});
 
-  const {mutate} = useAssessmentInsert();
+  const {mutate} = useAssessmentInsert({context});
 
   const onAddEstimation = async (data: AssessmentModalForm) => {
     if (isValid) {

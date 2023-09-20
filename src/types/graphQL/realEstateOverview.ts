@@ -1,3 +1,5 @@
+import {MicroserviceProps} from '../micro-service-props';
+
 export interface RealEstate {
   id: number;
   square_area: number;
@@ -15,6 +17,7 @@ export interface RealEstate {
 }
 
 export interface RealEstateParams {
+  context: MicroserviceProps;
   page: number;
   size: number;
   id: number;

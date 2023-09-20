@@ -4,9 +4,8 @@ import {Controller, FormProvider, useFieldArray, useForm} from 'react-hook-form'
 import ImmovableAddForm from '../../components/immovableAddForm/immovableAddForm';
 import MovableAddForm from '../../components/movableAddForm/movableAddForm';
 import SmallInventoryForm from '../../components/smallInventoryForm/smallInventoryForm';
-import useClassTypesGet from '../../services/graphQL/classTypes/useClassTypesGet';
+import useGetSettings from '../../services/graphQL/getSettings/useGetSettings';
 import useInventoryInsert from '../../services/graphQL/inventoryInsert/useInventoryInsert';
-import useSettingsDropdownOverview from '../../services/graphQL/settingsDorpdown/useSettingsDorpdown';
 import {InventoryProps} from '../../types/inventoryProps';
 import {parseDateForBackend} from '../../utils/dateUtils';
 import {newTableItem, tableHeads} from './constants';
@@ -37,10 +36,10 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
     control,
     name: 'items',
   });
-  const {settingsTypes: amortizationGroupOptions, fetch} = useSettingsDropdownOverview('', 0, 'deprecation_types');
+  const {options: amortizationGroupOptions} = useGetSettings({context: context, entity: 'deprecation_types'});
 
-  const {options: classOptions} = useClassTypesGet({search: '', id: 0});
-  const {mutate} = useInventoryInsert();
+  const {options: classOptions} = useGetSettings({context: context, entity: 'inventory_class_type'});
+  const {mutate} = useInventoryInsert(context);
 
   const updatedTableHeads = tableHeads.map((head: TableHead) => {
     const isDisabled = (head.accessor === 'title' || head.accessor === 'gross_price') && isOrderListSelected;
@@ -175,9 +174,9 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
   };
 
   const renderFormByType = {
-    movable: <MovableAddForm onFormSubmit={handleFormSubmit} />,
+    movable: <MovableAddForm context={context} onFormSubmit={handleFormSubmit} />,
     immovable: <ImmovableAddForm context={context} />,
-    small: <SmallInventoryForm onFormSubmit={handleFormSubmit} />,
+    small: <SmallInventoryForm context={context} onFormSubmit={handleFormSubmit} />,
   };
 
   useEffect(() => {
@@ -197,12 +196,12 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
               isOrderListSelected
                 ? []
                 : [
-                    {
-                      name: 'delete',
-                      onClick: (item: TableItemValues) => remove(fields.findIndex(field => field.id === item.id)),
-                      icon: <TrashIcon stroke={Theme?.palette?.gray800} />,
-                    },
-                  ]
+                  {
+                    name: 'delete',
+                    onClick: (item: TableItemValues) => remove(fields.findIndex(field => field.id === item.id)),
+                    icon: <TrashIcon stroke={Theme?.palette?.gray800} />,
+                  },
+                ]
             }
             style={{marginBottom: '20px'}}
           />

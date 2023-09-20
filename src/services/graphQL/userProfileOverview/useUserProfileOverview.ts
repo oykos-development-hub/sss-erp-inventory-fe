@@ -4,12 +4,14 @@ import {DropdownDataNumber} from '../../../types/dropdownData';
 import {GraphQLResponse} from '../../../types/graphQL/response';
 import {EmployeeListFilters, UserProfile} from '../../../types/graphQL/userProfileOverview';
 import {PaginationProps} from '../../../types/paginationParams';
+import {MicroserviceProps} from '../../../types/micro-service-props';
 
 const initialState = {items: [], total: 0, message: '', status: ''};
 
 interface UserProfileHookParams extends EmployeeListFilters, PaginationProps {
   id?: number;
   name?: string;
+  context: MicroserviceProps;
 }
 
 const useUserProfiles = ({
@@ -20,30 +22,31 @@ const useUserProfiles = ({
   job_position_id,
   organization_unit_id,
   name,
+  context,
 }: UserProfileHookParams) => {
   const [data, setData] = useState<GraphQLResponse['data']['userProfiles_Overview']>(initialState);
   const [loading, setLoading] = useState(true);
   const [options, setOptions] = useState<DropdownDataNumber[]>([]);
 
   const fetchEmployees = async () => {
-    const userProfiles: any = await GraphQL.userProfileOverview({
+    const userProfiles: any = await context.fetch(GraphQL.userProfileOverview, {
       page,
       size,
-      id: id ?? 0,
+      id,
       is_active: is_active ? is_active.id : true,
-      job_position_id: job_position_id ? job_position_id.id : 0,
-      organization_unit_id: organization_unit_id ? organization_unit_id.id : 0,
-      name: name ?? '',
+      job_position_id,
+      organization_unit_id,
+      name,
     });
 
-    const options = userProfiles.items.map((item: UserProfile) => ({
+    const options = userProfiles?.userProfiles_Overview?.items.map((item: UserProfile) => ({
       id: item.id,
       title: `${item.first_name} ${item.last_name}`,
     }));
 
     setOptions(options);
 
-    setData(userProfiles);
+    setData(userProfiles?.userProfiles_Overview);
     setLoading(false);
   };
 
