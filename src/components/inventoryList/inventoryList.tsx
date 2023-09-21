@@ -159,8 +159,8 @@ const InventoryList = ({context, filters, tableData, onFilter, filterValues, typ
       type === 'movable'
         ? movableInventoryTableHeads
         : type === 'immovable'
-          ? immovableInventoryTableHeads
-          : smallInventoryTableHeads;
+        ? immovableInventoryTableHeads
+        : smallInventoryTableHeads;
 
     return [
       ...heads,
@@ -237,40 +237,40 @@ const InventoryList = ({context, filters, tableData, onFilter, filterValues, typ
         tableActions={
           type !== 'small'
             ? [
-              {
-                name: 'print',
-                onClick: row => console.log('print'),
-                icon: <PrinterIcon stroke={Theme.palette.gray600} />,
-              },
-              {
-                name: 'Alokacija',
-                onClick: row => onAddMovement(row),
-              },
-              {
-                name: 'Dodaj procjenu',
-                onClick: row => onAddEstimation(row),
-                shouldRender: (item: any) => item.source_type?.includes('1'),
-              },
-              {
-                name: 'Deaktivacija',
-                onClick: row => console.log('Deaktivacija'),
-              },
-            ]
+                {
+                  name: 'print',
+                  onClick: row => console.log('print'),
+                  icon: <PrinterIcon stroke={Theme.palette.gray600} />,
+                },
+                {
+                  name: 'Alokacija',
+                  onClick: row => onAddMovement(row),
+                },
+                {
+                  name: 'Dodaj procjenu',
+                  onClick: row => onAddEstimation(row),
+                  shouldRender: (item: any) => item.source_type?.includes('1'),
+                },
+                {
+                  name: 'Deaktivacija',
+                  onClick: row => console.log('Deaktivacija'),
+                },
+              ]
             : [
-              {
-                name: 'print',
-                onClick: row => console.log('print'),
-                icon: <PrinterIcon stroke={Theme.palette.gray600} />,
-              },
-              {
-                name: 'Alokacija',
-                onClick: row => onAddMovement(row),
-              },
-              {
-                name: 'Deaktivacija',
-                onClick: row => console.log('Deaktivacija'),
-              },
-            ]
+                {
+                  name: 'print',
+                  onClick: row => console.log('print'),
+                  icon: <PrinterIcon stroke={Theme.palette.gray600} />,
+                },
+                {
+                  name: 'Alokacija',
+                  onClick: row => onAddMovement(row),
+                },
+                {
+                  name: 'Deaktivacija',
+                  onClick: row => console.log('Deaktivacija'),
+                },
+              ]
         }
         onRowClick={(item: any) => navigate(`/inventory/${type}-inventory/${item.id}`)}
         disabledCheckbox={isCheckboxDisabled}

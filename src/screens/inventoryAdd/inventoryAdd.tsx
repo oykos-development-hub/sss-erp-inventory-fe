@@ -196,12 +196,12 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
               isOrderListSelected
                 ? []
                 : [
-                  {
-                    name: 'delete',
-                    onClick: (item: TableItemValues) => remove(fields.findIndex(field => field.id === item.id)),
-                    icon: <TrashIcon stroke={Theme?.palette?.gray800} />,
-                  },
-                ]
+                    {
+                      name: 'delete',
+                      onClick: (item: TableItemValues) => remove(fields.findIndex(field => field.id === item.id)),
+                      icon: <TrashIcon stroke={Theme?.palette?.gray800} />,
+                    },
+                  ]
             }
             style={{marginBottom: '20px'}}
           />
