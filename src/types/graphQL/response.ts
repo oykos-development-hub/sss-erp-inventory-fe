@@ -38,7 +38,7 @@ export interface GraphQLResponse {
     basicInventory_Details: {
       message: string;
       status: string;
-      item: InventoryDetails[];
+      items: InventoryDetails;
     };
     organizationUnits: OverviewResponse<OrganizationUnit>;
     basicInventoryDispatch_Overview: OverviewResponse<InventoryDispatch>;

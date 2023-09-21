@@ -21,5 +21,5 @@ export interface InventoryAssessmentData {
   user_profile_id: number;
   gross_price_new: number;
   gross_price_difference: number;
-  date_of_assessment: string;
+  date_of_assessment?: string;
 }

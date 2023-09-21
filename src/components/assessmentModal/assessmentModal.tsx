@@ -2,11 +2,11 @@ import {Datepicker, Dropdown, Input, Modal} from 'client-library';
 import {Controller, useForm} from 'react-hook-form';
 import {estimationTypeOptions} from '../../constants';
 import useAssessmentInsert from '../../services/graphQL/assessmentInsert/useAssessmentInsert';
+import useGetSettings from '../../services/graphQL/getSettings/useGetSettings';
 import {DropdownDataNumber} from '../../types/dropdownData';
 import {MicroserviceProps} from '../../types/micro-service-props';
-import {parseDate} from '../../utils/dateUtils';
+import {parseDate, parseDateForBackend} from '../../utils/dateUtils';
 import {EstimationForm} from './styles';
-import useGetSettings from '../../services/graphQL/getSettings/useGetSettings';
 
 interface AssessmentModalProps {
   context: MicroserviceProps;
@@ -18,7 +18,7 @@ interface AssessmentModalProps {
 interface AssessmentModalForm {
   type: DropdownDataNumber;
   gross_price_difference: string;
-  date_of_assessment: string;
+  date_of_assessment: Date;
   depreciation_type_id: DropdownDataNumber;
   gross_price_new: string;
 }
@@ -44,12 +44,11 @@ const AssessmentModal = ({context, onClose, id, refetch}: AssessmentModalProps) 
     if (isValid) {
       await mutate(
         {
-          ...data,
           depreciation_type_id: data.depreciation_type_id.id,
           gross_price_difference: parseFloat(data.gross_price_difference),
           gross_price_new: parseFloat(data.gross_price_new),
-          date_of_assessment: parseDate(data.date_of_assessment, true),
-          inventory_id: id,
+          date_of_assessment: parseDateForBackend(data?.date_of_assessment),
+          inventory_id: Number(id),
           // This tells which is the last (active) assessment
           active: true,
           user_profile_id,

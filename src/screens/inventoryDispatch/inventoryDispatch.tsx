@@ -14,8 +14,16 @@ const InventoryDispatch = ({context}: InventoryProps) => {
   const onFilter = (value: any, name: string) => {
     setFilterValues({...filterValues, [name]: value});
   };
+  const type = context.navigation.location.pathname.split('/')[2] === 'movable-inventory' ? 'movable' : 'unmovable';
 
-  const {data, refetch} = useInventoryDispatchOverview({page, size: PAGE_SIZE, ...filterValues, id: 0, context});
+  const {data, refetch} = useInventoryDispatchOverview({
+    page,
+    size: PAGE_SIZE,
+    ...filterValues,
+    type: type,
+    id: 0,
+    context,
+  });
 
   const onPageChange = (page: number) => {
     setPage(page);

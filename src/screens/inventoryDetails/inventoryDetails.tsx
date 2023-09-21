@@ -63,14 +63,14 @@ const InventoryDetails = ({context, type}: InventoryProps) => {
   return (
     <ScreenWrapper>
       <SectionBox>
-        <ScreenTitle content={`INV. BROJ: ${data?.item[0].inventory_number ?? ''} - ${data?.item[0].title ?? ''}`} />
+        <ScreenTitle content={`INV. BROJ: ${data?.items.inventory_number ?? ''} - ${data?.items.title ?? ''}`} />
         <Divider color={Theme.palette.black} style={{marginBottom: 22, marginTop: 10}} />
 
         <InventoryDetailsWrapper>
           {type === 'movable' && (
             <MovableDetailsForm
               context={context}
-              data={data ? data.item[0] : null}
+              data={data ? data.items : null}
               inventoryType={type}
               refetch={refetch}
               inventoryId={id}
@@ -79,7 +79,7 @@ const InventoryDetails = ({context, type}: InventoryProps) => {
           {type === 'immovable' && (
             <ImmovableDetailsForm
               context={context}
-              data={data ? data.item[0] : null}
+              data={data ? data.items : null}
               inventoryType={type}
               refetch={refetch}
               inventoryId={id}
@@ -88,7 +88,7 @@ const InventoryDetails = ({context, type}: InventoryProps) => {
           {type === 'small' && (
             <SmallDetailsForm
               context={context}
-              data={data ? data.item[0] : null}
+              data={data ? data.items : null}
               inventoryType={type}
               refetch={refetch}
               inventoryId={id}
@@ -99,13 +99,13 @@ const InventoryDetails = ({context, type}: InventoryProps) => {
               <TableHeader>
                 <Typography variant="caption" content="estimations" />
                 <PlusButton
-                  disabled={data?.item[0].source_type?.includes('2')}
+                  disabled={data?.items.source_type?.includes('2')}
                   onClick={() => setAssessmentModal(true)}
                 />
               </TableHeader>
               <Table
                 tableHeads={getUpdatedTableHeads}
-                data={data?.item[0].assessments || []}
+                data={data?.items.assessments || []}
                 tableActions={[
                   {
                     name: 'print',
@@ -126,7 +126,7 @@ const InventoryDetails = ({context, type}: InventoryProps) => {
             </TableHeader>
             <Table
               tableHeads={movementsTableHeads}
-              data={data?.item[0].movements || []}
+              data={data?.items?.movements || []}
               tableActions={[
                 {
                   name: 'print',
@@ -147,7 +147,7 @@ const InventoryDetails = ({context, type}: InventoryProps) => {
               onClose={onCloseMovementModal}
               id={id}
               refetch={refetch}
-              sourceType={data?.item[0].source_type}
+              sourceType={data?.items.source_type}
               inventoryType={type}
             />
           )}

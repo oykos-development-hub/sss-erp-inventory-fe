@@ -15,8 +15,8 @@ export const calculateExperience = (startDate: Date | string, endDate: Date | st
   return diffInMonths;
 };
 
-export const parseDateForBackend = (date: Date | null) => {
-  if (!date) return null;
+export const parseDateForBackend = (date: Date | null): string | undefined => {
+  if (!date) return undefined;
 
   const pickedDate = new Date(date);
   pickedDate.setMinutes(pickedDate.getMinutes() - pickedDate.getTimezoneOffset());
