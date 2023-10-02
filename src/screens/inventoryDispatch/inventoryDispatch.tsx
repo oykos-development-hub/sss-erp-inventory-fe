@@ -16,7 +16,7 @@ const InventoryDispatch = ({context}: InventoryProps) => {
   };
   const type = context.navigation.location.pathname.split('/')[2] === 'movable-inventory' ? 'movable' : 'unmovable';
 
-  const {data, refetch} = useInventoryDispatchOverview({
+  const {data, refetch, loading} = useInventoryDispatchOverview({
     page,
     size: PAGE_SIZE,
     ...filterValues,
@@ -35,6 +35,7 @@ const InventoryDispatch = ({context}: InventoryProps) => {
         refetch={refetch}
         context={context}
         tableData={data.items}
+        loading={loading}
         onFilter={onFilter}
         filterValues={filterValues}
       />

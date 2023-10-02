@@ -25,7 +25,7 @@ const InventoryDetails = ({context, type}: InventoryProps) => {
 
   const id = context.navigation.location.pathname.split('/').pop();
 
-  const {data, refetch} = useInventoryDetails(context, id);
+  const {data, refetch, loading} = useInventoryDetails(context, id);
 
   const getDepreciationRate = (item: InventoryAssessment) => {
     const depreciationType = depreciationTypes?.items?.find(
@@ -106,6 +106,7 @@ const InventoryDetails = ({context, type}: InventoryProps) => {
               <Table
                 tableHeads={getUpdatedTableHeads}
                 data={data?.items.assessments || []}
+                isLoading={loading}
                 tableActions={[
                   {
                     name: 'print',
@@ -127,6 +128,7 @@ const InventoryDetails = ({context, type}: InventoryProps) => {
             <Table
               tableHeads={movementsTableHeads}
               data={data?.items?.movements || []}
+              isLoading={loading}
               tableActions={[
                 {
                   name: 'print',

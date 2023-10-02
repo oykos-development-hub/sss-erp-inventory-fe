@@ -23,13 +23,23 @@ interface InventoryListProps {
   context: MicroserviceProps;
   filters: (InventoryFiltersEnum | `${InventoryFiltersEnum}`)[];
   tableData: InventoryItem[];
+  loading: boolean;
   onFilter: (value: any, name: string) => void;
   filterValues: InventoryFilters;
   type: InventoryTypeEnum | `${InventoryTypeEnum}`;
   refetch: () => void;
 }
 
-const InventoryList = ({context, filters, tableData, onFilter, filterValues, type, refetch}: InventoryListProps) => {
+const InventoryList = ({
+  context,
+  filters,
+  tableData,
+  loading,
+  onFilter,
+  filterValues,
+  type,
+  refetch,
+}: InventoryListProps) => {
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
   const [movementType, setMovementType] = useState<DispatchType | `${DispatchType}`>();
   const [deactivateModal, setDeactivateModal] = useState(false);
@@ -228,6 +238,7 @@ const InventoryList = ({context, filters, tableData, onFilter, filterValues, typ
       <Filters>{filters.map(filter => React.cloneElement(renderFilters[filter], {key: filter}))}</Filters>
       <Table
         tableHeads={getTableHeads}
+        isLoading={loading}
         data={tableData}
         checkedRows={selectedRows}
         checkboxes={type !== 'small'}

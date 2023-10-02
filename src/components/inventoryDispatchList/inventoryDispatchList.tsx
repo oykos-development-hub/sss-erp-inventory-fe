@@ -12,12 +12,20 @@ import {InventoryDispatchFilters} from '../../screens/inventoryDispatch/types';
 interface InventoryDispatchList {
   context: MicroserviceProps;
   tableData: InventoryDispatch[];
+  loading: boolean;
   filterValues: InventoryDispatchFilters;
   onFilter: (value: any, name: string) => void;
   refetch: () => void;
 }
 
-const InventoryDispatchList = ({context, tableData, filterValues, onFilter, refetch}: InventoryDispatchList) => {
+const InventoryDispatchList = ({
+  context,
+  tableData,
+  loading,
+  filterValues,
+  onFilter,
+  refetch,
+}: InventoryDispatchList) => {
   const [receiveModal, setReceiveModal] = useState(false);
   const [currentId, setCurrentId] = useState<number>();
   const {options: locationOptions} = useOrganizationUnits(context);
@@ -93,7 +101,7 @@ const InventoryDispatchList = ({context, tableData, filterValues, onFilter, refe
           placeholder="Odaberi organizacionu jedinicu"
         />
       </Filters>
-      <Table tableHeads={receiveInventoryTableHeads} data={tableData} onRowClick={onRowClick} />
+      <Table isLoading={loading} tableHeads={receiveInventoryTableHeads} data={tableData} onRowClick={onRowClick} />
       {receiveModal && (
         <ReceiveInventoryModal
           refetch={refetch}

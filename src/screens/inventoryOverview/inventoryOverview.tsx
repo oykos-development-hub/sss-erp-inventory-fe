@@ -11,7 +11,7 @@ const InventoryOverview = ({context, type}: InventoryProps) => {
   const [debouncedSearch, setDebouncedSearch] = useState('');
   const [filterValues, setFilterValues] = useState(initialInventoryFilters[type]);
 
-  const {data, refetch} = useInventoryOverview({
+  const {data, refetch, loading} = useInventoryOverview({
     context,
     page,
     size: PAGE_SIZE,
@@ -43,6 +43,7 @@ const InventoryOverview = ({context, type}: InventoryProps) => {
         context={context}
         filters={inventoryFilters[type]}
         tableData={data.items || []}
+        loading={loading}
         filterValues={filterValues}
         onFilter={onFilter}
         type={type}

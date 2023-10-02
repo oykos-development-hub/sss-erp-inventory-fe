@@ -32,6 +32,7 @@ const DeactivateModal = ({onClose, onDeactivate}: DeactivateModalProps) => {
       rightButtonOnClick={handleSubmit(onDeactivate)}
       rightButtonText="Deaktiviraj"
       leftButtonText="Otkaži"
+      buttonLoading={true}
       content={
         <DeactivationForm>
           <Controller

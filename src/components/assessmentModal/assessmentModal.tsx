@@ -38,10 +38,10 @@ const AssessmentModal = ({context, onClose, id, refetch}: AssessmentModalProps) 
 
   const {options: depreciationTypeOptions} = useGetSettings({context: context, entity: 'deprecation_types'});
 
-  const {mutate} = useAssessmentInsert({context});
+  const {mutate, loading: isSaving} = useAssessmentInsert({context});
 
   const onAddEstimation = async (data: AssessmentModalForm) => {
-    if (isValid) {
+    if (isValid && !isSaving) {
       await mutate(
         {
           depreciation_type_id: data.depreciation_type_id.id,
@@ -74,6 +74,7 @@ const AssessmentModal = ({context, onClose, id, refetch}: AssessmentModalProps) 
       rightButtonOnClick={handleSubmit(onAddEstimation)}
       rightButtonText="Dodaj procjenu"
       leftButtonText="Otkaži"
+      buttonLoading={isSaving}
       content={
         <EstimationForm>
           <Controller

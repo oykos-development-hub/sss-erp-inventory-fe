@@ -22,11 +22,11 @@ const ReceiveInventoryModal = ({onClose, id, context, refetch}: ReceiveInventory
   const orgUnit = context.contextMain.organization_unit.title;
   const {alert} = context;
 
-  const {data: response} = useInventoryDispatchOverview({page: 0, size: PAGE_SIZE, id: id ?? 0, context});
+  const {data: response, loading} = useInventoryDispatchOverview({page: 0, size: PAGE_SIZE, id: id ?? 0, context});
   const data = response.items[0];
 
-  const {mutate: acceptDispatch} = useDispatchAccept(context);
-  const {mutate: rejectDispatch} = UseDispatchDelete(context);
+  const {mutate: acceptDispatch, loading: isSaving} = useDispatchAccept(context);
+  const {mutate: rejectDispatch, loading: isRejectSaving} = UseDispatchDelete(context);
 
   const onAccept = async () => {
     await acceptDispatch(
@@ -64,6 +64,7 @@ const ReceiveInventoryModal = ({onClose, id, context, refetch}: ReceiveInventory
       title={`Revers broj: ${data?.id}`}
       leftButtonOnClick={onReject}
       rightButtonOnClick={onAccept}
+      buttonLoading={isSaving || isRejectSaving}
       rightButtonText="Accept all"
       leftButtonText="Reject all"
       content={
@@ -77,7 +78,7 @@ const ReceiveInventoryModal = ({onClose, id, context, refetch}: ReceiveInventory
               <Typography variant="bodySmall" content={`Primio na potrebu za: ${orgUnit}`} />
             </>
           )}
-          <Table tableHeads={receiveModalTableHeads} data={data?.inventory ?? []} />
+          <Table isLoading={loading} tableHeads={receiveModalTableHeads} data={data?.inventory ?? []} />
         </>
       }
       customButtonsControls={data?.type === 'return-revers' ? <></> : undefined}

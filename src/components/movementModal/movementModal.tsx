@@ -72,10 +72,10 @@ const MovementModal = ({
 
   const returnReversOption: DropdownDataString[] = [{id: orgUnit, title: orgUnit}];
 
-  const {mutate} = useDispatchInsert({context});
+  const {mutate, loading: isSaving} = useDispatchInsert({context});
 
   const onSubmit = (values: MovementModalForm) => {
-    if (isValid) {
+    if (isValid && !isSaving) {
       const data = {
         source_user_profile_id: 1,
         target_user_profile_id: values.target_user_profile_id?.id ?? 0,
@@ -168,6 +168,7 @@ const MovementModal = ({
       leftButtonOnClick={onClose}
       rightButtonOnClick={handleSubmit(onSubmit)}
       rightButtonText={buttonText}
+      buttonLoading={isSaving}
       leftButtonText="Otkaži"
       content={
         <MovementForm>
