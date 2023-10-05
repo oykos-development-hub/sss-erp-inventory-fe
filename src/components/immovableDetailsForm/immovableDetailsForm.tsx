@@ -25,9 +25,9 @@ const ImmovableDetailsForm = ({context, data, refetch, inventoryId}: DetailsForm
     alert,
     navigation: {navigate},
   } = context;
-  const {mutate} = useInventoryInsert(context);
+  const {mutate} = useInventoryInsert();
 
-  const {options: depreciationTypes} = useGetSettings({context: context, entity: 'deprecation_types'});
+  const {options: depreciationTypes} = useGetSettings({entity: 'deprecation_types'});
 
   useEffect(() => {
     if (data) {

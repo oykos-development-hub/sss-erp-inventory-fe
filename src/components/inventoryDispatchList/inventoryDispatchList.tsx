@@ -28,7 +28,7 @@ const InventoryDispatchList = ({
 }: InventoryDispatchList) => {
   const [receiveModal, setReceiveModal] = useState(false);
   const [currentId, setCurrentId] = useState<number>();
-  const {options: locationOptions} = useOrganizationUnits(context);
+  const {options: locationOptions} = useOrganizationUnits();
 
   const receiveInventoryTableHeads: TableHead[] = [
     {

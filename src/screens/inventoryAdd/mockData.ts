@@ -29,6 +29,7 @@ export const mockMovableFormData = {
 };
 
 export const orderListOptions = [
+  {id: 0, title: 'Bez narudzbenice'},
   {id: 1, title: 'Narudzbenica 1'},
   {id: 2, title: 'Narudzbenica 2'},
 ];

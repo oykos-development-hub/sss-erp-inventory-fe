@@ -21,11 +21,11 @@ const InventoryDetails = ({context, type}: InventoryProps) => {
   const [assessmentModal, setAssessmentModal] = useState(false);
   const [movementModal, setMovementModal] = useState(false);
 
-  const {data: depreciationTypes} = useGetSettings({context: context, entity: 'deprecation_types'});
+  const {data: depreciationTypes} = useGetSettings({entity: 'deprecation_types'});
 
   const id = context.navigation.location.pathname.split('/').pop();
 
-  const {data, refetch, loading} = useInventoryDetails(context, id);
+  const {data, refetch, loading} = useInventoryDetails(id);
 
   const getDepreciationRate = (item: InventoryAssessment) => {
     const depreciationType = depreciationTypes?.items?.find(

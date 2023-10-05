@@ -17,7 +17,6 @@ export interface RealEstate {
 }
 
 export interface RealEstateParams {
-  context: MicroserviceProps;
   page: number;
   size: number;
   id: number;

@@ -52,14 +52,13 @@ const InventoryList = ({
   const prevStateRef = useRef<number[]>(selectedRows);
   const orgUnitId = context?.contextMain?.organization_unit?.id;
 
-  const {options: officeOptions} = useOrgUnitOfficesGet({page: 1, size: 1000, id: Number(orgUnitId), context});
+  const {options: officeOptions} = useOrgUnitOfficesGet({page: 1, size: 1000, id: Number(orgUnitId)});
 
   const {options: amortizationGroupOptions} = useGetSettings({
-    context: context,
     entity: 'deprecation_types',
   });
 
-  const {options: classTypeOptions} = useGetSettings({context: context, entity: 'inventory_class_type'});
+  const {options: classTypeOptions} = useGetSettings({entity: 'inventory_class_type'});
 
   const {
     navigation: {navigate},

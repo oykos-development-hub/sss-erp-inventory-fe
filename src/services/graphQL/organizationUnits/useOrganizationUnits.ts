@@ -4,15 +4,16 @@ import {initialOverviewData} from '../../constants';
 import {OrganizationUnit} from '../../../types/graphQL/organizationUnits';
 import {GraphQLResponse} from '../../../types/graphQL/response';
 import {DropdownDataNumber} from '../../../types/dropdownData';
-import {MicroserviceProps} from '../../../types/micro-service-props';
+import useAppContext from '../../../context/useAppContext';
 
-const useOrganizationUnits = (context: MicroserviceProps) => {
+const useOrganizationUnits = () => {
   const [data, setData] = useState<GraphQLResponse['data']['organizationUnits']>(initialOverviewData);
   const [options, setOptions] = useState<DropdownDataNumber[]>([]);
+  const {fetch, graphQl} = useAppContext();
 
   const fetchOrganizationUnits = async () => {
     try {
-      const response = await context.fetch(context.graphQl.getOrganizationUnits);
+      const response = await fetch(graphQl.getOrganizationUnits);
 
       const options = response?.organizationUnits?.items.map((item: OrganizationUnit) => ({
         id: item.id,

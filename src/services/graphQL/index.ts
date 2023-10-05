@@ -1,6 +1,7 @@
 import {getEnvironment} from '../get-environment';
 import assessmentInsert from './assessmentInsert/assessmentInsert';
 import dispatchInsert from './dispatchInsert/dispatchInsert';
+import getOrderList from './getOrderList/getOrderList';
 import inventoryDetailsGet from './inventoryDetails/inventoryDetailsGet';
 import inventoryDispatchAccept from './inventoryDispatchAccept/inventoryDispatchAccept';
 import inventoryDispatchOverview from './inventoryDispatchOverview/inventoryDispatchOverview';
@@ -30,4 +31,5 @@ export const GraphQL = {
   inventoryDispatchDelete: inventoryDispatchDelete,
   inventoryDispatchAccept: inventoryDispatchAccept,
   userProfileOverview: userProfileOverview,
+  getOrderList: getOrderList,
 };

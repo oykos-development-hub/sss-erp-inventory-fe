@@ -22,11 +22,11 @@ const ReceiveInventoryModal = ({onClose, id, context, refetch}: ReceiveInventory
   const orgUnit = context.contextMain.organization_unit.title;
   const {alert} = context;
 
-  const {data: response, loading} = useInventoryDispatchOverview({page: 0, size: PAGE_SIZE, id: id ?? 0, context});
+  const {data: response, loading} = useInventoryDispatchOverview({page: 0, size: PAGE_SIZE, id: id ?? 0});
   const data = response.items[0];
 
   const {mutate: acceptDispatch, loading: isSaving} = useDispatchAccept(context);
-  const {mutate: rejectDispatch, loading: isRejectSaving} = UseDispatchDelete(context);
+  const {mutate: rejectDispatch, loading: isRejectSaving} = UseDispatchDelete();
 
   const onAccept = async () => {
     await acceptDispatch(

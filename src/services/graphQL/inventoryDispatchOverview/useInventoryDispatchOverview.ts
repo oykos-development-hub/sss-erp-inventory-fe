@@ -4,15 +4,13 @@ import {initialOverviewData} from '../../constants';
 import {GraphQLResponse} from '../../../types/graphQL/response';
 import {PaginationProps} from '../../../types/paginationParams';
 import {InventoryDispatchFilters} from '../../../screens/inventoryDispatch/types';
-import {MicroserviceProps} from '../../../types/micro-service-props';
+import useAppContext from '../../../context/useAppContext';
 
 interface InventoryDispatchHookParams extends InventoryDispatchFilters, PaginationProps {
   id: number;
-  context: MicroserviceProps;
 }
 
 const useInventoryDispatchOverview = ({
-  context,
   page,
   size,
   id,
@@ -22,12 +20,11 @@ const useInventoryDispatchOverview = ({
 }: InventoryDispatchHookParams) => {
   const [data, setData] = useState<GraphQLResponse['data']['basicInventoryDispatch_Overview']>(initialOverviewData);
   const [loading, setLoading] = useState(true);
-
+  const {fetch} = useAppContext();
   const fetchInventoryDispatchOverview = async () => {
     setLoading(true);
-
     try {
-      const response = await context.fetch(GraphQL.inventoryDispatchOverview, {
+      const response = await fetch(GraphQL.inventoryDispatchOverview, {
         page,
         size,
         id,

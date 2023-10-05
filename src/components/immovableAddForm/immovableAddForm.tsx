@@ -24,8 +24,8 @@ const ImmovableAddForm = ({context}: {context: MicroserviceProps}) => {
     navigation: {navigate},
   } = context;
 
-  const {options: amortizationGroupOptions} = useGetSettings({context: context, entity: 'deprecation_types'});
-  const {mutate} = useInventoryInsert(context);
+  const {options: amortizationGroupOptions} = useGetSettings({entity: 'deprecation_types'});
+  const {mutate} = useInventoryInsert();
 
   const myOrgUnitId = context.contextMain?.organization_unit.id ?? 0;
   //handlers

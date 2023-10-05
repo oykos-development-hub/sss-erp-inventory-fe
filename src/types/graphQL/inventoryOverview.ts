@@ -30,7 +30,6 @@ export enum SourceType {
 }
 
 export interface InventoryOverviewParams {
-  context: MicroserviceProps;
   page?: number;
   size?: number;
   type?: InventoryTypeEnum | `${InventoryTypeEnum}`;

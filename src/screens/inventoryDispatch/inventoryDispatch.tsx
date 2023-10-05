@@ -22,7 +22,6 @@ const InventoryDispatch = ({context}: InventoryProps) => {
     ...filterValues,
     type: type,
     id: 0,
-    context,
   });
 
   const onPageChange = (page: number) => {

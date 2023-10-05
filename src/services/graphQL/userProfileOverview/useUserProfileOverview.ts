@@ -5,13 +5,13 @@ import {GraphQLResponse} from '../../../types/graphQL/response';
 import {EmployeeListFilters, UserProfile} from '../../../types/graphQL/userProfileOverview';
 import {PaginationProps} from '../../../types/paginationParams';
 import {MicroserviceProps} from '../../../types/micro-service-props';
+import useAppContext from '../../../context/useAppContext';
 
 const initialState = {items: [], total: 0, message: '', status: ''};
 
 interface UserProfileHookParams extends EmployeeListFilters, PaginationProps {
   id?: number;
   name?: string;
-  context: MicroserviceProps;
 }
 
 const useUserProfiles = ({
@@ -22,14 +22,14 @@ const useUserProfiles = ({
   job_position_id,
   organization_unit_id,
   name,
-  context,
 }: UserProfileHookParams) => {
   const [data, setData] = useState<GraphQLResponse['data']['userProfiles_Overview']>(initialState);
   const [loading, setLoading] = useState(true);
   const [options, setOptions] = useState<DropdownDataNumber[]>([]);
+  const {fetch} = useAppContext();
 
   const fetchEmployees = async () => {
-    const userProfiles: any = await context.fetch(GraphQL.userProfileOverview, {
+    const userProfiles: any = await fetch(GraphQL.userProfileOverview, {
       page,
       size,
       id,

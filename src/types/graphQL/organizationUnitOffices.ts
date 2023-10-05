@@ -12,7 +12,6 @@ export interface Office {
 }
 
 export interface OfficeParams {
-  context: MicroserviceProps;
   page: number;
   size: number;
   id: number;

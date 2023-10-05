@@ -9,7 +9,6 @@ export interface ClassType {
 }
 
 export interface ClassTypesParams {
-  context: MicroserviceProps;
   search?: string;
   id?: number;
   entity?: string;

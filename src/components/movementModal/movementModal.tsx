@@ -66,13 +66,13 @@ const MovementModal = ({
   const orgUnit = context.contextMain.organization_unit.title;
   const orgUnitId = context.contextMain.organization_unit.id;
 
-  const {options: officeOptions} = useOrgUnitOfficesGet({page: 1, size: 1000, id: Number(orgUnitId), context});
-  const {options: locationOptions} = useOrganizationUnits(context);
-  const {options: userOptions} = useUserProfiles({page: 1, size: 1000, organization_unit_id: orgUnitId, context});
+  const {options: officeOptions} = useOrgUnitOfficesGet({page: 1, size: 1000, id: Number(orgUnitId)});
+  const {options: locationOptions} = useOrganizationUnits();
+  const {options: userOptions} = useUserProfiles({page: 1, size: 1000, organization_unit_id: orgUnitId});
 
   const returnReversOption: DropdownDataString[] = [{id: orgUnit, title: orgUnit}];
 
-  const {mutate, loading: isSaving} = useDispatchInsert({context});
+  const {mutate, loading: isSaving} = useDispatchInsert();
 
   const onSubmit = (values: MovementModalForm) => {
     if (isValid && !isSaving) {

@@ -17,7 +17,7 @@ const SmallInventoryForm = ({onFormSubmit, context}: AddInventoryFormProps) => {
     formState: {errors},
   } = useFormContext<SmallInventoryAddFormProps>();
 
-  const {options: locationOptions} = useOrgUnitOfficesGet({page: 1, size: 10, id: 0, context});
+  const {options: locationOptions} = useOrgUnitOfficesGet({page: 1, size: 10, id: 0});
 
   const onSubmit = (values: SmallInventoryAddFormProps) => {
     onFormSubmit(values);

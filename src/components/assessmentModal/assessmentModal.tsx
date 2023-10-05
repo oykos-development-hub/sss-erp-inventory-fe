@@ -34,9 +34,9 @@ const AssessmentModal = ({context, onClose, id, refetch}: AssessmentModalProps) 
   const {alert} = context;
   const user_profile_id = context.contextMain.user_profile_id || 1;
 
-  const {options: depreciationTypeOptions} = useGetSettings({context: context, entity: 'deprecation_types'});
+  const {options: depreciationTypeOptions} = useGetSettings({entity: 'deprecation_types'});
 
-  const {mutate, loading: isSaving} = useAssessmentInsert({context});
+  const {mutate, loading: isSaving} = useAssessmentInsert();
 
   const onAddEstimation = async (data: AssessmentModalForm) => {
     if (isValid && !isSaving) {

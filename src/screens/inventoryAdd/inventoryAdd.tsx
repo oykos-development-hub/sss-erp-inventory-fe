@@ -36,10 +36,10 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
     control,
     name: 'items',
   });
-  const {options: amortizationGroupOptions} = useGetSettings({context: context, entity: 'deprecation_types'});
+  const {options: amortizationGroupOptions} = useGetSettings({entity: 'deprecation_types'});
 
-  const {options: classOptions} = useGetSettings({context: context, entity: 'inventory_class_type'});
-  const {mutate} = useInventoryInsert(context);
+  const {options: classOptions} = useGetSettings({entity: 'inventory_class_type'});
+  const {mutate} = useInventoryInsert();
 
   const updatedTableHeads = tableHeads.map((head: TableHead) => {
     const isDisabled = (head.accessor === 'title' || head.accessor === 'gross_price') && isOrderListSelected;

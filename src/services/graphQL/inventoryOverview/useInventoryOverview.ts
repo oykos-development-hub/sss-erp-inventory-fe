@@ -3,9 +3,9 @@ import {InventoryOverviewParams} from '../../../types/graphQL/inventoryOverview'
 import {GraphQL} from '..';
 import {initialOverviewData} from '../../constants';
 import {GraphQLResponse} from '../../../types/graphQL/response';
+import useAppContext from '../../../context/useAppContext';
 
 const useInventoryOverview = ({
-  context,
   page,
   size,
   class_type_id,
@@ -18,12 +18,12 @@ const useInventoryOverview = ({
 }: InventoryOverviewParams) => {
   const [data, setData] = useState<GraphQLResponse['data']['basicInventory_Overview']>(initialOverviewData);
   const [loading, setLoading] = useState(true);
-
+  const {fetch} = useAppContext();
   const fetchInventoryOverview = async () => {
     setLoading(true);
 
     try {
-      const response = await context.fetch(GraphQL.inventoryOverview, {
+      const response = await fetch(GraphQL.inventoryOverview, {
         page: Number(page) + 1,
         size,
         class_type_id,
