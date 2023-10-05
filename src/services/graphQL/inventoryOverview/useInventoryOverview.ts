@@ -13,7 +13,8 @@ const useInventoryOverview = ({
   office_id,
   search,
   type,
-  source_type,
+  source_type = '',
+  depreciation_type_id,
 }: InventoryOverviewParams) => {
   const [data, setData] = useState<GraphQLResponse['data']['basicInventory_Overview']>(initialOverviewData);
   const [loading, setLoading] = useState(true);
@@ -23,7 +24,7 @@ const useInventoryOverview = ({
 
     try {
       const response = await context.fetch(GraphQL.inventoryOverview, {
-        page,
+        page: Number(page) + 1,
         size,
         class_type_id,
         id,
@@ -31,6 +32,7 @@ const useInventoryOverview = ({
         search,
         type,
         source_type,
+        depreciation_type_id,
       });
 
       setData(response?.basicInventory_Overview);
@@ -42,7 +44,7 @@ const useInventoryOverview = ({
 
   useEffect(() => {
     fetchInventoryOverview();
-  }, [page, size, class_type_id, id, office_id, search, type, source_type]);
+  }, [page, size, class_type_id, id, office_id, search, type, source_type, depreciation_type_id]);
 
   return {data, loading, refetch: fetchInventoryOverview};
 };

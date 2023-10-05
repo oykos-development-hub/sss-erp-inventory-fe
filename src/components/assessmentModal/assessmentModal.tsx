@@ -34,8 +34,6 @@ const AssessmentModal = ({context, onClose, id, refetch}: AssessmentModalProps) 
   const {alert} = context;
   const user_profile_id = context.contextMain.user_profile_id || 1;
 
-  console.log(id, 'od');
-
   const {options: depreciationTypeOptions} = useGetSettings({context: context, entity: 'deprecation_types'});
 
   const {mutate, loading: isSaving} = useAssessmentInsert({context});
