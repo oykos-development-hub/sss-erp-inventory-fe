@@ -25,7 +25,7 @@ const useInventoryDispatchOverview = ({
     setLoading(true);
     try {
       const response = await fetch(GraphQL.inventoryDispatchOverview, {
-        page,
+        page: page + 1,
         size,
         id,
         source_organization_unit_id: source_organization_unit?.id,

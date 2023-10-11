@@ -25,13 +25,12 @@ const ReceiveInventoryModal = ({onClose, id, context, refetch}: ReceiveInventory
   const {data: response, loading} = useInventoryDispatchOverview({page: 0, size: PAGE_SIZE, id: id ?? 0});
   const data = response.items[0];
 
-  const {mutate: acceptDispatch, loading: isSaving} = useDispatchAccept(context);
+  const {mutate: acceptDispatch, loading: isSaving} = useDispatchAccept();
   const {mutate: rejectDispatch, loading: isRejectSaving} = UseDispatchDelete();
 
   const onAccept = async () => {
     await acceptDispatch(
       data.id,
-      1,
       () => {
         alert.success('Uspešno ste prihvatili revers');
       },

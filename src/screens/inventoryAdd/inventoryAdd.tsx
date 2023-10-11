@@ -156,7 +156,18 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
       if (values && 'order_list' in values && values.order_list) {
         remove(); // clear table
         setIsOrderListSelected(true);
-        append(mockTableData); // should append data from selected order_list
+        const articles: TableItemValues[] =
+          values?.articles?.map(item => ({
+            id: 0,
+            class_type: {id: 1, title: 'Class 1'},
+            depreciation_type: {id: 1, title: 'Amortizaciona grupa'},
+            inventory_number: '',
+            title: item.title,
+            serial_number: '',
+            gross_price: item?.total_price?.toString(),
+            description: '',
+          })) || [];
+        append(articles); // should append data from selected order_list
       } else append(newTableItem);
     }
   };

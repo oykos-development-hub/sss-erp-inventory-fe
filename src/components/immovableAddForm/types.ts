@@ -1,10 +1,10 @@
 import {DropdownDataNumber, DropdownDataString} from '../../types/dropdownData';
 
 export interface ImmovableAddFormProps {
-  gross_price: string;
+  gross_price: number;
   location: string;
   land_serial_number: string;
-  square_area: string;
+  square_area: number;
   ownership_scope: DropdownDataString | null;
   ownership_investment_scope: string;
   limitations_description: string;

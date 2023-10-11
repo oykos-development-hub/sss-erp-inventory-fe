@@ -3,14 +3,16 @@ import {Form, FieldsContainer, FormRow} from '../../shared/formStyles';
 import {parseDate} from '../../utils/dateUtils';
 import PlusButton from '../../shared/plusButton';
 import {Dropdown, Input, Datepicker} from 'client-library';
-import {DropdownDataString} from '../../types/dropdownData';
+import {DropdownDataNumber, DropdownDataString} from '../../types/dropdownData';
 import {AddInventoryFormProps} from '../../screens/inventoryAdd/types';
 import {MovableAddFormProps} from './types';
-import {mockMovableFormData, orderListOptions, supplierOptions} from '../../screens/inventoryAdd/mockData';
+import {mockMovableFormData, supplierOptions} from '../../screens/inventoryAdd/mockData';
 import useOrgUnitOfficesGet from '../../services/graphQL/organizationUnitOffices/useOrganizationUnitOfficesGet';
 import {inventorySourceOptions} from '../../screens/inventoryAdd/constants';
 import {Tooltip} from 'client-library';
 import {TooltipWrapper} from './styles';
+import useGetOrderList from '../../services/graphQL/getOrderList/useGetOrderList';
+
 const MovableAddForm = ({onFormSubmit, context}: AddInventoryFormProps) => {
   const {
     register,
@@ -26,15 +28,18 @@ const MovableAddForm = ({onFormSubmit, context}: AddInventoryFormProps) => {
     isValid && onFormSubmit(values);
   };
   const {options: locationOptions} = useOrgUnitOfficesGet({page: 1, size: 10, id: 0});
-  const handleOrderListChange = (selectedOrderList: DropdownDataString) => {
+  const {orders, orderListOptions} = useGetOrderList({page: 1, size: 1000});
+
+  const handleOrderListChange = (selectedOrderList: DropdownDataNumber) => {
     // When order list is selected:
     // reset the form
     reset();
     // set source to 'budzet'
     setValue('order_list', selectedOrderList);
-    setValue('source', {id: 'budzet', title: 'Budzet'});
+    setValue('source', {id: 'budzet', title: 'Budžet'});
     // fill some of the fields
-    const updatedData = {...mockMovableFormData, order_list: selectedOrderList};
+    const order = orders.find(item => item.id === selectedOrderList.id);
+    const updatedData = {...mockMovableFormData, order_list: selectedOrderList, articles: order?.articles || []};
     Object.keys(updatedData).forEach(key => {
       setValue(key as keyof typeof updatedData, updatedData[key as keyof typeof updatedData]);
     });
@@ -51,7 +56,7 @@ const MovableAddForm = ({onFormSubmit, context}: AddInventoryFormProps) => {
               <Dropdown
                 name={name}
                 value={value}
-                onChange={selectedValue => handleOrderListChange(selectedValue as DropdownDataString)}
+                onChange={selectedValue => handleOrderListChange(selectedValue as DropdownDataNumber)}
                 options={orderListOptions}
                 label="NARUDŽBENICA:"
               />

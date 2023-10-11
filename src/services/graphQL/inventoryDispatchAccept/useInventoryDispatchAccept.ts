@@ -1,14 +1,13 @@
 import {useState} from 'react';
-import {MicroserviceProps} from '../../../types/micro-service-props';
 import {GraphQL} from '..';
 import useAppContext from '../../../context/useAppContext';
 
-const useDispatchAccept = (context: MicroserviceProps) => {
+const useDispatchAccept = () => {
   const [loading, setLoading] = useState(false);
   const {fetch} = useAppContext();
-  const acceptDispatch = async (id: number, userId: number, onSuccess?: () => void, onError?: () => void) => {
+  const acceptDispatch = async (id: number, onSuccess?: () => void, onError?: () => void) => {
     setLoading(true);
-    const response = await fetch(GraphQL.inventoryDispatchAccept, {id, userId});
+    const response = await fetch(GraphQL.inventoryDispatchAccept, {dispatch_id: id});
     if (response.basicInventoryDispatch_Accept.status === 'success') {
       onSuccess && onSuccess();
     } else {

@@ -9,7 +9,7 @@ export interface RealEstate {
   ownership_scope: string;
   ownership_investment_scope: string;
   limitations_description: string;
-  file_id: string;
+  file_id?: number;
   property_document: string;
   limitation_id: string;
   document: string;

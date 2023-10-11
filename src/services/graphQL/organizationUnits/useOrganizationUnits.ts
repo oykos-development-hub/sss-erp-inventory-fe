@@ -6,7 +6,7 @@ import {GraphQLResponse} from '../../../types/graphQL/response';
 import {DropdownDataNumber} from '../../../types/dropdownData';
 import useAppContext from '../../../context/useAppContext';
 
-const useOrganizationUnits = () => {
+const useOrganizationUnits = (onlyParent?: boolean) => {
   const [data, setData] = useState<GraphQLResponse['data']['organizationUnits']>(initialOverviewData);
   const [options, setOptions] = useState<DropdownDataNumber[]>([]);
   const {fetch, graphQl} = useAppContext();
@@ -15,10 +15,13 @@ const useOrganizationUnits = () => {
     try {
       const response = await fetch(graphQl.getOrganizationUnits);
 
-      const options = response?.organizationUnits?.items.map((item: OrganizationUnit) => ({
-        id: item.id,
-        title: item.title,
-      }));
+      const options = response?.organizationUnits?.items
+        .filter((item: OrganizationUnit) => (!item.parent_id && onlyParent) || !onlyParent)
+        .map((item: OrganizationUnit) => ({
+          id: item.id,
+          title: item.title,
+        }));
+
       setOptions(options);
 
       setData(response?.organizationUnits);

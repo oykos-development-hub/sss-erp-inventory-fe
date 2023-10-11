@@ -7,4 +7,5 @@ export const initialValues: MovableAddFormProps = {
   supplier: null,
   date_of_purchase: '',
   source: null,
+  articles: [],
 };

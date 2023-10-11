@@ -9,6 +9,7 @@ import {MicroserviceProps} from '../../types/micro-service-props';
 import {initialValues} from './constants';
 import {ImmovableAddFormProps} from './types';
 import useGetSettings from '../../services/graphQL/getSettings/useGetSettings';
+import {parseDateForBackend} from '../../utils/dateUtils';
 
 const ImmovableAddForm = ({context}: {context: MicroserviceProps}) => {
   const {
@@ -34,51 +35,32 @@ const ImmovableAddForm = ({context}: {context: MicroserviceProps}) => {
     if (isValid) {
       const data = [
         {
-          ...values,
-          id: 0,
-          date_of_purchase: '',
-          source: '',
-          office_id: 0,
-          invoice_number: '',
-          supplier_id: 0,
-          depreciation_type_id: values.depreciation_type?.id ?? 0,
-          class_type_id: 0,
-          inventory_number: '',
-          title: '',
-          description: '',
-          gross_price: Number(values.gross_price),
-          serial_number: '',
           type: InventoryTypeEnum.IMMOVABLE,
-          abbreviation: '',
           internal_ownership: true,
-          organization_unit_id: myOrgUnitId,
-          target_user_profile_id: 1,
-          unit: '',
-          amount: 1,
-          net_price: 1,
-          donor_title: '',
+          gross_price: values?.gross_price || 0,
           price_of_assessment: 0,
-          date_of_assessment: '',
-          lifetime_of_assessment_in_months: 0,
           active: true,
           deactivation_description: 0,
-          invoice_file_id: 0,
-          file_id: 0,
+          date_of_assessment: parseDateForBackend(new Date()),
+          date_of_purchase: parseDateForBackend(new Date()),
           real_estate: {
             id: 0,
-            square_area: Number(values.square_area) ?? 0,
-            land_serial_number: values.land_serial_number ?? '',
-            estate_serial_number: '',
-            ownership_type: '',
-            ownership_scope: values.ownership_scope?.id ?? '',
-            ownership_investment_scope: values.ownership_investment_scope ?? '',
-            limitations_description: values.limitations_description ?? '',
-            file_id: '',
-            type_id: values.type?.id ?? '',
-            property_document: values.property_document ?? '',
-            limitation_id: values.limitation?.id ?? '',
-            document: values.document ?? '',
+            square_area: values?.square_area || 0,
+            land_serial_number: values?.land_serial_number || '',
+            estate_serial_number: ' ',
+            ownership_type: ' ',
+            ownership_scope: values?.ownership_scope?.id || '',
+            ownership_investment_scope: values?.ownership_investment_scope || '',
+            limitations_description: values?.limitations_description || '',
+            file_id: 0,
+            type_id: values?.type?.id || '',
+            property_document: values?.property_document || '',
+            limitation_id: values?.limitation?.id || '',
+            document: values?.document || '',
+            title: ' ',
           },
+          depreciation_type_id: values?.depreciation_type?.id || 0,
+          file_id: 0,
         },
       ];
 

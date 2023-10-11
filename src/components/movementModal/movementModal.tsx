@@ -67,7 +67,7 @@ const MovementModal = ({
   const orgUnitId = context.contextMain.organization_unit.id;
 
   const {options: officeOptions} = useOrgUnitOfficesGet({page: 1, size: 1000, id: Number(orgUnitId)});
-  const {options: locationOptions} = useOrganizationUnits();
+  const {options: locationOptions} = useOrganizationUnits(true);
   const {options: userOptions} = useUserProfiles({page: 1, size: 1000, organization_unit_id: orgUnitId});
 
   const returnReversOption: DropdownDataString[] = [{id: orgUnit, title: orgUnit}];

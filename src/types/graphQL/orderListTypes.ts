@@ -2,7 +2,7 @@ import {DropdownDataString} from '../dropdownData';
 import {SimpleResponse, OverviewResponse} from './response';
 
 export interface OrderListItem {
-  id?: number;
+  id: number;
   date_order?: string;
   total_price?: number;
   total_neto: number;
@@ -11,7 +11,7 @@ export interface OrderListItem {
   status?: string;
   articles?: OrderListArticleType[];
   invoice_date?: string;
-  invoice_number?: string;
+  invoice_number: string;
   date_system?: string;
   description?: string;
   recipient_user?: DropdownDataString;
