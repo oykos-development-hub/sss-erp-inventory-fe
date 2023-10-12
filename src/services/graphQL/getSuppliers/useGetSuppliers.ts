@@ -10,7 +10,7 @@ const useSuppliersOverview = (id?: number, search?: string) => {
   const {fetch, graphQl} = useAppContext();
 
   const fetchSuppliers = async () => {
-    const response: GraphQLResponse['data']['suppliers_Overview'] = await fetch(graphQl.getSuppliersOverview, {
+    const response = await fetch(graphQl.getSuppliersOverview, {
       id,
       search,
     });

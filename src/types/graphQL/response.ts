@@ -21,7 +21,6 @@ export interface SimpleResponse {
 }
 
 export interface OverviewResponse<T> {
-  suppliers_Overview: any;
   status: string;
   message: string;
   items: T[];
