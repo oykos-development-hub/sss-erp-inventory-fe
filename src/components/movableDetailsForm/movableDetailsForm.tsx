@@ -4,10 +4,11 @@ import {Controller, useForm} from 'react-hook-form';
 import {DetailsFormProps} from '../../screens/inventoryDetails/types';
 import useInventoryInsert from '../../services/graphQL/inventoryInsert/useInventoryInsert';
 import {parseDate} from '../../utils/dateUtils';
-import {initialValues, optionsOne, optionsThree, optionsTwo, supplierOptions} from './constants';
+import {initialValues, optionsOne, optionsThree, optionsTwo} from './constants';
 import {ButtonWrapper, FormWrapper, InputWrapper, OfficeDropdown, SupplierDropdown} from './style';
 import {MovableDetailsFormProps} from './types';
 import {InventoryInsertData} from '../../types/graphQL/inventoryOverview';
+import useSuppliersOverview from '../../services/graphQL/getSuppliers/useGetSuppliers';
 
 const MovableDetailsForm = ({data, context, inventoryType, refetch, inventoryId}: DetailsFormProps) => {
   const {
@@ -17,6 +18,8 @@ const MovableDetailsForm = ({data, context, inventoryType, refetch, inventoryId}
     reset,
     formState: {errors},
   } = useForm<MovableDetailsFormProps>({defaultValues: initialValues});
+
+  const {suppliers} = useSuppliersOverview();
 
   const {
     alert,
@@ -154,13 +157,7 @@ const MovableDetailsForm = ({data, context, inventoryType, refetch, inventoryId}
           name="supplier"
           control={control}
           render={({field: {name, value, onChange}}) => (
-            <SupplierDropdown
-              name={name}
-              value={value}
-              onChange={onChange}
-              options={supplierOptions}
-              label="DOBAVLJAČ:"
-            />
+            <SupplierDropdown name={name} value={value} onChange={onChange} options={suppliers} label="DOBAVLJAČ:" />
           )}
         />
 

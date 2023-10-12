@@ -2,7 +2,6 @@ import {Button, Dropdown, Input, Datepicker} from 'client-library';
 import {useEffect} from 'react';
 import {Controller, useForm} from 'react-hook-form';
 import {inventorySourceOptions} from '../../screens/inventoryAdd/constants';
-import {supplierOptions} from '../../screens/inventoryAdd/mockData';
 import {DetailsFormProps} from '../../screens/inventoryDetails/types';
 import useInventoryInsert from '../../services/graphQL/inventoryInsert/useInventoryInsert';
 import {parseDate} from '../../utils/dateUtils';
@@ -17,6 +16,7 @@ import {
   SupplierLocationDescriptionWrapper,
 } from './style';
 import {SmallDetailsFormProps} from './types';
+import useSuppliersOverview from '../../services/graphQL/getSuppliers/useGetSuppliers';
 
 const SmallDetailsForm = ({context, data, inventoryType, refetch, inventoryId}: DetailsFormProps) => {
   const {
@@ -26,6 +26,8 @@ const SmallDetailsForm = ({context, data, inventoryType, refetch, inventoryId}: 
     reset,
     formState: {errors},
   } = useForm<SmallDetailsFormProps>({defaultValues: initialValues});
+
+  const {suppliers} = useSuppliersOverview();
 
   const {
     alert,
@@ -171,13 +173,7 @@ const SmallDetailsForm = ({context, data, inventoryType, refetch, inventoryId}: 
             name="supplier"
             control={control}
             render={({field: {name, value, onChange}}) => (
-              <LocationDropdown
-                name={name}
-                value={value}
-                onChange={onChange}
-                options={supplierOptions}
-                label="DOBAVLJAČ"
-              />
+              <LocationDropdown name={name} value={value} onChange={onChange} options={suppliers} label="DOBAVLJAČ" />
             )}
           />
           <Controller

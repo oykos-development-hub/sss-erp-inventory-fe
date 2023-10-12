@@ -43,10 +43,6 @@ export const optionsThree = [
   {id: 1, title: 'item 1'},
   {id: 2, title: 'item 2'},
 ];
-export const supplierOptions = [
-  {id: 1, title: 'Dobavljac 1'},
-  {id: 2, title: 'Dobavljac 2'},
-];
 
 export const optionsFour = [
   {id: 1, title: 'Lokacija 1'},

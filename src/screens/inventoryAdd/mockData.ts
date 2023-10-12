@@ -27,8 +27,3 @@ export const mockMovableFormData = {
   supplier: {id: 1, title: 'Supplier'},
   date_of_purchase: '11.11.1111',
 };
-
-export const supplierOptions = [
-  {id: 1, title: 'Dobavljac 1'},
-  {id: 2, title: 'Dobavljac 2'},
-];

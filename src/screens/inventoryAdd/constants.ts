@@ -25,7 +25,7 @@ export const newTableItem: TableItemValues = {
 };
 
 export const inventorySourceOptions: DropdownDataString[] = [
-  {id: 'budzet', title: 'Budzet'},
+  {id: 'budzet', title: 'Budžet'},
   {id: 'donacija', title: 'Donacija'},
 ];
 

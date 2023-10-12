@@ -6,6 +6,7 @@ import {InventoryItem} from './inventoryOverview';
 import {Office} from './organizationUnitOffices';
 import {OrganizationUnit} from './organizationUnits';
 import {RealEstate} from './realEstateOverview';
+import {Supplier} from './suppliersOverviewTypes';
 import {UserProfile} from './userProfileOverview';
 
 export interface InsertResponse<T> {
@@ -20,6 +21,7 @@ export interface SimpleResponse {
 }
 
 export interface OverviewResponse<T> {
+  suppliers_Overview: any;
   status: string;
   message: string;
   items: T[];
@@ -40,6 +42,7 @@ export interface GraphQLResponse {
       status: string;
       items: InventoryDetails;
     };
+    suppliers_Overview: OverviewResponse<Supplier>;
     organizationUnits: OverviewResponse<OrganizationUnit>;
     basicInventoryDispatch_Overview: OverviewResponse<InventoryDispatch>;
     basicInventoryDispatch_Delete: SimpleResponse;

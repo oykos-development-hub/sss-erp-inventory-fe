@@ -1,13 +1,13 @@
 import {Datepicker, Dropdown, Input} from 'client-library';
 import {Controller, useFormContext} from 'react-hook-form';
 import {inventorySourceOptions} from '../../screens/inventoryAdd/constants';
-import {supplierOptions} from '../../screens/inventoryAdd/mockData';
 import {AddInventoryFormProps} from '../../screens/inventoryAdd/types';
 import useOrgUnitOfficesGet from '../../services/graphQL/organizationUnitOffices/useOrganizationUnitOfficesGet';
 import {FieldsContainer, Form, FormRow} from '../../shared/formStyles';
 import PlusButton from '../../shared/plusButton';
 import {parseDate} from '../../utils/dateUtils';
 import {SmallInventoryAddFormProps} from './types';
+import useSuppliersOverview from '../../services/graphQL/getSuppliers/useGetSuppliers';
 
 const SmallInventoryForm = ({onFormSubmit, context}: AddInventoryFormProps) => {
   const {
@@ -18,6 +18,7 @@ const SmallInventoryForm = ({onFormSubmit, context}: AddInventoryFormProps) => {
   } = useFormContext<SmallInventoryAddFormProps>();
 
   const {options: locationOptions} = useOrgUnitOfficesGet({page: 1, size: 10, id: 0});
+  const {suppliers} = useSuppliersOverview();
 
   const onSubmit = (values: SmallInventoryAddFormProps) => {
     onFormSubmit(values);
@@ -71,7 +72,7 @@ const SmallInventoryForm = ({onFormSubmit, context}: AddInventoryFormProps) => {
                 name={name}
                 value={value}
                 onChange={onChange}
-                options={supplierOptions}
+                options={suppliers}
                 placeholder=""
                 label="DOBAVLJAČ:"
                 error={errors.supplier?.message}

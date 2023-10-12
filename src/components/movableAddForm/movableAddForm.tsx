@@ -6,12 +6,14 @@ import {Dropdown, Input, Datepicker} from 'client-library';
 import {DropdownDataNumber, DropdownDataString} from '../../types/dropdownData';
 import {AddInventoryFormProps} from '../../screens/inventoryAdd/types';
 import {MovableAddFormProps} from './types';
-import {mockMovableFormData, supplierOptions} from '../../screens/inventoryAdd/mockData';
+import {mockMovableFormData} from '../../screens/inventoryAdd/mockData';
 import useOrgUnitOfficesGet from '../../services/graphQL/organizationUnitOffices/useOrganizationUnitOfficesGet';
 import {inventorySourceOptions} from '../../screens/inventoryAdd/constants';
 import {Tooltip} from 'client-library';
 import {TooltipWrapper} from './styles';
 import useGetOrderList from '../../services/graphQL/getOrderList/useGetOrderList';
+import {useDebounce} from '../../utils/useDebounce';
+import useSuppliersOverview from '../../services/graphQL/getSuppliers/useGetSuppliers';
 
 const MovableAddForm = ({onFormSubmit, context}: AddInventoryFormProps) => {
   const {
@@ -29,6 +31,8 @@ const MovableAddForm = ({onFormSubmit, context}: AddInventoryFormProps) => {
   };
   const {options: locationOptions} = useOrgUnitOfficesGet({page: 1, size: 10, id: 0});
   const {orders, orderListOptions} = useGetOrderList({page: 1, size: 1000});
+
+  const {suppliers} = useSuppliersOverview();
 
   const handleOrderListChange = (selectedOrderList: DropdownDataNumber) => {
     // When order list is selected:
@@ -105,7 +109,7 @@ const MovableAddForm = ({onFormSubmit, context}: AddInventoryFormProps) => {
                 name={name}
                 value={value}
                 onChange={onChange}
-                options={supplierOptions}
+                options={suppliers}
                 placeholder=""
                 label="DOBAVLJAČ:"
                 isDisabled={!!selectedOrderList}
