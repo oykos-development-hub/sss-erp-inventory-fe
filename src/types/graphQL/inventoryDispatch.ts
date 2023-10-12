@@ -8,6 +8,7 @@ export interface InventoryDispatch {
   target_user_profiles: DropdownDataNumber;
   target_organization_unit: DropdownDataNumber;
   source_organization_unit: DropdownDataNumber;
+  office?: DropdownDataNumber;
   is_accepted: boolean;
   serial_number: string;
   dispatch_description: string;

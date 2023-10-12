@@ -20,7 +20,7 @@ const useGetSettings = ({search, id, entity}: ClassTypesParams) => {
       const options = createDropdownOptions(response.settingsDropdown_Overview.items || []);
       setOptions(options);
 
-      setData(response);
+      setData(response.settingsDropdown_Overview);
       setLoading(false);
     } catch (err) {
       console.log(err);

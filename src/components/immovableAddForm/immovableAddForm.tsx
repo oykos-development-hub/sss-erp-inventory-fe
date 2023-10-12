@@ -43,6 +43,7 @@ const ImmovableAddForm = ({context}: {context: MicroserviceProps}) => {
           deactivation_description: 0,
           date_of_assessment: parseDateForBackend(new Date()),
           date_of_purchase: parseDateForBackend(new Date()),
+          location: values.location,
           real_estate: {
             id: 0,
             square_area: values?.square_area || 0,

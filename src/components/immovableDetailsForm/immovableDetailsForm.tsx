@@ -27,11 +27,11 @@ const ImmovableDetailsForm = ({context, data, refetch, inventoryId}: DetailsForm
   } = context;
   const {mutate} = useInventoryInsert();
 
-  const {options: depreciationTypes} = useGetSettings({entity: 'deprecation_types'});
+  const {data: depreciationTypes} = useGetSettings({entity: 'deprecation_types'});
 
   useEffect(() => {
     if (data) {
-      const depreciationType = depreciationTypes?.find(option => option.id === data?.depreciation_type?.id);
+      const depreciationType = depreciationTypes?.items?.find(option => option.id === data?.depreciation_type?.id);
 
       const currentValues = {
         ...data,
@@ -44,7 +44,7 @@ const ImmovableDetailsForm = ({context, data, refetch, inventoryId}: DetailsForm
         limitation: restrictionOptions.find(option => option.id === data?.real_estate?.limitation_id),
         limitations_description: data?.real_estate?.limitations_description,
         square_area: data.real_estate?.square_area,
-        depreciation_rate: depreciationType ? 100 / Number(depreciationType) : 0,
+        depreciation_rate: depreciationType && depreciationType.value ? 100 / Number(depreciationType.value) : 0,
       };
 
       reset(currentValues as any);

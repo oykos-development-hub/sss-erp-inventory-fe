@@ -48,9 +48,11 @@ export interface InventoryDetails {
     source_user_profile: DropdownDataNumber;
     target_user_profile: DropdownDataNumber;
     target_organization_unit: DropdownDataNumber;
+    office: DropdownDataNumber;
     is_accepted: boolean;
     serial_number: string;
     dispatch_description: string;
+    created_at?: string;
   }[];
   created_at: string;
   updated_at: string;

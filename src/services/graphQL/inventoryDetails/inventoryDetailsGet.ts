@@ -97,9 +97,14 @@ const inventoryDetailsGet = `query BasicInventoryDetails($id: Int!) {
                     id
                     title
                 }
+                office {
+                    id
+                    title
+                }
                 is_accepted
                 serial_number
                 dispatch_description
+                created_at
             }
             created_at
             updated_at

@@ -38,21 +38,24 @@ export const movementsTableHeads: TableHead[] = [
   },
   {
     title: 'Lokacija',
-    accessor: 'target_organization_unit',
+    accessor: '',
     type: 'custom',
-    renderContents: target_organization_unit => (
-      <Typography variant="bodyMedium" content={target_organization_unit?.title} />
+    renderContents: (_: any, item: InventoryDispatch) => (
+      <Typography
+        variant="bodyMedium"
+        content={item.type === 'revers' ? item?.target_organization_unit?.title : item?.office?.title}
+      />
     ),
   },
   {
     title: 'Primalac',
-    accessor: 'source_user_profile',
+    accessor: 'target_user_profile',
     type: 'custom',
-    renderContents: source_user_profile => <Typography variant="bodyMedium" content={source_user_profile?.title} />,
+    renderContents: target_user_profile => <Typography variant="bodyMedium" content={target_user_profile?.title} />,
   },
   {
     title: 'Datum',
-    accessor: 'date_of_assessment',
+    accessor: 'created_at',
     type: 'custom',
     renderContents: date => <Typography variant="bodyMedium" content={date ? parseDate(date) : ''} />,
   },
