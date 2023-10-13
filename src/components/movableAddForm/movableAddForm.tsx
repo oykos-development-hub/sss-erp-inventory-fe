@@ -29,7 +29,12 @@ const MovableAddForm = ({onFormSubmit, context}: AddInventoryFormProps) => {
   const onSubmit = (values: MovableAddFormProps) => {
     isValid && onFormSubmit(values);
   };
-  const {options: locationOptions} = useOrgUnitOfficesGet({page: 1, size: 10, id: 0});
+  const orgUnitId = context.contextMain.organization_unit.id;
+  const {options: locationOptions} = useOrgUnitOfficesGet({
+    page: 1,
+    size: 1000,
+    organization_unit_id: Number(orgUnitId),
+  });
   const {orders, orderListOptions} = useGetOrderList({page: 1, size: 1000});
 
   const {suppliers} = useSuppliersOverview();

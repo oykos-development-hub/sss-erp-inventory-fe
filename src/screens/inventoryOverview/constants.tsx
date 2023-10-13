@@ -56,32 +56,20 @@ export const immovableTypeOptions: DropdownDataString[] = [
 
 export const movableInventoryTableHeads: TableHead[] = [
   {title: 'Tip', accessor: 'source_type'},
-  {title: 'Inv. broj', accessor: 'inventory_number'},
   {title: 'Naziv', accessor: 'title'},
-  {title: 'Cijena', accessor: 'gross_price'},
-  {
-    title: 'Klasa',
-    accessor: 'class_type',
-    type: 'custom',
-    renderContents: classType => <Typography content={classType?.title} />,
-  },
-  {
-    title: 'Amortizaciona grupa',
-    accessor: 'depreciation_type',
-    type: 'custom',
-    renderContents: depreciation_type => <Typography content={depreciation_type?.title} />,
-  },
-  {
-    title: 'Datum nabavke',
-    accessor: 'date_of_purchase',
-    type: 'custom',
-    renderContents: date => <Typography content={parseDate(date)} />,
-  },
   {
     title: 'Lokacija',
     accessor: 'office',
     type: 'custom',
     renderContents: office => <Typography content={office?.title} />,
+  },
+  {title: 'Inv. broj', accessor: 'inventory_number'},
+  {title: 'Cijena', accessor: 'gross_price'},
+  {
+    title: 'Datum nabavke',
+    accessor: 'date_of_purchase',
+    type: 'custom',
+    renderContents: date => <Typography content={parseDate(date)} />,
   },
   {
     title: 'Alokacija',

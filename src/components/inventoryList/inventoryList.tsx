@@ -282,7 +282,13 @@ const InventoryList = ({
                 },
               ]
         }
-        onRowClick={(item: any) => navigate(`/inventory/${type}-inventory/${item.id}`)}
+        onRowClick={(item: InventoryItem) => {
+          navigate(`/inventory/${type}-inventory/${item.id}`);
+          context.breadcrumbs.add({
+            name: `${item.title}`,
+            to: `/inventory/${type}-inventory/${item.id}`,
+          });
+        }}
         disabledCheckbox={isCheckboxDisabled}
       />
       {/* //TODO ID 1 IS ONLY FOR TESTING, REMOVE LATER */}

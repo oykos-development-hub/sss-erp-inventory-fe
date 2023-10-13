@@ -53,8 +53,8 @@ const InventoryOverview = ({context, type}: InventoryProps) => {
         onChange={onPageChange}
         variant="filled"
         itemsPerPage={PAGE_SIZE}
-        previousLabel="Previous"
-        nextLabel="Next"
+        previousLabel="Prethodna"
+        nextLabel="Sledeća"
         pageRangeDisplayed={3}
         style={{marginTop: '20px'}}
       />

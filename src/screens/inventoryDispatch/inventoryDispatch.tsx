@@ -20,7 +20,7 @@ const InventoryDispatch = ({context}: InventoryProps) => {
     page,
     size: PAGE_SIZE,
     ...filterValues,
-    type: type,
+    inventory_type: type,
     id: 0,
   });
 
@@ -43,8 +43,8 @@ const InventoryDispatch = ({context}: InventoryProps) => {
         onChange={onPageChange}
         variant="filled"
         itemsPerPage={PAGE_SIZE}
-        previousLabel="Previous"
-        nextLabel="Next"
+        previousLabel="Prethodna"
+        nextLabel="Sledeća"
         pageRangeDisplayed={3}
         style={{marginTop: '20px'}}
       />

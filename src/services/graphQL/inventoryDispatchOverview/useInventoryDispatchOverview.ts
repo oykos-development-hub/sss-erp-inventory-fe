@@ -8,6 +8,7 @@ import useAppContext from '../../../context/useAppContext';
 
 interface InventoryDispatchHookParams extends InventoryDispatchFilters, PaginationProps {
   id: number;
+  inventory_type?: string;
 }
 
 const useInventoryDispatchOverview = ({
@@ -17,6 +18,7 @@ const useInventoryDispatchOverview = ({
   source_organization_unit,
   accepted,
   type,
+  inventory_type,
 }: InventoryDispatchHookParams) => {
   const [data, setData] = useState<GraphQLResponse['data']['basicInventoryDispatch_Overview']>(initialOverviewData);
   const [loading, setLoading] = useState(true);
@@ -31,6 +33,7 @@ const useInventoryDispatchOverview = ({
         source_organization_unit_id: source_organization_unit?.id,
         type,
         accepted,
+        inventory_type,
       });
 
       setData(response?.basicInventoryDispatch_Overview);

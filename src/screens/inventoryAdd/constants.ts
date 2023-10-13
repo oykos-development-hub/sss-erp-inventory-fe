@@ -3,12 +3,12 @@ import {TableItemValues} from './types';
 import {DropdownDataString} from '../../types/dropdownData';
 
 export const tableHeads: TableHead[] = [
-  {title: 'Klasa sredstava', accessor: 'class_type', type: 'custom'},
-  {title: 'Amortizaciona grupa', accessor: 'depreciation_type', type: 'custom'},
-  {title: 'Inv. broj', accessor: 'inventory_number', type: 'custom'},
   {title: 'Naziv', accessor: 'title', type: 'custom'},
+  {title: 'Inv. broj', accessor: 'inventory_number', type: 'custom'},
   {title: 'Serijski Broj', accessor: 'serial_number', type: 'custom'},
   {title: 'Cijena', accessor: 'gross_price', type: 'custom'},
+  {title: 'Klasa sredstava', accessor: 'class_type', type: 'custom'},
+  {title: 'Amortizaciona grupa', accessor: 'depreciation_type', type: 'custom'},
   {title: 'Napomena', accessor: 'description', type: 'custom'},
   {title: '', accessor: 'TABLE_ACTIONS', type: 'tableActions'},
 ];
