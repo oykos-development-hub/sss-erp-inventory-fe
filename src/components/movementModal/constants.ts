@@ -2,9 +2,9 @@ import {DropdownDataString} from '../../types/dropdownData';
 
 export const movableTransactionOptions: DropdownDataString[] = [
   {id: 'revers', title: 'Revers'},
-  {id: 'return-revers', title: 'Povrat reversa'},
+  {id: 'allocation', title: 'Zaposleni'},
   {id: 'return', title: 'Povrat sredstava'},
-  {id: 'allocation', title: 'Premještaj sredstava'},
+  {id: 'return-revers', title: 'Povrat reversa'},
 ];
 
 export const immovableTransactionOptions: DropdownDataString[] = [

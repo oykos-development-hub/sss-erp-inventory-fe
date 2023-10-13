@@ -97,7 +97,7 @@ const InventoryDetails = ({context, type}: InventoryProps) => {
           {type !== 'small' && (
             <div>
               <TableHeader>
-                <Typography variant="caption" content="estimations" />
+                <Typography variant="caption" content="procjene" />
                 <PlusButton
                   disabled={data?.items.source_type?.includes('2')}
                   onClick={() => setAssessmentModal(true)}
@@ -122,7 +122,7 @@ const InventoryDetails = ({context, type}: InventoryProps) => {
 
           <div>
             <TableHeader>
-              <Typography variant="caption" content="asset movements" />
+              <Typography variant="caption" content="kretanje sredstva" />
               <PlusButton onClick={() => setMovementModal(true)} />
             </TableHeader>
             <Table

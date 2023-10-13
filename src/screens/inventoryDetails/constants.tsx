@@ -29,7 +29,7 @@ export const estimationTableHeads: TableHead[] = [
 
 export const movementsTableHeads: TableHead[] = [
   {
-    title: 'Transaction',
+    title: 'Transakcija',
     accessor: '',
     type: 'custom',
     renderContents: (_: any, item: InventoryDispatch) => (

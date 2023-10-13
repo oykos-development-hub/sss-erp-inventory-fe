@@ -147,7 +147,7 @@ const MovableDetailsForm = ({data, context, inventoryType, refetch, inventoryId}
             />
           )}
         />
-        <Input {...register('amount')} label="UKUPNA VRIJEDNOST AMORTIZACIJE:" disabled={true} />
+        <Input {...register('amount')} label="VRIJEDNOST AMORTIZACIJE:" disabled={true} />
 
         <Input {...register('description')} label="NAPOMENA:" />
       </InputWrapper>
@@ -157,7 +157,14 @@ const MovableDetailsForm = ({data, context, inventoryType, refetch, inventoryId}
           name="supplier"
           control={control}
           render={({field: {name, value, onChange}}) => (
-            <SupplierDropdown name={name} value={value} onChange={onChange} options={suppliers} label="DOBAVLJAČ:" />
+            <SupplierDropdown
+              name={name}
+              value={value}
+              onChange={onChange}
+              options={suppliers}
+              isDisabled={true}
+              label="DOBAVLJAČ:"
+            />
           )}
         />
 
@@ -178,8 +185,8 @@ const MovableDetailsForm = ({data, context, inventoryType, refetch, inventoryId}
       </InputWrapper>
 
       <ButtonWrapper>
-        <Button content="Back" onClick={() => navigate(-1)} />
-        <Button content="Save Changes" onClick={handleSubmit(onSubmit)} />
+        <Button content="Nazad" onClick={() => navigate(-1)} />
+        <Button content="Sačuvaj" onClick={handleSubmit(onSubmit)} />
       </ButtonWrapper>
     </FormWrapper>
   );
