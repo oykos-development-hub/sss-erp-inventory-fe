@@ -1,15 +1,21 @@
 import React from 'react';
 import {TableHead, Typography} from 'client-library';
-import {DropdownDataNumber} from '../../types/dropdownData';
+import {DropdownDataNumber, DropdownDataString} from '../../types/dropdownData';
 import {parseDate} from '../../utils/dateUtils';
 import {DispatchType, DispatchTypeTitles, InventoryDispatch} from '../../types/graphQL/inventoryDispatch';
+import {estimationTypeOptions} from '../../constants';
 
 export const estimationTableHeads: TableHead[] = [
   {
-    title: 'Type',
-    accessor: 'depreciation_type',
+    title: 'Tip procjene',
+    accessor: 'type',
     type: 'custom',
-    renderContents: depreciationType => <Typography variant="bodyMedium" content={depreciationType?.title} />,
+    renderContents: type => (
+      <Typography
+        variant="bodyMedium"
+        content={estimationTypeOptions.find((item: DropdownDataString) => item.id === type)?.title}
+      />
+    ),
   },
   {title: 'Vrijednost procjene', accessor: 'gross_price_difference'},
   {
@@ -18,7 +24,6 @@ export const estimationTableHeads: TableHead[] = [
     type: 'custom',
     renderContents: date => <Typography variant="bodyMedium" content={date ? parseDate(date) : ''} />,
   },
-
   {title: 'Ispravka vrijednosti', accessor: 'gross_price_new'},
   {
     title: '',

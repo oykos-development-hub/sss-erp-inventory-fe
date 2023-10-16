@@ -3,7 +3,7 @@ import {useEffect} from 'react';
 import {Controller, useForm} from 'react-hook-form';
 import {DetailsFormProps} from '../../screens/inventoryDetails/types';
 import useInventoryInsert from '../../services/graphQL/inventoryInsert/useInventoryInsert';
-import {parseDate} from '../../utils/dateUtils';
+import {parseDate, parseDateForBackend} from '../../utils/dateUtils';
 import {initialValues, optionsOne, optionsThree, optionsTwo} from './constants';
 import {ButtonWrapper, FormWrapper, InputWrapper, OfficeDropdown, SupplierDropdown} from './style';
 import {MovableDetailsFormProps} from './types';
@@ -55,12 +55,12 @@ const MovableDetailsForm = ({data, context, inventoryType, refetch, inventoryId}
         net_price: 0,
         gross_price: values?.gross_price || 0,
         description: values?.description || '',
-        date_of_purchase: parseDate(values?.date_of_purchase, true) || '',
+        date_of_purchase: parseDateForBackend(new Date(values?.date_of_purchase)),
         source: '',
         donor_title: '',
         invoice_number: '',
         price_of_assessment: 0,
-        date_of_assessment: '',
+        date_of_assessment: parseDateForBackend(new Date()),
         lifetime_of_assessment_in_months: values?.lifetime_of_assessment_in_months || 0,
         active: true,
         deactivation_description: 0,
@@ -68,6 +68,7 @@ const MovableDetailsForm = ({data, context, inventoryType, refetch, inventoryId}
         file_id: 0,
       },
     ];
+
     await mutate(
       movableDetailsValues,
       () => {

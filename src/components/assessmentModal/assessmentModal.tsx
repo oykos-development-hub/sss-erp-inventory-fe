@@ -3,7 +3,7 @@ import {Controller, useForm} from 'react-hook-form';
 import {estimationTypeOptions} from '../../constants';
 import useAssessmentInsert from '../../services/graphQL/assessmentInsert/useAssessmentInsert';
 import useGetSettings from '../../services/graphQL/getSettings/useGetSettings';
-import {DropdownDataNumber} from '../../types/dropdownData';
+import {DropdownDataNumber, DropdownDataString} from '../../types/dropdownData';
 import {MicroserviceProps} from '../../types/micro-service-props';
 import {parseDate, parseDateForBackend} from '../../utils/dateUtils';
 import {EstimationForm} from './styles';
@@ -16,7 +16,7 @@ interface AssessmentModalProps {
 }
 
 interface AssessmentModalForm {
-  type: DropdownDataNumber;
+  type: DropdownDataString;
   gross_price_difference: string;
   date_of_assessment: Date;
   depreciation_type_id: DropdownDataNumber;
@@ -44,9 +44,10 @@ const AssessmentModal = ({context, onClose, id, refetch}: AssessmentModalProps) 
         {
           depreciation_type_id: data.depreciation_type_id.id,
           gross_price_difference: parseFloat(data.gross_price_difference),
-          gross_price_new: parseFloat(data.gross_price_new),
+          gross_price_new: 0,
           date_of_assessment: parseDateForBackend(data?.date_of_assessment),
           inventory_id: Number(id),
+          type: data?.type?.id,
           // This tells which is the last (active) assessment
           active: true,
           user_profile_id,
@@ -124,12 +125,6 @@ const AssessmentModal = ({context, onClose, id, refetch}: AssessmentModalProps) 
                 error={errors.depreciation_type_id?.message}
               />
             )}
-          />
-          <Input
-            {...register('gross_price_new', {required: 'Ovo polje je obavezno'})}
-            label="ISPRAVKA VRIJEDNOSTI:"
-            error={errors.gross_price_new?.message}
-            type="number"
           />
         </EstimationForm>
       }
