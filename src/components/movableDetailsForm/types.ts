@@ -27,6 +27,8 @@ export interface MovableDetailsFormProps {
   price_of_assessment: number;
   date_of_assessment: string;
   lifetime_of_assessment_in_months: number;
+  depreciation_rate?: string;
+  amortization_value?: number;
   active: boolean;
   deactivation_description: number;
   invoice_file_id: string;

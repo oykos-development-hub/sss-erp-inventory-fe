@@ -133,22 +133,8 @@ const MovableDetailsForm = ({data, context, inventoryType, refetch, inventoryId}
       <InputWrapper>
         <Input {...register('gross_price')} type="number" label="CIJENA:" disabled={true} />
         <Input {...register('lifetime_of_assessment_in_months')} label="VIJEK TRAJANJA:" disabled={true} />
-
-        <Controller
-          name="depreciation_type"
-          control={control}
-          render={({field: {name, value, onChange}}) => (
-            <Dropdown
-              name={name}
-              value={value}
-              onChange={onChange}
-              options={optionsThree}
-              label="AMORTIZACIONA STOPA:"
-              isDisabled={true}
-            />
-          )}
-        />
-        <Input {...register('amount')} label="VRIJEDNOST AMORTIZACIJE:" disabled={true} />
+        <Input {...register('depreciation_rate')} label="AMORTIZACIONA STOPA:" disabled={true} />
+        <Input {...register('amortization_value')} label="VRIJEDNOST AMORTIZACIJE:" disabled={true} />
 
         <Input {...register('description')} label="NAPOMENA:" />
       </InputWrapper>

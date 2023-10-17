@@ -30,6 +30,8 @@ export interface InventoryDetails {
   price_of_assessment: number;
   date_of_assessment: number;
   lifetime_of_assessment_in_months: number;
+  depreciation_rate?: string;
+  amortization_value: number;
   active: boolean;
   source_type: SourceType | `${SourceType}`;
   deactivation_description: string;
