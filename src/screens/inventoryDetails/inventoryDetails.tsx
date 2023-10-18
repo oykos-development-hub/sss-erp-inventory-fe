@@ -112,7 +112,7 @@ const InventoryDetails = ({context, type}: InventoryProps) => {
                     name: 'print',
                     icon: <PrinterIcon stroke={Theme.palette.gray600} />,
                     onClick: () => {
-                      console.log('printed estimation');
+                      console.log('printed estimation test');
                     },
                   },
                 ]}
@@ -134,7 +134,7 @@ const InventoryDetails = ({context, type}: InventoryProps) => {
                   name: 'print',
                   icon: <PrinterIcon stroke={Theme.palette.gray600} />,
                   onClick: () => {
-                    console.log('printed movement');
+                    console.log('printed movement test');
                   },
                 },
               ]}
