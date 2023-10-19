@@ -10,7 +10,7 @@ export const Filters = styled.div`
 `;
 
 export const FilterDropdown = styled(Dropdown)`
-  width: 300px;
+  width: 300px !important;
 `;
 
 export const FilterInput = styled(Input)`
