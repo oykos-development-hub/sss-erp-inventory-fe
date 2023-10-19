@@ -16,6 +16,7 @@ export interface InventoryItem {
   gross_price: number;
   date_of_purchase: string;
   source: string;
+  status: string;
   active: boolean;
   source_type: SourceType | `${SourceType}`;
   organization_unit: DropdownDataNumber;

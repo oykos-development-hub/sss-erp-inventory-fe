@@ -1,4 +1,4 @@
-import {Dropdown, Modal} from 'client-library';
+import {Dropdown, Modal, Datepicker} from 'client-library';
 import {useEffect, useMemo} from 'react';
 import {Controller, useForm} from 'react-hook-form';
 import useDispatchInsert from '../../services/graphQL/dispatchInsert/useDispatchInsert';
@@ -12,6 +12,7 @@ import {MicroserviceProps} from '../../types/micro-service-props';
 import {MovementForm} from './styles';
 import {InventoryTypeEnum} from '../../types/inventoryType';
 import {immovableTransactionOptions, movableTransactionOptions, smallTransactionOptions} from './constants';
+import {parseDate, parseDateForBackend} from '../../utils/dateUtils';
 
 interface MovementModalProps {
   context: MicroserviceProps;
@@ -23,6 +24,7 @@ interface MovementModalProps {
   returnOrgUnitId?: number;
   inventoryType: InventoryTypeEnum | `${InventoryTypeEnum}`;
   currentItem?: InventoryItem;
+  status: string;
 }
 
 const initialFormData: MovementModalForm = {
@@ -31,6 +33,7 @@ const initialFormData: MovementModalForm = {
   target_organization_unit_id: null,
   office_id: null,
   serial_number: '',
+  date: new Date(),
 };
 
 interface MovementModalForm {
@@ -39,6 +42,7 @@ interface MovementModalForm {
   target_organization_unit_id?: DropdownDataNumber | null;
   office_id: DropdownDataNumber | null;
   serial_number: string;
+  date: Date;
 }
 
 const MovementModal = ({
@@ -51,6 +55,7 @@ const MovementModal = ({
   returnOrgUnitId,
   inventoryType,
   currentItem,
+  status,
 }: MovementModalProps) => {
   const {
     handleSubmit,
@@ -86,6 +91,7 @@ const MovementModal = ({
         type: (values.transaction?.id as DispatchType) ?? '',
         dispatch_description: '',
         inventory_id: id,
+        date: parseDateForBackend(values?.date),
       };
       try {
         const successTypeString =
@@ -127,7 +133,7 @@ const MovementModal = ({
         : smallTransactionOptions;
 
     return options.filter(option => {
-      const optionsToRemove = [];
+      const optionsToRemove = ['return'];
 
       if (sourceType?.includes('2') || (currentItem && isReversDone(currentItem))) {
         optionsToRemove.push('revers');
@@ -141,9 +147,6 @@ const MovementModal = ({
   }, [sourceType, inventoryType, initialDispatchType]);
 
   const transactionType = watch('transaction')?.id;
-
-  const buttonText =
-    transactionType === 'revers' ? 'Revers' : transactionType === 'allocation' ? 'Premjesti' : 'Povrat';
 
   useEffect(() => {
     if (initialDispatchType) {
@@ -164,29 +167,31 @@ const MovementModal = ({
     <Modal
       open={true}
       onClose={onClose}
-      title="DODAJ KRETANJE"
+      title="KRETANJE SREDSTVA"
       leftButtonOnClick={onClose}
       rightButtonOnClick={handleSubmit(onSubmit)}
-      rightButtonText={buttonText}
+      rightButtonText={'Sačuvaj'}
       buttonLoading={isSaving}
       leftButtonText="Otkaži"
       content={
         <MovementForm>
-          <Controller
-            name="transaction"
-            control={control}
-            rules={{required: 'Ovo polje je obavezno'}}
-            render={({field: {name, value, onChange}}) => (
-              <Dropdown
-                name={name}
-                value={value}
-                onChange={onChange}
-                options={transactionOptionsToShow}
-                label="TRANSAKCIJA:"
-                error={errors.transaction?.message}
-              />
-            )}
-          />
+          {status == 'Lager' && (
+            <Controller
+              name="transaction"
+              control={control}
+              rules={{required: 'Ovo polje je obavezno'}}
+              render={({field: {name, value, onChange}}) => (
+                <Dropdown
+                  name={name}
+                  value={value}
+                  onChange={onChange}
+                  options={transactionOptionsToShow}
+                  label="TIP KRETANJA:"
+                  error={errors.transaction?.message}
+                />
+              )}
+            />
+          )}
           {transactionType === 'revers' && (
             <Controller
               name="target_organization_unit_id"
@@ -249,6 +254,22 @@ const MovementModal = ({
                   options={officeOptions}
                   label="LOKACIJA:"
                   error={errors.office_id?.message}
+                />
+              )}
+            />
+          )}
+          {transactionType && (
+            <Controller
+              name="date"
+              control={control}
+              rules={{required: 'Ovo polje je obavezno'}}
+              render={({field: {name, value, onChange}}) => (
+                <Datepicker
+                  onChange={onChange}
+                  label="DATUM ZADUŽENJA:"
+                  name={name}
+                  value={value ? parseDate(value) : ''}
+                  error={errors.date?.message}
                 />
               )}
             />

@@ -18,6 +18,7 @@ import AssessmentModal from '../assessmentModal/assessmentModal';
 import DeactivateModal from '../deactivateModal/deactivateModal';
 import MovementModal from '../movementModal/movementModal';
 import {FilterDropdown, FilterInput, Filters, ReversButtonContainer} from './styles';
+import useInventoryDeactivate from '../../services/graphQL/inventoryDeactivate/useInventoryDeactivate';
 
 interface InventoryListProps {
   context: MicroserviceProps;
@@ -59,9 +60,11 @@ const InventoryList = ({
   });
 
   const {options: classTypeOptions} = useGetSettings({entity: 'inventory_class_type'});
+  const {mutate: deactivate, loading: loadingDeactivate} = useInventoryDeactivate();
 
   const {
     navigation: {navigate},
+    alert,
   } = context;
 
   //todo: add useMemo
@@ -263,7 +266,10 @@ const InventoryList = ({
                 },
                 {
                   name: 'Deaktivacija',
-                  onClick: row => console.log('Deaktivacija'),
+                  onClick: row => {
+                    setCurrentInventoryId([row.id]);
+                    setDeactivateModal(true);
+                  },
                 },
               ]
             : [
@@ -278,7 +284,10 @@ const InventoryList = ({
                 },
                 {
                   name: 'Deaktivacija',
-                  onClick: row => console.log('Deaktivacija'),
+                  onClick: row => {
+                    setCurrentInventoryId([row.id]);
+                    setDeactivateModal(true);
+                  },
                 },
               ]
         }
@@ -293,7 +302,18 @@ const InventoryList = ({
       />
       {/* //TODO ID 1 IS ONLY FOR TESTING, REMOVE LATER */}
       {deactivateModal && (
-        <DeactivateModal onClose={() => setDeactivateModal(false)} onDeactivate={(e: any) => console.log(e)} id={0} />
+        <DeactivateModal
+          onClose={() => setDeactivateModal(false)}
+          loading={loadingDeactivate}
+          onDeactivate={({description}) =>
+            deactivate(currentInventoryId[0], description, () => {
+              setCurrentInventoryId([]);
+              setDeactivateModal(false);
+              alert.success('Osnovno sredstvo je deaktivirano.');
+            })
+          }
+          id={0}
+        />
       )}
       {movementModal && (
         <MovementModal
@@ -306,6 +326,7 @@ const InventoryList = ({
           returnOrgUnitId={returnOrgUnitId}
           inventoryType={type}
           currentItem={currentItem}
+          status={currentItem?.status || ''}
         />
       )}
       {estimationModal && (

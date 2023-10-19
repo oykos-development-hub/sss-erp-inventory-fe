@@ -57,7 +57,6 @@ const InventoryDetails = ({context, type}: InventoryProps) => {
 
   const onCloseMovementModal = () => {
     setMovementModal(false);
-    refetch();
   };
 
   return (
@@ -123,7 +122,7 @@ const InventoryDetails = ({context, type}: InventoryProps) => {
           <div>
             <TableHeader>
               <Typography variant="caption" content="kretanje sredstva" />
-              <PlusButton onClick={() => setMovementModal(true)} />
+              {data?.items?.status !== 'Revers' && <PlusButton onClick={() => setMovementModal(true)} />}
             </TableHeader>
             <Table
               tableHeads={movementsTableHeads}
@@ -151,6 +150,7 @@ const InventoryDetails = ({context, type}: InventoryProps) => {
               refetch={refetch}
               sourceType={data?.items.source_type}
               inventoryType={type}
+              status={data?.items?.status || ''}
             />
           )}
         </InventoryDetailsWrapper>

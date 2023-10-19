@@ -2,6 +2,7 @@ import {getEnvironment} from '../get-environment';
 import assessmentInsert from './assessmentInsert/assessmentInsert';
 import dispatchInsert from './dispatchInsert/dispatchInsert';
 import getOrderList from './getOrderList/getOrderList';
+import inventoryDeactivate from './inventoryDeactivate/inventoryDeactivate';
 import inventoryDetailsGet from './inventoryDetails/inventoryDetailsGet';
 import inventoryDispatchAccept from './inventoryDispatchAccept/inventoryDispatchAccept';
 import inventoryDispatchOverview from './inventoryDispatchOverview/inventoryDispatchOverview';
@@ -27,6 +28,7 @@ export const GraphQL = {
   assessmentInsert: assessmentInsert,
   dispatchInsert: dispatchInsert,
   inventoryDetailsGet: inventoryDetailsGet,
+  inventoryDeactivate: inventoryDeactivate,
   inventoryDispatchOverview: inventoryDispatchOverview,
   inventoryDispatchDelete: inventoryDispatchDelete,
   inventoryDispatchAccept: inventoryDispatchAccept,

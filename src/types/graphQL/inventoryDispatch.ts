@@ -34,6 +34,7 @@ export interface InventoryDispatchData {
   dispatch_description: string;
   inventory_id: number[];
   type: DispatchType | `${DispatchType}`;
+  date?: string;
 }
 
 export enum DispatchType {

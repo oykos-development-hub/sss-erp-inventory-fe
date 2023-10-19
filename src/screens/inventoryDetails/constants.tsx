@@ -34,7 +34,7 @@ export const estimationTableHeads: TableHead[] = [
 
 export const movementsTableHeads: TableHead[] = [
   {
-    title: 'Transakcija',
+    title: 'Tip kretanja',
     accessor: '',
     type: 'custom',
     renderContents: (_: any, item: InventoryDispatch) => (
@@ -53,7 +53,7 @@ export const movementsTableHeads: TableHead[] = [
     ),
   },
   {
-    title: 'Primalac',
+    title: 'Korisnik sredstva',
     accessor: 'target_user_profile',
     type: 'custom',
     renderContents: target_user_profile => <Typography variant="bodyMedium" content={target_user_profile?.title} />,

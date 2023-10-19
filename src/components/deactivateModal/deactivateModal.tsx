@@ -7,20 +7,19 @@ interface DeactivateModalProps {
   onClose: () => void;
   onDeactivate: (data: DeactivationModalForm) => void;
   id?: number;
+  loading?: boolean;
 }
 
 interface DeactivationModalForm {
   //todo check if string
-  reason: DropdownDataString;
   description: string;
 }
 
-const DeactivateModal = ({onClose, onDeactivate}: DeactivateModalProps) => {
+const DeactivateModal = ({onClose, onDeactivate, loading}: DeactivateModalProps) => {
   const {
     register,
     handleSubmit,
     formState: {errors},
-    control,
   } = useForm<DeactivationModalForm>();
 
   return (
@@ -32,24 +31,9 @@ const DeactivateModal = ({onClose, onDeactivate}: DeactivateModalProps) => {
       rightButtonOnClick={handleSubmit(onDeactivate)}
       rightButtonText="Deaktiviraj"
       leftButtonText="Otkaži"
-      buttonLoading={true}
+      buttonLoading={loading}
       content={
         <DeactivationForm>
-          <Controller
-            name="reason"
-            control={control}
-            rules={{required: 'Ovo polje je obavezno'}}
-            render={({field: {name, value, onChange}}) => (
-              <Dropdown
-                name={name}
-                value={value}
-                onChange={onChange}
-                options={[]}
-                label="RAZLOG DEAKTIVACIJE:"
-                error={errors.reason?.message}
-              />
-            )}
-          />
           <Input
             {...register('description', {required: 'Ovo polje je obavezno'})}
             label="OPIS:"

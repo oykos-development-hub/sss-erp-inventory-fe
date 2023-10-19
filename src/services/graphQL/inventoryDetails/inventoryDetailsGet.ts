@@ -35,6 +35,7 @@ const inventoryDetailsGet = `query BasicInventoryDetails($id: Int!) {
                 file_id
             }
             serial_number
+            status
             inventory_number
             title
             abbreviation

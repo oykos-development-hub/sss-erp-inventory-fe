@@ -72,10 +72,8 @@ export const movableInventoryTableHeads: TableHead[] = [
     renderContents: date => <Typography content={parseDate(date)} />,
   },
   {
-    title: 'Alokacija',
-    accessor: 'target_organization_unit',
-    type: 'custom',
-    renderContents: target_organization_unit => <Typography content={target_organization_unit?.title} />,
+    title: 'Status',
+    accessor: 'status',
   },
 ];
 
