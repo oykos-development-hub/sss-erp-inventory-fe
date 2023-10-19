@@ -39,7 +39,7 @@ const useInventoryDispatchOverview = ({
       setData(response?.basicInventoryDispatch_Overview);
       setLoading(false);
     } catch (err) {
-      console.log(err);
+      console.log('Error', err);
     }
   };
 
