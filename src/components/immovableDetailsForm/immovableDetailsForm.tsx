@@ -18,6 +18,7 @@ const ImmovableDetailsForm = ({context, data, refetch, inventoryId}: DetailsForm
     control,
     register,
     reset,
+    watch,
     formState: {errors},
   } = useForm<ImmovableDetailsFormProps>({defaultValues: initialValues});
 
@@ -28,6 +29,7 @@ const ImmovableDetailsForm = ({context, data, refetch, inventoryId}: DetailsForm
   const {mutate} = useInventoryInsert();
 
   const {data: depreciationTypes} = useGetSettings({entity: 'deprecation_types'});
+  const {limitation} = watch();
 
   useEffect(() => {
     if (data) {
@@ -38,7 +40,7 @@ const ImmovableDetailsForm = ({context, data, refetch, inventoryId}: DetailsForm
         type: ownershipTypeOptions.find(option => option.id === data?.real_estate?.type_id),
         land_serial_number: data.real_estate?.land_serial_number,
         property_document: data.real_estate?.property_document,
-        ownership_scope: rightPropertyOptions.find(option => option.id === data?.real_estate?.ownership_scope),
+        ownership_scope: data?.real_estate?.ownership_scope,
         ownership_investment_scope: data?.real_estate?.ownership_investment_scope,
         document: data.real_estate?.document,
         limitation: restrictionOptions.find(option => option.id === data?.real_estate?.limitation_id),
@@ -70,13 +72,13 @@ const ImmovableDetailsForm = ({context, data, refetch, inventoryId}: DetailsForm
           land_serial_number: values?.land_serial_number || '',
           estate_serial_number: '',
           ownership_type: '',
-          ownership_scope: values?.ownership_scope?.id || '',
+          ownership_scope: values?.ownership_scope || '',
           ownership_investment_scope: values?.ownership_investment_scope || '',
           limitations_description: values?.limitations_description || '',
           file_id: 0,
           type_id: values?.type?.id || '',
           property_document: values?.property_document || '',
-          limitation_id: values?.limitation?.id || '',
+          limitation_id: values?.limitation?.id || false,
           document: values?.document || '',
         },
         depreciation_type_id: values?.depreciation_type?.id || 0,
@@ -131,20 +133,10 @@ const ImmovableDetailsForm = ({context, data, refetch, inventoryId}: DetailsForm
           label="ISPRAVE O SVOJINI:"
         />
 
-        <Controller
-          name="ownership_scope"
-          rules={{required: 'Ovo polje je obavezno'}}
-          control={control}
-          render={({field: {name, value, onChange}}) => (
-            <Dropdown
-              name={name}
-              value={value}
-              onChange={onChange}
-              options={rightPropertyOptions}
-              error={errors.ownership_scope?.message}
-              label="OBIM PRAVA:"
-            />
-          )}
+        <Input
+          {...register('ownership_scope', {required: 'Ovo polje je obavezno'})}
+          label="OBIM PRAVA:"
+          error={errors.ownership_scope?.message}
         />
       </ImmovableDetailsInputWrapper>
       <ImmovableDetailsInputWrapper>
@@ -178,8 +170,9 @@ const ImmovableDetailsForm = ({context, data, refetch, inventoryId}: DetailsForm
         />
 
         <Input
-          {...register('limitations_description', {required: 'Ovo polje je obevezno'})}
+          {...register('limitations_description')}
           error={errors.limitations_description?.message}
+          disabled={!limitation?.id}
           label="OPIS TERETA OGRANIČENJA:"
         />
       </ImmovableDetailsInputWrapper>
@@ -203,8 +196,8 @@ const ImmovableDetailsForm = ({context, data, refetch, inventoryId}: DetailsForm
       </ImmovableDetailsInputWrapper>
 
       <ButtonWrapper>
-        <Button content="Back" onClick={() => navigate(-1)} />
-        <Button content="Save Changes" onClick={handleSubmit(onSubmit)} />
+        <Button content="Odustani" onClick={() => navigate(-1)} />
+        <Button content="Sačuvaj" onClick={handleSubmit(onSubmit)} />
       </ButtonWrapper>
     </ImmovableDetailsFormWrapper>
   );

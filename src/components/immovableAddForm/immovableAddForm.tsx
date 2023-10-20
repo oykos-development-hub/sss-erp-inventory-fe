@@ -17,6 +17,7 @@ const ImmovableAddForm = ({context}: {context: MicroserviceProps}) => {
     handleSubmit,
     control,
     reset,
+    watch,
     formState: {errors, isValid},
   } = useForm<ImmovableAddFormProps>({defaultValues: initialValues});
 
@@ -27,6 +28,8 @@ const ImmovableAddForm = ({context}: {context: MicroserviceProps}) => {
 
   const {options: amortizationGroupOptions} = useGetSettings({entity: 'deprecation_types'});
   const {mutate} = useInventoryInsert();
+
+  const {limitation} = watch();
 
   const myOrgUnitId = context.contextMain?.organization_unit.id ?? 0;
   //handlers
@@ -50,13 +53,13 @@ const ImmovableAddForm = ({context}: {context: MicroserviceProps}) => {
             land_serial_number: values?.land_serial_number || '',
             estate_serial_number: ' ',
             ownership_type: ' ',
-            ownership_scope: values?.ownership_scope?.id || '',
+            ownership_scope: values?.ownership_scope || '',
             ownership_investment_scope: values?.ownership_investment_scope || '',
             limitations_description: values?.limitations_description || '',
             file_id: 0,
             type_id: values?.type?.id || '',
             property_document: values?.property_document || '',
-            limitation_id: values?.limitation?.id || '',
+            limitation_id: values?.limitation?.id || false,
             document: values?.document || '',
             title: ' ',
           },
@@ -98,7 +101,7 @@ const ImmovableAddForm = ({context}: {context: MicroserviceProps}) => {
 
           <Input
             {...register('location', {required: 'Ovo polje je obavezno'})}
-            label="LOCATION:"
+            label="LOKACIJA:"
             error={errors.location?.message}
           />
 
@@ -123,45 +126,30 @@ const ImmovableAddForm = ({context}: {context: MicroserviceProps}) => {
         </FormRow>
 
         <FormRow>
-          <div style={{width: 'fit-content'}}>
-            <Controller
-              name="ownership_scope"
-              rules={{required: 'Ovo polje je obavezno'}}
-              control={control}
-              render={({field: {name, value, onChange}}) => (
-                <Dropdown
-                  name={name}
-                  value={value}
-                  onChange={onChange}
-                  options={rightPropertyOptions}
-                  label="OBIM PRAVA:"
-                  error={errors.ownership_scope?.message}
-                />
-              )}
-            />
-          </div>
-
+          <Input
+            {...register('ownership_scope', {required: 'Ovo polje je obavezno'})}
+            label="OBIM PRAVA:"
+            error={errors.ownership_scope?.message}
+          />
           <Input
             {...register('ownership_investment_scope', {required: 'Ovo polje je obavezno'})}
             label="OBIM PRAVA ZA IMOVINU STEČENU ZAJEDNIČKIM ULAGANJEM:"
             error={errors.ownership_investment_scope?.message}
           />
-        </FormRow>
-
-        <FormRow>
           <Input
             {...register('gross_price', {required: 'Ovo polje je obavezno'})}
             label="NABAVNA VRIJEDNOST:"
             error={errors.gross_price?.message}
             type="number"
           />
+        </FormRow>
 
+        <FormRow>
           <Input
             {...register('document', {required: 'Ovo polje je obavezno'})}
             label="LIST NEPOKRETNOSTI:"
             error={errors.document?.message}
           />
-
           <Controller
             name="limitation"
             rules={{required: 'Ovo polje je obavezno'}}
@@ -172,20 +160,18 @@ const ImmovableAddForm = ({context}: {context: MicroserviceProps}) => {
                 value={value}
                 onChange={onChange}
                 options={restrictionOptions}
-                label="TERETI OGRANIČENJA:"
+                label="TERETI I OGRANIČENJA:"
                 error={errors.limitation?.message}
               />
             )}
           />
 
           <Input
-            {...register('limitations_description', {required: 'Ovo polje je obavezno'})}
+            {...register('limitations_description')}
             label="OPIS TERETA OGRANIČENJA:"
+            disabled={!limitation?.id}
             error={errors.limitations_description?.message}
           />
-        </FormRow>
-
-        <FormRow>
           <Controller
             name="depreciation_type"
             rules={{required: 'Ovo polje je obavezno'}}
@@ -206,7 +192,7 @@ const ImmovableAddForm = ({context}: {context: MicroserviceProps}) => {
 
       <ButtonContainer>
         <Button content="Odustani" onClick={() => reset()} />
-        <Button content="Dodaj u inventar" onClick={handleSubmit(addButtonClick)} variant="primary" />
+        <Button content="Sačuvaj" onClick={handleSubmit(addButtonClick)} variant="primary" />
       </ButtonContainer>
     </Form>
   );

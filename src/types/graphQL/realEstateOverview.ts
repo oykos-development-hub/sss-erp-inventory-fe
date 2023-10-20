@@ -11,7 +11,7 @@ export interface RealEstate {
   limitations_description: string;
   file_id?: number;
   property_document: string;
-  limitation_id: string;
+  limitation_id: boolean;
   document: string;
   type_id: string;
 }

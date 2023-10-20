@@ -1,4 +1,4 @@
-import {DropdownDataString, DropdownDataNumber} from '../../types/dropdownData';
+import {DropdownDataString, DropdownDataNumber, DropdownDataBoolean} from '../../types/dropdownData';
 
 export interface ImmovableDetailsFormProps {
   inventoryId: number;
@@ -34,14 +34,14 @@ export interface ImmovableDetailsFormProps {
   land_serial_number: string;
   estate_serial_number: string;
   ownership_type: DropdownDataString | null;
-  ownership_scope: DropdownDataString | null;
+  ownership_scope?: string;
   ownership_investment_scope: string;
   limitations_description: string;
   file_id: number;
   type: DropdownDataString | null;
   property_document: string;
-  limitation: DropdownDataString | null;
-  limitation_id: string;
+  limitation: DropdownDataBoolean | null;
+  limitation_id: boolean;
   document: string;
   depreciation_rate: number;
 }

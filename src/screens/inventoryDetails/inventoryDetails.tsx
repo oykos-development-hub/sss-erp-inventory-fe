@@ -33,9 +33,9 @@ const InventoryDetails = ({context, type}: InventoryProps) => {
     );
 
     if (depreciationType) {
-      return 100 / Number(depreciationType.value);
+      return 100 / Number(depreciationType.value) + '%';
     } else {
-      return 0;
+      return 0 + '%';
     }
   };
 

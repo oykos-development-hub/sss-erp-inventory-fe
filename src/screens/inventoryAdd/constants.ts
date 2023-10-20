@@ -46,6 +46,6 @@ export const realEstateTypeOptions = [
 ];
 
 export const restrictionOptions = [
-  {id: 'hipoteka', title: 'Hipoteka'},
-  {id: 'sudski_spor', title: 'Sudski spor'},
+  {id: true, title: 'Da'},
+  {id: false, title: 'Ne'},
 ];

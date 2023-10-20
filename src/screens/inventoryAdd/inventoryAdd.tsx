@@ -227,7 +227,7 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
 
           <ButtonContainer>
             <Button content="Odustani" onClick={clearButtonClick} />
-            <Button content="Dodaj u inventar" onClick={handleSubmit(onSubmit)} variant="primary" />
+            <Button content="Sačuvaj" onClick={handleSubmit(onSubmit)} variant="primary" />
           </ButtonContainer>
         </>
       )}

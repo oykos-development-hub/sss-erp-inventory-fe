@@ -4,7 +4,7 @@ export const initialValues: ImmovableAddFormProps = {
   location: '',
   square_area: 0,
   land_serial_number: '',
-  ownership_scope: null,
+  ownership_scope: '',
   ownership_investment_scope: '',
   gross_price: 0,
   limitations_description: '',
@@ -13,5 +13,5 @@ export const initialValues: ImmovableAddFormProps = {
   property_document: '',
   limitation: null,
   document: '',
-  limitation_id: '',
+  limitation_id: false,
 };
