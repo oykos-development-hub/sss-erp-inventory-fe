@@ -1,5 +1,4 @@
 import {defineConfig, loadEnv} from 'vite';
-import react from '@vitejs/plugin-react';
 
 // https://vitejs.dev/config/
 export default ({mode}) => {
@@ -7,22 +6,7 @@ export default ({mode}) => {
 
   return defineConfig({
     base: '/',
-    plugins: [
-      react({
-        babel: {
-          plugins: [
-            [
-              'babel-plugin-styled-components',
-              {
-                displayName: true,
-                fileName: false,
-                namespace: 'inventory',
-              },
-            ],
-          ],
-        },
-      }),
-    ],
+    plugins: [],
     server: {
       port: process.env.VITE_PORT,
     },
