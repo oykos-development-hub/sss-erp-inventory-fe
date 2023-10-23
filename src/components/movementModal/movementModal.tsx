@@ -68,14 +68,11 @@ const MovementModal = ({
   });
 
   const {alert} = context;
-  const orgUnit = context.contextMain.organization_unit.title;
   const orgUnitId = context.contextMain.organization_unit.id;
 
   const {options: officeOptions} = useOrgUnitOfficesGet({page: 1, size: 1000, organization_unit_id: Number(orgUnitId)});
   const {options: locationOptions} = useOrganizationUnits(true);
   const {options: userOptions} = useUserProfiles({page: 1, size: 1000, organization_unit_id: orgUnitId});
-
-  const returnReversOption: DropdownDataString[] = [{id: orgUnit, title: orgUnit}];
 
   const {mutate, loading: isSaving} = useDispatchInsert();
 
@@ -88,9 +85,10 @@ const MovementModal = ({
         target_organization_unit_id: values.target_organization_unit_id?.id ?? 0,
         serial_number: '',
         office_id: values.office_id?.id ?? 0,
-        type: (values.transaction?.id as DispatchType) ?? '',
+        type: (values.transaction?.id as DispatchType) ?? DispatchType.return,
         dispatch_description: '',
         inventory_id: id,
+        inventory_type: 'movable',
         date: parseDateForBackend(values?.date),
       };
       try {
@@ -209,21 +207,7 @@ const MovementModal = ({
               )}
             />
           )}
-          {transactionType === 'return-revers' && (
-            <Controller
-              name="target_organization_unit_id.title"
-              control={control}
-              render={({field: {name}}) => (
-                <Dropdown
-                  name={name}
-                  options={returnReversOption}
-                  placeholder={orgUnit}
-                  label="LOKACIJA:"
-                  isDisabled={true}
-                />
-              )}
-            />
-          )}
+
           {transactionType === 'allocation' && (
             <Controller
               name="target_user_profile_id"
@@ -258,7 +242,7 @@ const MovementModal = ({
               )}
             />
           )}
-          {transactionType && (
+          {(transactionType || status == 'Zadužen') && (
             <Controller
               name="date"
               control={control}

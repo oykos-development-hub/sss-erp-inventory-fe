@@ -16,10 +16,12 @@ interface ReceiveInventoryModalProps {
   id?: number;
   context: MicroserviceProps;
   refetch: () => void;
+  targetOrgID?: number;
 }
 
-const ReceiveInventoryModal = ({onClose, id, context, refetch}: ReceiveInventoryModalProps) => {
+const ReceiveInventoryModal = ({onClose, id, context, refetch, targetOrgID}: ReceiveInventoryModalProps) => {
   const orgUnit = context.contextMain.organization_unit.title;
+  const orgUnitID = context.contextMain.organization_unit.id;
   const {alert} = context;
 
   const {data: response, loading} = useInventoryDispatchOverview({page: 0, size: PAGE_SIZE, id: id ?? 0});
@@ -61,9 +63,9 @@ const ReceiveInventoryModal = ({onClose, id, context, refetch}: ReceiveInventory
       open={true}
       onClose={onClose}
       title={`Revers broj: ${data?.id}`}
+      buttonLoading={isSaving || isRejectSaving}
       leftButtonOnClick={onReject}
       rightButtonOnClick={onAccept}
-      buttonLoading={isSaving || isRejectSaving}
       rightButtonText="Accept all"
       leftButtonText="Reject all"
       content={
@@ -80,7 +82,7 @@ const ReceiveInventoryModal = ({onClose, id, context, refetch}: ReceiveInventory
           <Table isLoading={loading} tableHeads={receiveModalTableHeads} data={data?.inventory ?? []} />
         </>
       }
-      customButtonsControls={data?.type === 'return-revers' ? <></> : undefined}
+      customButtonsControls={data?.type === 'return-revers' || targetOrgID != orgUnitID ? <></> : undefined}
     />
   );
 };

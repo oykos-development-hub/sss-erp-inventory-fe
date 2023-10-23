@@ -28,6 +28,7 @@ const InventoryDispatchList = ({
 }: InventoryDispatchList) => {
   const [receiveModal, setReceiveModal] = useState(false);
   const [currentId, setCurrentId] = useState<number>();
+  const [targetOrgID, setTargetOrgID] = useState<number>();
   const {options: locationOptions} = useOrganizationUnits();
 
   const receiveInventoryTableHeads: TableHead[] = [
@@ -67,6 +68,7 @@ const InventoryDispatchList = ({
   const onRowClick = (item: InventoryDispatch) => {
     if ((item.type === 'revers' || item.type === 'return-revers') && !item.is_accepted) {
       setCurrentId(item.id);
+      setTargetOrgID(item?.target_organization_unit?.id);
       setReceiveModal(true);
     }
   };
@@ -107,6 +109,7 @@ const InventoryDispatchList = ({
           refetch={refetch}
           context={context}
           id={currentId}
+          targetOrgID={targetOrgID}
           onClose={() => {
             setReceiveModal(false);
             setCurrentId(undefined);

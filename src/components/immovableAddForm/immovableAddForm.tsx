@@ -30,8 +30,6 @@ const ImmovableAddForm = ({context}: {context: MicroserviceProps}) => {
   const {mutate} = useInventoryInsert();
 
   const {limitation} = watch();
-
-  const myOrgUnitId = context.contextMain?.organization_unit.id ?? 0;
   //handlers
 
   const addButtonClick = async (values: ImmovableAddFormProps) => {
