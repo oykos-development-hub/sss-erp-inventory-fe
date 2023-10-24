@@ -66,17 +66,16 @@ const ReceiveInventoryModal = ({onClose, id, context, refetch, targetOrgID}: Rec
       buttonLoading={isSaving || isRejectSaving}
       leftButtonOnClick={onReject}
       rightButtonOnClick={onAccept}
-      rightButtonText="Accept all"
-      leftButtonText="Reject all"
+      rightButtonText="Prihvati"
+      leftButtonText="Odbij"
       content={
         <>
           {data?.type === 'revers' && (
             <>
               <Typography
                 variant="bodyMedium"
-                content={`Potvrđujem da sam od: ${data?.target_organization_unit.title}`}
+                content={`Organizaciona jedinica ${data?.source_organization_unit?.title} je kreirala revers. Da li želite prihvatiti sredstvo?`}
               />
-              <Typography variant="bodySmall" content={`Primio na potrebu za: ${orgUnit}`} />
             </>
           )}
           <Table isLoading={loading} tableHeads={receiveModalTableHeads} data={data?.inventory ?? []} />
