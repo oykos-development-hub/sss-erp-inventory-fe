@@ -47,7 +47,7 @@ export enum DispatchType {
 export const DispatchTypeTitles = {
   [DispatchType.revers]: 'Revers',
   [DispatchType.returnRevers]: 'Povrat reversa',
-  [DispatchType.allocation]: 'Premještaj',
+  [DispatchType.allocation]: 'Zaduženje',
   [DispatchType.return]: 'Povrat sredstava',
 };
 

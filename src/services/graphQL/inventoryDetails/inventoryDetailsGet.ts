@@ -108,7 +108,7 @@ const inventoryDetailsGet = `query BasicInventoryDetails($id: Int!) {
                 is_accepted
                 serial_number
                 dispatch_description
-                created_at
+                date
             }
             created_at
             updated_at

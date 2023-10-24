@@ -60,7 +60,7 @@ export const movementsTableHeads: TableHead[] = [
   },
   {
     title: 'Datum',
-    accessor: 'created_at',
+    accessor: 'date',
     type: 'custom',
     renderContents: date => <Typography variant="bodyMedium" content={date ? parseDate(date) : ''} />,
   },
