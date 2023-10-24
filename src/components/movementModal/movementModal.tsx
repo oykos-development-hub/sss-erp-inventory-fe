@@ -250,7 +250,9 @@ const MovementModal = ({
               render={({field: {name, value, onChange}}) => (
                 <Datepicker
                   onChange={onChange}
-                  label="DATUM ZADUŽENJA:"
+                  label={`DATUM ${
+                    status == 'Zadužen' ? 'RAZDUŽENJA' : transactionType === 'revers' ? 'REVERSA' : 'ZADUŽENJA'
+                  }:`}
                   name={name}
                   value={value ? parseDate(value) : ''}
                   error={errors.date?.message}

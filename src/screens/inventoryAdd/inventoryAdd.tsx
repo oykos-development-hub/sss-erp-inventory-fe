@@ -9,7 +9,6 @@ import useInventoryInsert from '../../services/graphQL/inventoryInsert/useInvent
 import {InventoryProps} from '../../types/inventoryProps';
 import {parseDateForBackend} from '../../utils/dateUtils';
 import {newTableItem, tableHeads} from './constants';
-import {mockTableData} from './mockData';
 import {ButtonContainer, StyledTable} from './styles';
 import {DropdownName, InputName, TableItemValues, TableValues, valuesType} from './types';
 
@@ -41,56 +40,61 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
   const {options: classOptions} = useGetSettings({entity: 'inventory_class_type'});
   const {mutate} = useInventoryInsert();
 
-  const updatedTableHeads = tableHeads.map((head: TableHead) => {
-    const isDisabled = (head.accessor === 'title' || head.accessor === 'gross_price') && isOrderListSelected;
-    const options = head.accessor === 'class_type' ? classOptions : amortizationGroupOptions;
+  const updatedTableHeads = tableHeads
+    .filter(item => {
+      if (type === 'small' && item.accessor === 'depreciation_type') return false;
+      return true;
+    })
+    .map((head: TableHead) => {
+      const isDisabled = (head.accessor === 'title' || head.accessor === 'gross_price') && isOrderListSelected;
+      const options = head.accessor === 'class_type' ? classOptions : amortizationGroupOptions;
 
-    if (head.type === 'custom') {
-      if (head.accessor === 'class_type' || head.accessor === 'depreciation_type') {
-        return {
-          ...head,
-          renderContents: (_: any, __: any, index: any) => {
-            return (
-              <Controller
-                name={`items.${index}.${head.accessor}` as DropdownName}
-                rules={{required: 'Ovo polje je obavezno'}}
-                control={control}
-                render={({field: {name, value, onChange}}) => (
-                  <Dropdown
-                    name={name}
-                    value={value}
-                    onChange={onChange}
-                    options={options}
-                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                    // @ts-ignore
-                    error={errors?.items?.[index]?.[`${head.accessor}`]?.message}
-                  />
-                )}
-              />
-            );
-          },
-        } as TableHead;
-      } else {
-        return {
-          ...head,
-          renderContents: (_: any, __: any, index: any) => {
-            return (
-              <Input
-                type={head.accessor === 'gross_price' ? 'number' : 'text'}
-                {...register(`items.${index}.${head.accessor}` as InputName, {
-                  required: head.accessor !== 'description' ? 'Ovo polje je obavezno' : false,
-                })}
-                disabled={isDisabled}
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
-                error={errors?.items?.[index]?.[`${head.accessor}`]?.message}
-              />
-            );
-          },
-        } as TableHead;
-      }
-    } else return head;
-  });
+      if (head.type === 'custom') {
+        if (head.accessor === 'class_type' || head.accessor === 'depreciation_type') {
+          return {
+            ...head,
+            renderContents: (_: any, __: any, index: any) => {
+              return (
+                <Controller
+                  name={`items.${index}.${head.accessor}` as DropdownName}
+                  rules={{required: 'Ovo polje je obavezno'}}
+                  control={control}
+                  render={({field: {name, value, onChange}}) => (
+                    <Dropdown
+                      name={name}
+                      value={value}
+                      onChange={onChange}
+                      options={options}
+                      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                      // @ts-ignore
+                      error={errors?.items?.[index]?.[`${head.accessor}`]?.message}
+                    />
+                  )}
+                />
+              );
+            },
+          } as TableHead;
+        } else {
+          return {
+            ...head,
+            renderContents: (_: any, __: any, index: any) => {
+              return (
+                <Input
+                  type={head.accessor === 'gross_price' ? 'number' : 'text'}
+                  {...register(`items.${index}.${head.accessor}` as InputName, {
+                    required: head.accessor !== 'description' ? 'Ovo polje je obavezno' : false,
+                  })}
+                  disabled={isDisabled}
+                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                  // @ts-ignore
+                  error={errors?.items?.[index]?.[`${head.accessor}`]?.message}
+                />
+              );
+            },
+          } as TableHead;
+        }
+      } else return head;
+    });
 
   // handlers:
 

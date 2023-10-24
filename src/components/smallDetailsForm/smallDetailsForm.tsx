@@ -98,19 +98,40 @@ const SmallDetailsForm = ({context, data, inventoryType, refetch, inventoryId}: 
   return (
     <SmallDetailsFormWrapper>
       <SmallDetailsInputWrapper>
+        <Input
+          {...register('title', {required: 'Ovo polje je obavezno'})}
+          error={errors.title?.message}
+          label="NAZIV:"
+        />
         <Controller
-          name="source"
+          name="supplier"
           control={control}
           render={({field: {name, value, onChange}}) => (
-            <Dropdown
+            <LocationDropdown name={name} value={value} onChange={onChange} options={suppliers} label="DOBAVLJAČ" />
+          )}
+        />
+        <Input {...register('gross_price')} label="CIJENA:" disabled={true} />
+        <Controller
+          name="office"
+          control={control}
+          render={({field: {name, value, onChange}}) => (
+            <SupplierDropdown
               name={name}
               value={value}
               onChange={onChange}
-              options={inventorySourceOptions}
-              label="IZVOR SREDSTAVA:"
+              options={[]}
+              isDisabled={true}
+              label="LOKACIJA:"
             />
           )}
         />
+        {/* 
+       
+       
+
+         */}
+      </SmallDetailsInputWrapper>
+      <SmallDetailsInputWrapper>
         <Input
           {...register('invoice_number', {required: 'Ovo polje je obavezno'})}
           type="number"
@@ -130,7 +151,19 @@ const SmallDetailsForm = ({context, data, inventoryType, refetch, inventoryId}: 
             />
           )}
         />
-
+        <Controller
+          name="source"
+          control={control}
+          render={({field: {name, value, onChange}}) => (
+            <Dropdown
+              name={name}
+              value={value}
+              onChange={onChange}
+              options={inventorySourceOptions}
+              label="IZVOR SREDSTAVA:"
+            />
+          )}
+        />
         <Controller
           name="class_type"
           control={control}
@@ -147,12 +180,6 @@ const SmallDetailsForm = ({context, data, inventoryType, refetch, inventoryId}: 
         />
       </SmallDetailsInputWrapper>
       <SmallDetailsInputWrapper>
-        <Input
-          {...register('title', {required: 'Ovo polje je obavezno'})}
-          error={errors.title?.message}
-          label="NAZIV:"
-        />
-        <Input {...register('gross_price')} label="CIJENA:" disabled={true} />
         <Controller
           name="unit"
           control={control}
@@ -166,37 +193,14 @@ const SmallDetailsForm = ({context, data, inventoryType, refetch, inventoryId}: 
           error={errors.amount?.message}
           label="KOLIČINA:"
         />
-      </SmallDetailsInputWrapper>
-      <SmallDetailsInputWrapper>
         <SupplierLocationDescriptionWrapper>
-          <Controller
-            name="supplier"
-            control={control}
-            render={({field: {name, value, onChange}}) => (
-              <LocationDropdown name={name} value={value} onChange={onChange} options={suppliers} label="DOBAVLJAČ" />
-            )}
-          />
-          <Controller
-            name="office"
-            control={control}
-            render={({field: {name, value, onChange}}) => (
-              <SupplierDropdown
-                name={name}
-                value={value}
-                onChange={onChange}
-                options={[]}
-                isDisabled={true}
-                label="LOKACIJA:"
-              />
-            )}
-          />
           <DescriptionInput {...register('description')} label="NAPOMENA:" />
         </SupplierLocationDescriptionWrapper>
       </SmallDetailsInputWrapper>
 
       <ButtonWrapper>
-        <Button content="Back" onClick={() => navigate(-1)} />
-        <Button content="Save Changes" onClick={handleSubmit(onSubmit)} />
+        <Button content="Nazad" onClick={() => navigate(-1)} />
+        <Button content="Sačuvaj" onClick={handleSubmit(onSubmit)} />
       </ButtonWrapper>
     </SmallDetailsFormWrapper>
   );
