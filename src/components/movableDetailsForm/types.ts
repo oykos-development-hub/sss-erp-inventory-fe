@@ -18,6 +18,7 @@ export interface MovableDetailsFormProps {
   unit: string;
   amount: number;
   net_price: number;
+  purchase_gross_price?: number;
   gross_price: number;
   description: string;
   date_of_purchase: string;

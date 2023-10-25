@@ -1,19 +1,17 @@
+import {Datepicker, Dropdown, Input, Tooltip} from 'client-library';
 import {Controller, useFormContext} from 'react-hook-form';
-import {Form, FieldsContainer, FormRow} from '../../shared/formStyles';
-import {parseDate} from '../../utils/dateUtils';
-import PlusButton from '../../shared/plusButton';
-import {Dropdown, Input, Datepicker} from 'client-library';
-import {DropdownDataNumber, DropdownDataString} from '../../types/dropdownData';
-import {AddInventoryFormProps} from '../../screens/inventoryAdd/types';
-import {MovableAddFormProps} from './types';
-import {mockMovableFormData} from '../../screens/inventoryAdd/mockData';
-import useOrgUnitOfficesGet from '../../services/graphQL/organizationUnitOffices/useOrganizationUnitOfficesGet';
 import {inventorySourceOptions} from '../../screens/inventoryAdd/constants';
-import {Tooltip} from 'client-library';
-import {TooltipWrapper} from './styles';
+import {AddInventoryFormProps} from '../../screens/inventoryAdd/types';
 import useGetOrderList from '../../services/graphQL/getOrderList/useGetOrderList';
-import {useDebounce} from '../../utils/useDebounce';
 import useSuppliersOverview from '../../services/graphQL/getSuppliers/useGetSuppliers';
+import useOrgUnitOfficesGet from '../../services/graphQL/organizationUnitOffices/useOrganizationUnitOfficesGet';
+import {FieldsContainer, Form, FormRow} from '../../shared/formStyles';
+import PlusButton from '../../shared/plusButton';
+import {DropdownDataNumber} from '../../types/dropdownData';
+import {parseDate} from '../../utils/dateUtils';
+import {TooltipWrapper} from './styles';
+import {MovableAddFormProps} from './types';
+import {useEffect} from 'react';
 
 const MovableAddForm = ({onFormSubmit, context}: AddInventoryFormProps) => {
   const {
@@ -35,24 +33,41 @@ const MovableAddForm = ({onFormSubmit, context}: AddInventoryFormProps) => {
     size: 1000,
     organization_unit_id: Number(orgUnitId),
   });
+  useEffect(() => {
+    setValue('order_list', {id: 0, title: 'Bez narudžbenice'});
+  }, []);
   const {orders, orderListOptions} = useGetOrderList({page: 1, size: 1000});
 
   const {suppliers} = useSuppliersOverview();
 
   const handleOrderListChange = (selectedOrderList: DropdownDataNumber) => {
-    // When order list is selected:
-    // reset the form
-    reset();
     // set source to 'budzet'
     setValue('order_list', selectedOrderList);
-    setValue('source', {id: 'budzet', title: 'Budžet'});
-    // fill some of the fields
-    const order = orders.find(item => item.id === selectedOrderList.id);
-    const updatedData = {...mockMovableFormData, order_list: selectedOrderList, articles: order?.articles || []};
-    Object.keys(updatedData).forEach(key => {
-      setValue(key as keyof typeof updatedData, updatedData[key as keyof typeof updatedData]);
-    });
-    onFormSubmit(updatedData);
+
+    if (selectedOrderList.id === 0) {
+      const updatedData = {order_list: {id: 0, title: 'Bez narudžbenice'}, articles: []};
+      Object.keys(updatedData).forEach(key => {
+        setValue(key as keyof typeof updatedData, updatedData[key as keyof typeof updatedData]);
+      });
+      onFormSubmit(updatedData);
+    }
+    if (selectedOrderList.id > 0) {
+      // When order list is selected:
+      // reset the form
+      reset();
+      setValue('source', {id: 'budzet', title: 'Budžet'});
+      // fill some of the fields
+      const order = orders.find(item => item.id === selectedOrderList.id);
+      const updatedData = {
+        order_list: selectedOrderList,
+        articles: order?.articles || [],
+        supplier: order?.supplier || {id: 0, title: ''},
+      };
+      Object.keys(updatedData).forEach(key => {
+        setValue(key as keyof typeof updatedData, updatedData[key as keyof typeof updatedData]);
+      });
+      onFormSubmit(updatedData);
+    }
   };
   return (
     <Form>
@@ -100,7 +115,7 @@ const MovableAddForm = ({onFormSubmit, context}: AddInventoryFormProps) => {
                 options={inventorySourceOptions}
                 placeholder=""
                 label="IZVOR SREDSTAVA:"
-                isDisabled={!!selectedOrderList}
+                isDisabled={!!selectedOrderList && selectedOrderList.id !== 0}
                 error={errors.source?.message}
               />
             )}
@@ -117,7 +132,7 @@ const MovableAddForm = ({onFormSubmit, context}: AddInventoryFormProps) => {
                 options={suppliers}
                 placeholder=""
                 label="DOBAVLJAČ:"
-                isDisabled={!!selectedOrderList}
+                isDisabled={!!selectedOrderList && selectedOrderList.id !== 0}
                 error={errors.supplier?.message}
               />
             )}
@@ -154,7 +169,10 @@ const MovableAddForm = ({onFormSubmit, context}: AddInventoryFormProps) => {
             variant="filled"
             position="topLeft"
             content={'Funkcionalnost je onemogućena zbog odabira narudžbenice.'}>
-            <PlusButton onClick={handleSubmit(onSubmit)} disabled={!!selectedOrderList} />
+            <PlusButton
+              onClick={handleSubmit(onSubmit)}
+              disabled={!!selectedOrderList && selectedOrderList?.id !== 0}
+            />
           </Tooltip>
         </TooltipWrapper>
       ) : (

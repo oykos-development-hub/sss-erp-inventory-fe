@@ -131,12 +131,11 @@ const MovableDetailsForm = ({data, context, inventoryType, refetch, inventoryId}
       </InputWrapper>
 
       <InputWrapper>
-        <Input {...register('gross_price')} type="number" label="CIJENA:" disabled={true} />
+        <Input {...register('purchase_gross_price')} type="number" label="NABAVNA CIJENA:" disabled={true} />
+        <Input {...register('gross_price')} type="number" label="TRENUTNA CIJENA:" disabled={true} />
         <Input {...register('lifetime_of_assessment_in_months')} label="VIJEK TRAJANJA:" disabled={true} />
         <Input {...register('depreciation_rate')} label="AMORTIZACIONA STOPA:" disabled={true} />
         <Input {...register('amortization_value')} label="VRIJEDNOST AMORTIZACIJE:" disabled={true} />
-
-        <Input {...register('description')} label="NAPOMENA:" />
       </InputWrapper>
 
       <InputWrapper>
@@ -169,6 +168,8 @@ const MovableDetailsForm = ({data, context, inventoryType, refetch, inventoryId}
             />
           )}
         />
+
+        <Input {...register('description')} label="NAPOMENA:" />
       </InputWrapper>
 
       <ButtonWrapper>

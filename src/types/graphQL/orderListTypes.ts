@@ -1,4 +1,4 @@
-import {DropdownDataString} from '../dropdownData';
+import {DropdownDataNumber, DropdownDataString} from '../dropdownData';
 import {SimpleResponse, OverviewResponse} from './response';
 
 export interface OrderListItem {
@@ -7,7 +7,7 @@ export interface OrderListItem {
   total_price?: number;
   total_neto: number;
   public_procurement?: DropdownDataString;
-  supplier?: DropdownDataString;
+  supplier?: DropdownDataNumber;
   status?: string;
   articles?: OrderListArticleType[];
   invoice_date?: string;

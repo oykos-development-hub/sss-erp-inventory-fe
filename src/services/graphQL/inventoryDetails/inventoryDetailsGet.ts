@@ -52,6 +52,7 @@ const inventoryDetailsGet = `query BasicInventoryDetails($id: Int!) {
             unit
             amount
             net_price
+            purchase_gross_price
             gross_price
             description
             date_of_purchase

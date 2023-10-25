@@ -200,7 +200,7 @@ const InventoryList = ({
     return (
       row.source_type?.includes('1') &&
       row.organization_unit?.id !== row.target_organization_unit?.id &&
-      row.target_organization_unit !== null
+      row.target_organization_unit?.id !== 0
     );
   };
 

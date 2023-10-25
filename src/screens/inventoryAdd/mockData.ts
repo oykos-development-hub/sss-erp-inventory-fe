@@ -22,8 +22,3 @@ export const mockTableData: TableItemValues[] = [
     description: '',
   },
 ];
-
-export const mockMovableFormData = {
-  supplier: {id: 1, title: 'Supplier'},
-  date_of_purchase: '11.11.1111',
-};
