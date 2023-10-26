@@ -71,6 +71,7 @@ const inventoryOverview = `query BasicInventoryOverview(
                 title
             }
             gross_price
+            purchase_gross_price
             date_of_purchase
             source
             status

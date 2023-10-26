@@ -45,7 +45,8 @@ const MovableAddForm = ({onFormSubmit, context}: AddInventoryFormProps) => {
     setValue('order_list', selectedOrderList);
 
     if (selectedOrderList.id === 0) {
-      const updatedData = {order_list: {id: 0, title: 'Bez narudžbenice'}, articles: []};
+      reset();
+      const updatedData = {order_list: {id: 0, title: 'Bez narudžbenice'}, articles: null};
       Object.keys(updatedData).forEach(key => {
         setValue(key as keyof typeof updatedData, updatedData[key as keyof typeof updatedData]);
       });
@@ -162,7 +163,7 @@ const MovableAddForm = ({onFormSubmit, context}: AddInventoryFormProps) => {
           />
         </FormRow>
       </FieldsContainer>
-      {selectedOrderList ? (
+      {selectedOrderList && selectedOrderList.id !== 0 ? (
         <TooltipWrapper>
           <Tooltip
             style={{width: '200px'}}
@@ -176,7 +177,7 @@ const MovableAddForm = ({onFormSubmit, context}: AddInventoryFormProps) => {
           </Tooltip>
         </TooltipWrapper>
       ) : (
-        <PlusButton onClick={handleSubmit(onSubmit)} disabled={!!selectedOrderList} />
+        <PlusButton onClick={handleSubmit(onSubmit)} />
       )}
     </Form>
   );

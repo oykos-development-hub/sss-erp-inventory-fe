@@ -1,4 +1,4 @@
-import {Dropdown, Modal, Datepicker} from 'client-library';
+import {Dropdown, Modal, Datepicker, Table} from 'client-library';
 import {useEffect, useMemo, useState} from 'react';
 import {Controller, useForm} from 'react-hook-form';
 import useDispatchInsert from '../../services/graphQL/dispatchInsert/useDispatchInsert';
@@ -13,6 +13,7 @@ import {MovementForm} from './styles';
 import {InventoryTypeEnum} from '../../types/inventoryType';
 import {immovableTransactionOptions, movableTransactionOptions, smallTransactionOptions} from './constants';
 import {parseDate, parseDateForBackend} from '../../utils/dateUtils';
+import {receiveModalTableHeads} from '../receiveInventoryModal/constants';
 
 interface MovementModalProps {
   context: MicroserviceProps;
@@ -95,7 +96,7 @@ const MovementModal = ({
         const successTypeString =
           initialDispatchType === 'revers' ? 'revers' : initialDispatchType === 'allocation' ? 'kretanje' : 'povrat';
         const errorTypeString =
-          initialDispatchType === 'revers' ? 'reversa' : initialDispatchType === 'allocation' ? 'kretanja' : 'povrata';
+          initialDispatchType === 'revers' ? 'revers' : initialDispatchType === 'allocation' ? 'kretanja' : 'povrata';
 
         mutate(
           data,
@@ -260,6 +261,8 @@ const MovementModal = ({
               )}
             />
           )}
+
+          {/* {transactionType === 'revers' && <Table tableHeads={receiveModalTableHeads} data={[]} />} */}
         </MovementForm>
       }
     />

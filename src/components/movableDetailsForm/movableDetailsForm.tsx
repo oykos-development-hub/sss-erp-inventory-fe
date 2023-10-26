@@ -1,14 +1,14 @@
-import {Button, Input, Dropdown} from 'client-library';
+import {Button, Dropdown, Input} from 'client-library';
 import {useEffect} from 'react';
 import {Controller, useForm} from 'react-hook-form';
 import {DetailsFormProps} from '../../screens/inventoryDetails/types';
+import useSuppliersOverview from '../../services/graphQL/getSuppliers/useGetSuppliers';
 import useInventoryInsert from '../../services/graphQL/inventoryInsert/useInventoryInsert';
-import {parseDate, parseDateForBackend} from '../../utils/dateUtils';
+import {InventoryInsertData} from '../../types/graphQL/inventoryOverview';
+import {parseDateForBackend} from '../../utils/dateUtils';
 import {initialValues, optionsOne, optionsThree, optionsTwo} from './constants';
 import {ButtonWrapper, FormWrapper, InputWrapper, OfficeDropdown, SupplierDropdown} from './style';
 import {MovableDetailsFormProps} from './types';
-import {InventoryInsertData} from '../../types/graphQL/inventoryOverview';
-import useSuppliersOverview from '../../services/graphQL/getSuppliers/useGetSuppliers';
 
 const MovableDetailsForm = ({data, context, inventoryType, refetch, inventoryId}: DetailsFormProps) => {
   const {

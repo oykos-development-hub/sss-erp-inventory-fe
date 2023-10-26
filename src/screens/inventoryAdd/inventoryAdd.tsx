@@ -157,7 +157,7 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
 
   const handleFormSubmit = (values: valuesType) => {
     if (!isImmovable) {
-      if (values && 'order_list' in values && values.order_list) {
+      if (values && 'order_list' in values && values.order_list && values.order_list.id !== 0) {
         remove(); // clear table
         setIsOrderListSelected(true);
         const articles: TableItemValues[] =
@@ -172,6 +172,9 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
             description: '',
           })) || [];
         append(articles); // should append data from selected order_list
+      } else if (!values?.invoice_number) {
+        remove();
+        setIsOrderListSelected(false);
       } else append(newTableItem);
     }
   };

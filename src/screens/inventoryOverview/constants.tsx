@@ -61,10 +61,17 @@ export const movableInventoryTableHeads: TableHead[] = [
     title: 'Lokacija',
     accessor: 'office',
     type: 'custom',
-    renderContents: office => <Typography content={office?.title} />,
+    renderContents: (_: any, item: InventoryItem) => {
+      const title =
+        item.status === 'Revers' && item?.target_organization_unit
+          ? item?.target_organization_unit?.title
+          : item.office.title;
+      return <Typography content={title} />;
+    },
   },
   {title: 'Inv. broj', accessor: 'inventory_number'},
-  {title: 'Cijena', accessor: 'gross_price'},
+  {title: 'Nabavna Cijena', accessor: 'purchase_gross_price'},
+  {title: 'Trenutna Cijena', accessor: 'gross_price'},
   {
     title: 'Datum nabavke',
     accessor: 'date_of_purchase',
