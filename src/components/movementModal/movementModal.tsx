@@ -1,4 +1,4 @@
-import {Dropdown, Modal, Datepicker, Table} from 'client-library';
+import {Datepicker, Dropdown, Modal} from 'client-library';
 import {useEffect, useMemo, useState} from 'react';
 import {Controller, useForm} from 'react-hook-form';
 import useDispatchInsert from '../../services/graphQL/dispatchInsert/useDispatchInsert';
@@ -8,12 +8,12 @@ import useUserProfiles from '../../services/graphQL/userProfileOverview/useUserP
 import {DropdownDataNumber, DropdownDataString} from '../../types/dropdownData';
 import {DispatchType} from '../../types/graphQL/inventoryDispatch';
 import {InventoryItem, SourceType} from '../../types/graphQL/inventoryOverview';
-import {MicroserviceProps} from '../../types/micro-service-props';
-import {MovementForm} from './styles';
 import {InventoryTypeEnum} from '../../types/inventoryType';
-import {immovableTransactionOptions, movableTransactionOptions, smallTransactionOptions} from './constants';
+import {MicroserviceProps} from '../../types/micro-service-props';
 import {parseDate, parseDateForBackend} from '../../utils/dateUtils';
-import {receiveModalTableHeads} from '../receiveInventoryModal/constants';
+import {immovableTransactionOptions, movableTransactionOptions, smallTransactionOptions} from './constants';
+import {MovementForm} from './styles';
+import ReceiveInventoryModal from '../receiveInventoryModal/receiveInventoryModal';
 
 interface MovementModalProps {
   context: MicroserviceProps;
@@ -26,6 +26,7 @@ interface MovementModalProps {
   inventoryType: InventoryTypeEnum | `${InventoryTypeEnum}`;
   currentItem?: InventoryItem;
   status: string;
+  openReceiveModal?: (id: number) => void;
 }
 
 const initialFormData: MovementModalForm = {
@@ -57,6 +58,7 @@ const MovementModal = ({
   inventoryType,
   currentItem,
   status,
+  openReceiveModal,
 }: MovementModalProps) => {
   const {
     handleSubmit,
@@ -100,9 +102,10 @@ const MovementModal = ({
 
         mutate(
           data,
-          () => {
+          id => {
             alert.success(`Uspješno ste izvršili ${successTypeString}`);
             onClose(initialDispatchType === 'revers');
+            openReceiveModal && openReceiveModal(id);
             refetch();
           },
           () => {
@@ -261,8 +264,6 @@ const MovementModal = ({
               )}
             />
           )}
-
-          {/* {transactionType === 'revers' && <Table tableHeads={receiveModalTableHeads} data={[]} />} */}
         </MovementForm>
       }
     />

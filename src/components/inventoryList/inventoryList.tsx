@@ -19,6 +19,7 @@ import DeactivateModal from '../deactivateModal/deactivateModal';
 import MovementModal from '../movementModal/movementModal';
 import {FilterDropdown, FilterInput, Filters, ReversButtonContainer} from './styles';
 import useInventoryDeactivate from '../../services/graphQL/inventoryDeactivate/useInventoryDeactivate';
+import ReceiveInventoryModal from '../receiveInventoryModal/receiveInventoryModal';
 
 interface InventoryListProps {
   context: MicroserviceProps;
@@ -50,6 +51,8 @@ const InventoryList = ({
   const [currentItem, setCurrentItem] = useState<InventoryItem>();
   const [sourceType, setSourceType] = useState<SourceType | `${SourceType}`>();
   const [returnOrgUnitId, setReturnOrgUnitId] = useState<number>();
+  const [receiveModal, setReceiveModal] = useState(false);
+  const [currentId, setCurrentId] = useState<number>();
   const prevStateRef = useRef<number[]>(selectedRows);
   const orgUnitId = context?.contextMain?.organization_unit?.id;
 
@@ -327,10 +330,27 @@ const InventoryList = ({
           inventoryType={type}
           currentItem={currentItem}
           status={currentItem?.status || ''}
+          openReceiveModal={id => {
+            setCurrentId(id);
+            setReceiveModal(true);
+          }}
         />
       )}
       {estimationModal && (
         <AssessmentModal context={context} onClose={() => setEstimationModal(false)} id={currentInventoryId[0]} />
+      )}
+
+      {receiveModal && currentId && (
+        <ReceiveInventoryModal
+          refetch={refetch}
+          context={context}
+          id={currentId}
+          targetOrgID={0}
+          onClose={() => {
+            setReceiveModal(false);
+            setCurrentId(undefined);
+          }}
+        />
       )}
     </div>
   );

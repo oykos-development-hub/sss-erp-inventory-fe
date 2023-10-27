@@ -16,10 +16,13 @@ import MovementModal from '../../components/movementModal/movementModal';
 import {InventoryAssessment} from '../../types/graphQL/inventoryAssessment';
 import {SettingsDropdownOverview} from '../../types/graphQL/classTypes';
 import useGetSettings from '../../services/graphQL/getSettings/useGetSettings';
+import ReceiveInventoryModal from '../../components/receiveInventoryModal/receiveInventoryModal';
 
 const InventoryDetails = ({context, type}: InventoryProps) => {
   const [assessmentModal, setAssessmentModal] = useState(false);
   const [movementModal, setMovementModal] = useState(false);
+  const [receiveModal, setReceiveModal] = useState(false);
+  const [currentId, setCurrentId] = useState<number>();
 
   const {data: depreciationTypes} = useGetSettings({entity: 'deprecation_types'});
 
@@ -151,6 +154,22 @@ const InventoryDetails = ({context, type}: InventoryProps) => {
               sourceType={data?.items.source_type}
               inventoryType={type}
               status={data?.items?.status || ''}
+              openReceiveModal={id => {
+                setCurrentId(id);
+                setReceiveModal(true);
+              }}
+            />
+          )}
+          {receiveModal && currentId && (
+            <ReceiveInventoryModal
+              refetch={refetch}
+              context={context}
+              id={currentId}
+              targetOrgID={0}
+              onClose={() => {
+                setReceiveModal(false);
+                setCurrentId(undefined);
+              }}
             />
           )}
         </InventoryDetailsWrapper>

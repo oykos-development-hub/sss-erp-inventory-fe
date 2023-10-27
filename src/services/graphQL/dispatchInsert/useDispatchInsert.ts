@@ -7,11 +7,15 @@ const useDispatchInsert = () => {
   const [loading, setLoading] = useState(false);
   const {fetch} = useAppContext();
 
-  const insertDispatch = async (data: InventoryDispatchData, onSuccess?: () => void, onError?: () => void) => {
+  const insertDispatch = async (
+    data: InventoryDispatchData,
+    onSuccess?: (id: number) => void,
+    onError?: () => void,
+  ) => {
     setLoading(true);
     const response = await fetch(GraphQL.dispatchInsert, {data});
     if (response.basicInventoryDispatch_Insert.status === 'success') {
-      onSuccess && onSuccess();
+      onSuccess && onSuccess(response?.basicInventoryDispatch_Insert?.item?.id);
     } else {
       onError && onError();
     }
