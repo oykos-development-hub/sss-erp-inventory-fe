@@ -44,6 +44,14 @@ const inventoryDetailsGet = `query BasicInventoryDetails($id: Int!) {
                 id
                 title
             }
+            organization_unit {
+                id
+                title
+            }
+            target_organization_unit {
+                id
+                title
+            }
             location
             target_user_profile {
                 id

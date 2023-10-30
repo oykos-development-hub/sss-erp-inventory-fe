@@ -10,7 +10,7 @@ const useInventoryInsert = () => {
   const insertInventory = async (data: InventoryInsertData[], onSuccess?: () => void, onError?: () => void) => {
     setLoading(true);
     const response = await fetch(GraphQL.inventoryInsert, {data});
-    if (response.basicInventory_Insert.status === 'success') {
+    if (response?.basicInventory_Insert?.status === 'success') {
       onSuccess && onSuccess();
     } else {
       onError && onError();

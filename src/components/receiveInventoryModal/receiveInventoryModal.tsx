@@ -17,10 +17,17 @@ interface ReceiveInventoryModalProps {
   context: MicroserviceProps;
   refetch: () => void;
   targetOrgID?: number;
+  createRevers?: boolean;
 }
 
-const ReceiveInventoryModal = ({onClose, id, context, refetch, targetOrgID}: ReceiveInventoryModalProps) => {
-  const orgUnit = context.contextMain.organization_unit.title;
+const ReceiveInventoryModal = ({
+  onClose,
+  id,
+  context,
+  refetch,
+  targetOrgID,
+  createRevers,
+}: ReceiveInventoryModalProps) => {
   const orgUnitID = context.contextMain.organization_unit.id;
   const {alert} = context;
 
@@ -31,17 +38,21 @@ const ReceiveInventoryModal = ({onClose, id, context, refetch, targetOrgID}: Rec
   const {mutate: rejectDispatch, loading: isRejectSaving} = UseDispatchDelete();
 
   const onAccept = async () => {
-    await acceptDispatch(
-      data.id,
-      () => {
-        alert.success('Uspešno ste prihvatili revers');
-      },
-      () => {
-        alert.error('Došlo je do greške prilikom prihvatanja reversa');
-      },
-    );
-    refetch();
-    onClose();
+    if (targetOrgID != orgUnitID) {
+      onClose();
+    } else {
+      await acceptDispatch(
+        data.id,
+        () => {
+          alert.success(createRevers ? '' : 'Uspešno ste prihvatili revers');
+        },
+        () => {
+          alert.error('Došlo je do greške prilikom prihvatanja reversa');
+        },
+      );
+      refetch();
+      onClose();
+    }
   };
 
   const onReject = async () => {
@@ -61,7 +72,10 @@ const ReceiveInventoryModal = ({onClose, id, context, refetch, targetOrgID}: Rec
   return (
     <Modal
       open={true}
-      onClose={onClose}
+      onClose={() => {
+        if (createRevers) onReject();
+        onClose();
+      }}
       title={`Revers broj: ${data?.id}`}
       buttonLoading={isSaving || isRejectSaving}
       leftButtonOnClick={onReject}
@@ -74,14 +88,20 @@ const ReceiveInventoryModal = ({onClose, id, context, refetch, targetOrgID}: Rec
             <>
               <Typography
                 variant="bodyMedium"
-                content={`Organizaciona jedinica ${data?.source_organization_unit?.title} je kreirala revers. Da li želite prihvatiti sredstvo?`}
+                content={
+                  createRevers
+                    ? 'Da li želite kreirati revers? Sredstvo će biti poslato odabranoj organizacionoj jedinici.'
+                    : `Organizaciona jedinica ${data?.source_organization_unit?.title} je kreirala revers. Da li želite prihvatiti sredstvo?`
+                }
               />
             </>
           )}
           <Table isLoading={loading} tableHeads={receiveModalTableHeads} data={data?.inventory ?? []} />
         </>
       }
-      customButtonsControls={data?.type === 'return-revers' || targetOrgID != orgUnitID ? <></> : undefined}
+      customButtonsControls={
+        data?.type === 'return-revers' || (targetOrgID != orgUnitID && !createRevers) ? <></> : undefined
+      }
     />
   );
 };

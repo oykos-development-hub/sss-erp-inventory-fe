@@ -105,7 +105,7 @@ const MovementModal = ({
           id => {
             alert.success(`Uspješno ste izvršili ${successTypeString}`);
             onClose(initialDispatchType === 'revers');
-            openReceiveModal && openReceiveModal(id);
+            if (initialDispatchType === 'revers' && openReceiveModal) openReceiveModal(id);
             refetch();
           },
           () => {

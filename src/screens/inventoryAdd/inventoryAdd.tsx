@@ -110,7 +110,7 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
         supplier_id: values.supplier.id,
 
         // item data
-        depreciation_type_id: item.depreciation_type.id,
+        depreciation_type_id: item?.depreciation_type?.id,
         class_type_id: item.class_type.id,
         inventory_number: item.inventory_number,
         title: item.title,

@@ -48,6 +48,7 @@ const MovableDetailsForm = ({data, context, inventoryType, refetch, inventoryId}
         abbreviation: '',
         internal_ownership: true,
         office_id: values?.office?.id || 0,
+        organization_unit_id: data?.organization_unit?.id,
         location: '',
         target_user_profile_id: values?.target_user_profile_id || 0,
         unit: values?.unit || '',

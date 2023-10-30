@@ -350,6 +350,7 @@ const InventoryList = ({
             setReceiveModal(false);
             setCurrentId(undefined);
           }}
+          createRevers={true}
         />
       )}
     </div>
