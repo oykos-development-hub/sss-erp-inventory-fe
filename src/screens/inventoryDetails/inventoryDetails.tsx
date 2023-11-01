@@ -154,7 +154,7 @@ const InventoryDetails = ({context, type}: InventoryProps) => {
               sourceType={data?.items.source_type}
               inventoryType={type}
               status={data?.items?.status || ''}
-              openReceiveModal={() => {
+              openReceiveModal={id => {
                 setCurrentId(id);
                 setReceiveModal(true);
               }}

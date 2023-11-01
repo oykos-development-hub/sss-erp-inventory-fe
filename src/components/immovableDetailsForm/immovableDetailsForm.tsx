@@ -5,7 +5,7 @@ import {restrictionOptions, rightPropertyOptions} from '../../screens/inventoryA
 import {DetailsFormProps} from '../../screens/inventoryDetails/types';
 import useInventoryInsert from '../../services/graphQL/inventoryInsert/useInventoryInsert';
 import {InventoryTypeEnum} from '../../types/inventoryType';
-import {parseDate} from '../../utils/dateUtils';
+import {parseDate, parseDateForBackend} from '../../utils/dateUtils';
 import {ButtonWrapper} from '../movableDetailsForm/style';
 import {depreciationTypeOptions, initialValues, ownershipTypeOptions} from './constants';
 import {ImmovableDetailsFormWrapper, ImmovableDetailsInputWrapper} from './style';
@@ -61,17 +61,18 @@ const ImmovableDetailsForm = ({context, data, refetch, inventoryId}: DetailsForm
         internal_ownership: true,
         location: values?.location?.id || '',
         gross_price: values?.gross_price || 0,
-        date_of_purchase: parseDate(values?.date_of_purchase, true) || '',
+        date_of_purchase: parseDateForBackend(new Date(values?.date_of_purchase)) || '',
         price_of_assessment: 0,
         active: true,
         deactivation_description: 0,
         invoice_file_id: values?.invoice_file_id || 0,
+        organization_unit_id: data?.organization_unit?.id,
         real_estate: {
-          id: 0,
+          id: data?.real_estate?.id || 0,
           square_area: values?.square_area || 0,
           land_serial_number: values?.land_serial_number || '',
-          estate_serial_number: '',
-          ownership_type: '',
+          estate_serial_number: ' ',
+          ownership_type: ' ',
           ownership_scope: values?.ownership_scope || '',
           ownership_investment_scope: values?.ownership_investment_scope || '',
           limitations_description: values?.limitations_description || '',
@@ -80,6 +81,7 @@ const ImmovableDetailsForm = ({context, data, refetch, inventoryId}: DetailsForm
           property_document: values?.property_document || '',
           limitation_id: values?.limitation?.id || false,
           document: values?.document || '',
+          title: ' ',
         },
         depreciation_type_id: values?.depreciation_type?.id || 0,
         file_id: 0,
@@ -115,7 +117,7 @@ const ImmovableDetailsForm = ({context, data, refetch, inventoryId}: DetailsForm
             />
           )}
         />
-        <Input {...register('location')} label="LOCATION:" disabled={true} />
+        <Input {...register('location')} label="LOKACIJA:" disabled={true} />
         <Input
           {...register('square_area', {required: 'Ovo polje je obavezno'})}
           type="number"

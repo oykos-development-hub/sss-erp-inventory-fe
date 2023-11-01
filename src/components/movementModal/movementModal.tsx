@@ -72,6 +72,7 @@ const MovementModal = ({
 
   const {alert} = context;
   const orgUnitId = context.contextMain.organization_unit.id;
+  const type = context.navigation.location.pathname.split('/')[2] === 'movable-inventory' ? 'movable' : 'unmovable';
 
   const {options: officeOptions} = useOrgUnitOfficesGet({page: 1, size: 1000, organization_unit_id: Number(orgUnitId)});
   const {options: locationOptions} = useOrganizationUnits(true);
@@ -91,7 +92,7 @@ const MovementModal = ({
         type: (values.transaction?.id as DispatchType) ?? DispatchType.return,
         dispatch_description: '',
         inventory_id: id,
-        inventory_type: 'movable',
+        inventory_type: type,
         date: parseDateForBackend(values?.date),
       };
       try {
@@ -103,7 +104,7 @@ const MovementModal = ({
         mutate(
           data,
           id => {
-            alert.success(`Uspješno ste izvršili ${successTypeString}`);
+            if (initialDispatchType !== 'revers') alert.success(`Uspješno ste izvršili ${successTypeString}`);
             onClose(initialDispatchType === 'revers');
             if (initialDispatchType === 'revers' && openReceiveModal) openReceiveModal(id);
             refetch();
