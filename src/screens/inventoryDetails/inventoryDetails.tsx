@@ -65,7 +65,9 @@ const InventoryDetails = ({context, type}: InventoryProps) => {
   return (
     <ScreenWrapper>
       <SectionBox>
-        <ScreenTitle content={`INV. BROJ: ${data?.items.inventory_number ?? ''} - ${data?.items.title ?? ''}`} />
+        {type !== 'immovable' && (
+          <ScreenTitle content={`INV. BROJ: ${data?.items.inventory_number ?? ''} - ${data?.items.title ?? ''}`} />
+        )}
         <Divider color={Theme.palette.black} style={{marginBottom: 22, marginTop: 10}} />
 
         <InventoryDetailsWrapper>

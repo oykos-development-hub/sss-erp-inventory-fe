@@ -4,7 +4,7 @@ import useDispatchAccept from '../../services/graphQL/inventoryDispatchAccept/us
 import useInventoryDispatchOverview from '../../services/graphQL/inventoryDispatchOverview/useInventoryDispatchOverview';
 import UseDispatchDelete from '../../services/graphQL/inventoryDispatchReject/useInventoryDispatchDelete';
 import {MicroserviceProps} from '../../types/micro-service-props';
-import {receiveModalTableHeads} from './constants';
+import {receiveModalTableHeads, receiveImmovableModalTableHeads} from './constants';
 
 export enum ReceiveType {
   revers = 'revers',
@@ -33,6 +33,7 @@ const ReceiveInventoryModal = ({
 
   const {data: response, loading} = useInventoryDispatchOverview({page: 0, size: PAGE_SIZE, id: id ?? 0});
   const data = response.items[0];
+  const type = context.navigation.location.pathname.split('/')[2] === 'movable-inventory' ? 'movable' : 'immovable';
 
   const {mutate: acceptDispatch, loading: isSaving} = useDispatchAccept();
   const {mutate: rejectDispatch, loading: isRejectSaving} = UseDispatchDelete();
@@ -96,7 +97,11 @@ const ReceiveInventoryModal = ({
               />
             </>
           )}
-          <Table isLoading={loading} tableHeads={receiveModalTableHeads} data={data?.inventory ?? []} />
+          <Table
+            isLoading={loading}
+            tableHeads={type === 'immovable' ? receiveImmovableModalTableHeads : receiveModalTableHeads}
+            data={data?.inventory ?? []}
+          />
         </>
       }
       customButtonsControls={

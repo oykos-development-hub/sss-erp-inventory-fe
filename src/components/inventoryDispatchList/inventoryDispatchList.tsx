@@ -44,7 +44,6 @@ const InventoryDispatchList = ({
       type: 'custom',
       renderContents: date => <Typography variant="bodyMedium" content={date ? parseDate(date) : ''} />,
     },
-    {title: 'Broj', accessor: 'serial_number', type: 'text'},
     {
       title: 'Pošiljalac',
       accessor: 'source_organization_unit',

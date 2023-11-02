@@ -29,6 +29,7 @@ const InventoryDispatchOverview = `query BasicInventoryDispatchOverview($page: I
           is_accepted
           serial_number
           dispatch_description
+          inventory_type
           inventory {
               id
               type
@@ -36,6 +37,7 @@ const InventoryDispatchOverview = `query BasicInventoryDispatchOverview($page: I
               title
               gross_price
               serial_number
+              location
           }
           created_at
           updated_at

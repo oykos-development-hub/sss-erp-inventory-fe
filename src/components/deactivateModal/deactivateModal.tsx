@@ -28,7 +28,7 @@ const DeactivateModal = ({onClose, onDeactivate, loading}: DeactivateModalProps)
     <Modal
       open={true}
       onClose={onClose}
-      title="INACTIVATE"
+      title="DEAKTIVACIJA SREDSTVA"
       leftButtonOnClick={onClose}
       rightButtonOnClick={handleSubmit(onDeactivate)}
       rightButtonText="Deaktiviraj"
