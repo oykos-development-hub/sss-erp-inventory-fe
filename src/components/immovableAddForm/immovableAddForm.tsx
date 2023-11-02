@@ -53,7 +53,7 @@ const ImmovableAddForm = ({context}: {context: MicroserviceProps}) => {
             ownership_type: ' ',
             ownership_scope: values?.ownership_scope || '',
             ownership_investment_scope: values?.ownership_investment_scope || '',
-            limitations_description: values?.limitations_description || '',
+            limitations_description: values?.limitations_description || ' ',
             file_id: 0,
             type_id: values?.type?.id || '',
             property_document: values?.property_document || '',
