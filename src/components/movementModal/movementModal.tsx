@@ -138,7 +138,11 @@ const MovementModal = ({
     return options.filter(option => {
       const optionsToRemove = ['return'];
 
-      if (sourceType?.includes('2') || (currentItem && isReversDone(currentItem))) {
+      if (
+        sourceType?.includes('2') ||
+        currentItem?.source_type.includes('2') ||
+        (currentItem && isReversDone(currentItem))
+      ) {
         optionsToRemove.push('revers');
       }
       if (sourceType?.includes('1')) {

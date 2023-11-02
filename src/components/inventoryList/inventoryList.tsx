@@ -274,6 +274,7 @@ const InventoryList = ({
                     setCurrentInventoryId([row.id]);
                     setDeactivateModal(true);
                   },
+                  disabled: (item: any) => item.source_type?.includes('2'),
                 },
               ]
             : [
@@ -292,6 +293,7 @@ const InventoryList = ({
                     setCurrentInventoryId([row.id]);
                     setDeactivateModal(true);
                   },
+                  disabled: (item: any) => item.source_type?.includes('2'),
                 },
               ]
         }
