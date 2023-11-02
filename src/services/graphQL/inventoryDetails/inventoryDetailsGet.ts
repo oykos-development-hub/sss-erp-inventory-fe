@@ -73,6 +73,7 @@ const inventoryDetailsGet = `query BasicInventoryDetails($id: Int!) {
             depreciation_rate
             amortization_value
             active
+            inactive
             deactivation_description
             assessments {
                 id

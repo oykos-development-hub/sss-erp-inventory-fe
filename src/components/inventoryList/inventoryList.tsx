@@ -20,6 +20,7 @@ import MovementModal from '../movementModal/movementModal';
 import {FilterDropdown, FilterInput, Filters, ReversButtonContainer} from './styles';
 import useInventoryDeactivate from '../../services/graphQL/inventoryDeactivate/useInventoryDeactivate';
 import ReceiveInventoryModal from '../receiveInventoryModal/receiveInventoryModal';
+import {parseDateForBackend} from '../../utils/dateUtils';
 
 interface InventoryListProps {
   context: MicroserviceProps;
@@ -308,8 +309,8 @@ const InventoryList = ({
         <DeactivateModal
           onClose={() => setDeactivateModal(false)}
           loading={loadingDeactivate}
-          onDeactivate={({description}) =>
-            deactivate(currentInventoryId[0], description, () => {
+          onDeactivate={({inactive, description}) =>
+            deactivate(currentInventoryId[0], parseDateForBackend(inactive) || '', description, () => {
               setCurrentInventoryId([]);
               setDeactivateModal(false);
               alert.success('Osnovno sredstvo je deaktivirano.');

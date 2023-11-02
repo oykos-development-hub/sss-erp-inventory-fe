@@ -35,6 +35,7 @@ export interface InventoryDetails {
   depreciation_rate?: string;
   amortization_value: number;
   active: boolean;
+  inactive?: string;
   source_type: SourceType | `${SourceType}`;
   status?: string;
   deactivation_description: string;

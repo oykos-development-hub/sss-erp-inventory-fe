@@ -7,6 +7,7 @@ const useInventoryDeactivate = () => {
   const {fetch} = useAppContext();
   const inventoryDeactivate = async (
     id: number,
+    inactive: string,
     deactivation_description: string,
     onSuccess?: () => void,
     onError?: () => void,
@@ -14,6 +15,7 @@ const useInventoryDeactivate = () => {
     setLoading(true);
     const response = await fetch(GraphQL.inventoryDeactivate, {
       id: id,
+      inactive: inactive,
       deactivation_description: deactivation_description,
     });
     if (response.basicInventory_Deactivate.status === 'success') {

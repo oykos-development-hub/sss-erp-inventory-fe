@@ -1,7 +1,7 @@
-import {Dropdown, Input, Modal} from 'client-library';
+import {Input, Modal, Datepicker} from 'client-library';
 import {Controller, useForm} from 'react-hook-form';
-import {DropdownDataString} from '../../types/dropdownData';
 import {DeactivationForm} from './styles';
+import {parseDate} from '../../utils/dateUtils';
 
 interface DeactivateModalProps {
   onClose: () => void;
@@ -12,6 +12,7 @@ interface DeactivateModalProps {
 
 interface DeactivationModalForm {
   //todo check if string
+  inactive: Date;
   description: string;
 }
 
@@ -19,6 +20,7 @@ const DeactivateModal = ({onClose, onDeactivate, loading}: DeactivateModalProps)
   const {
     register,
     handleSubmit,
+    control,
     formState: {errors},
   } = useForm<DeactivationModalForm>();
 
@@ -34,6 +36,20 @@ const DeactivateModal = ({onClose, onDeactivate, loading}: DeactivateModalProps)
       buttonLoading={loading}
       content={
         <DeactivationForm>
+          <Controller
+            name="inactive"
+            rules={{required: 'Ovo polje je obavezno'}}
+            control={control}
+            render={({field: {name, value, onChange}}) => (
+              <Datepicker
+                name={name}
+                value={value ? parseDate(value) : ''}
+                onChange={onChange}
+                options={[]}
+                label="DATUM:"
+              />
+            )}
+          />
           <Input
             {...register('description', {required: 'Ovo polje je obavezno'})}
             label="OPIS:"
