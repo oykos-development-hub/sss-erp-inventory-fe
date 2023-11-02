@@ -106,7 +106,7 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
         date_of_purchase: parseDateForBackend(values.date_of_purchase) || '',
         source: values.source.id,
         office_id: values.office.id,
-        invoice_number: Number(values.invoice_number),
+        invoice_number: values.invoice_number,
         supplier_id: values.supplier.id,
 
         // item data

@@ -67,7 +67,7 @@ export interface InventoryInsertData {
   source?: string;
   donor_title?: string;
   invoice_number?: string;
-  price_of_assessment: number;
+  price_of_assessment?: number;
   date_of_assessment?: string;
   lifetime_of_assessment_in_months?: number;
   active: boolean;

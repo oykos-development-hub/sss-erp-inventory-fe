@@ -33,7 +33,7 @@ const SmallInventoryForm = ({onFormSubmit, context}: AddInventoryFormProps) => {
     <Form>
       <FieldsContainer>
         <FormRow>
-          <Input {...register('invoice_number')} label="BROJ RAČUNA NABAVKE:" type="number" />
+          <Input {...register('invoice_number')} label="BROJ RAČUNA NABAVKE:" />
 
           <Controller
             name="date_of_purchase"

@@ -23,6 +23,7 @@ export interface SmallDetailsFormProps {
   invoice_number: string;
   date_of_purchase: string;
   gross_price: number;
+  purchase_gross_price?: number;
   amount: number;
   description: string;
   location: DropdownDataString | null;

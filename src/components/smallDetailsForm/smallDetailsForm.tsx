@@ -4,7 +4,7 @@ import {Controller, useForm} from 'react-hook-form';
 import {inventorySourceOptions} from '../../screens/inventoryAdd/constants';
 import {DetailsFormProps} from '../../screens/inventoryDetails/types';
 import useInventoryInsert from '../../services/graphQL/inventoryInsert/useInventoryInsert';
-import {parseDate} from '../../utils/dateUtils';
+import {parseDate, parseDateForBackend} from '../../utils/dateUtils';
 import {initialValues, unitOptions} from './constants';
 import {
   ButtonWrapper,
@@ -52,7 +52,6 @@ const SmallDetailsForm = ({context, data, inventoryType, refetch, inventoryId}: 
   const onSubmit = (values: SmallDetailsFormProps) => {
     const smallDetailsValues = [
       {
-        ...values,
         id: inventoryId,
         type: inventoryType,
         class_type_id: values?.class_type?.id || 0,
@@ -66,21 +65,20 @@ const SmallDetailsForm = ({context, data, inventoryType, refetch, inventoryId}: 
         source: values?.source?.id || '',
         donor_title: '',
         invoice_number: values?.invoice_number || '',
-        date_of_purchase: parseDate(values?.date_of_purchase, true) || '',
+        date_of_purchase: parseDateForBackend(new Date(values?.date_of_purchase)) || '',
         gross_price: values?.gross_price || 0,
         amount: values?.amount || 0,
         description: values?.description || '',
         unit: values?.unit?.id || '',
         location: values?.location?.id || '',
         active: true,
-        target_user_profile_id: 0,
+        target_user_profile_id: data?.target_user_profile?.id,
         net_price: 0,
         lifetime_of_assessment_in_months: 0,
         file_id: 0,
-        price_of_assessment: 0,
-        date_of_assessment: '',
         deactivation_description: 0,
         invoice_file_id: 0,
+        organization_unit_id: data?.organization_unit?.id,
       },
     ];
 
@@ -110,7 +108,7 @@ const SmallDetailsForm = ({context, data, inventoryType, refetch, inventoryId}: 
             <LocationDropdown name={name} value={value} onChange={onChange} options={suppliers} label="DOBAVLJAČ" />
           )}
         />
-        <Input {...register('gross_price')} label="CIJENA:" disabled={true} />
+        <Input {...register('purchase_gross_price')} label="CIJENA:" disabled={true} />
         <Controller
           name="office"
           control={control}
@@ -134,7 +132,6 @@ const SmallDetailsForm = ({context, data, inventoryType, refetch, inventoryId}: 
       <SmallDetailsInputWrapper>
         <Input
           {...register('invoice_number', {required: 'Ovo polje je obavezno'})}
-          type="number"
           error={errors.invoice_number?.message}
           label="BROJ RAČUNA NABAVKE:"
         />

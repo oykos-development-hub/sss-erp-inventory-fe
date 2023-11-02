@@ -14,7 +14,7 @@ const InventoryDispatch = ({context}: InventoryProps) => {
   const onFilter = (value: any, name: string) => {
     setFilterValues({...filterValues, [name]: value});
   };
-  const type = context.navigation.location.pathname.split('/')[2] === 'movable-inventory' ? 'movable' : 'unmovable';
+  const type = context.navigation.location.pathname.split('/')[2] === 'movable-inventory' ? 'movable' : 'immovable';
 
   const {data, refetch, loading} = useInventoryDispatchOverview({
     page,

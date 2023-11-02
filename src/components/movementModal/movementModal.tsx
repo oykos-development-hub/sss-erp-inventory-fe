@@ -72,7 +72,7 @@ const MovementModal = ({
 
   const {alert} = context;
   const orgUnitId = context.contextMain.organization_unit.id;
-  const type = context.navigation.location.pathname.split('/')[2] === 'movable-inventory' ? 'movable' : 'unmovable';
+  const type = context.navigation.location.pathname.split('/')[2] === 'movable-inventory' ? 'movable' : 'immovable';
 
   const {options: officeOptions} = useOrgUnitOfficesGet({page: 1, size: 1000, organization_unit_id: Number(orgUnitId)});
   const {options: locationOptions} = useOrganizationUnits(true);

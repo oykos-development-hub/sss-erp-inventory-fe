@@ -23,6 +23,7 @@ export const initialValues: SmallDetailsFormProps = {
   location: null,
   target_user_profile_id: 1,
   net_price: 1,
+  purchase_gross_price: 0,
   square_area: 0,
   land_serial_number: '',
   ownership_documents: '',
