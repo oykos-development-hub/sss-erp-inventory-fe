@@ -26,7 +26,7 @@ const ImmovableDetailsForm = ({context, data, refetch, inventoryId}: DetailsForm
     alert,
     navigation: {navigate},
   } = context;
-  const {mutate} = useInventoryInsert();
+  const {mutate, loading} = useInventoryInsert();
 
   const {data: depreciationTypes} = useGetSettings({entity: 'deprecation_types'});
   const {limitation} = watch();
@@ -199,7 +199,7 @@ const ImmovableDetailsForm = ({context, data, refetch, inventoryId}: DetailsForm
 
       <ButtonWrapper>
         <Button content="Odustani" onClick={() => navigate(-1)} />
-        <Button content="Sačuvaj" onClick={handleSubmit(onSubmit)} />
+        <Button content="Sačuvaj" onClick={handleSubmit(onSubmit)} loader={loading} />
       </ButtonWrapper>
     </ImmovableDetailsFormWrapper>
   );

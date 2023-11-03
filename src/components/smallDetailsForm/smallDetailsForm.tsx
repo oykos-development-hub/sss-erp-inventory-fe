@@ -34,7 +34,7 @@ const SmallDetailsForm = ({context, data, inventoryType, refetch, inventoryId}: 
     navigation: {navigate},
   } = context;
 
-  const {mutate} = useInventoryInsert();
+  const {mutate, loading} = useInventoryInsert();
 
   useEffect(() => {
     if (data) {
@@ -108,7 +108,7 @@ const SmallDetailsForm = ({context, data, inventoryType, refetch, inventoryId}: 
             <LocationDropdown name={name} value={value} onChange={onChange} options={suppliers} label="DOBAVLJAČ" />
           )}
         />
-        <Input {...register('purchase_gross_price')} label="CIJENA:" disabled={true} />
+        <Input {...register('purchase_gross_price')} label="CIJENA:" disabled={true} rightContent={<div>€</div>} />
         <Controller
           name="office"
           control={control}
@@ -197,7 +197,7 @@ const SmallDetailsForm = ({context, data, inventoryType, refetch, inventoryId}: 
 
       <ButtonWrapper>
         <Button content="Nazad" onClick={() => navigate(-1)} />
-        <Button content="Sačuvaj" onClick={handleSubmit(onSubmit)} />
+        <Button content="Sačuvaj" onClick={handleSubmit(onSubmit)} loader={loading} />
       </ButtonWrapper>
     </SmallDetailsFormWrapper>
   );

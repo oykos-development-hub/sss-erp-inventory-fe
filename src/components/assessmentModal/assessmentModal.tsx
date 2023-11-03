@@ -96,6 +96,7 @@ const AssessmentModal = ({context, onClose, id, refetch}: AssessmentModalProps) 
             label="VRIJEDNOST PROCJENE:"
             error={errors.gross_price_difference?.message}
             type="number"
+            rightContent={<div>€</div>}
           />
           <Controller
             name="date_of_assessment"

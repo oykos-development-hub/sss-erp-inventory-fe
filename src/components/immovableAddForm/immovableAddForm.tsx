@@ -27,7 +27,7 @@ const ImmovableAddForm = ({context}: {context: MicroserviceProps}) => {
   } = context;
 
   const {options: amortizationGroupOptions} = useGetSettings({entity: 'deprecation_types'});
-  const {mutate} = useInventoryInsert();
+  const {mutate, loading} = useInventoryInsert();
 
   const {limitation} = watch();
   //handlers
@@ -190,7 +190,7 @@ const ImmovableAddForm = ({context}: {context: MicroserviceProps}) => {
 
       <ButtonContainer>
         <Button content="Odustani" onClick={() => reset()} />
-        <Button content="Sačuvaj" onClick={handleSubmit(addButtonClick)} variant="primary" />
+        <Button content="Sačuvaj" onClick={handleSubmit(addButtonClick)} variant="primary" loader={loading} />
       </ButtonContainer>
     </Form>
   );

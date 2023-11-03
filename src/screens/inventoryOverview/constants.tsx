@@ -77,8 +77,18 @@ export const movableInventoryTableHeads: TableHead[] = [
     },
   },
   {title: 'Inv. broj', accessor: 'inventory_number'},
-  {title: 'Nabavna Cijena', accessor: 'purchase_gross_price'},
-  {title: 'Trenutna Cijena', accessor: 'gross_price'},
+  {
+    title: 'Nabavna Cijena',
+    accessor: 'purchase_gross_price',
+    type: 'custom',
+    renderContents: data => <Typography content={`${data || '0'}€`} />,
+  },
+  {
+    title: 'Trenutna Cijena',
+    accessor: 'gross_price',
+    type: 'custom',
+    renderContents: data => <Typography content={`${data || '0'}€`} />,
+  },
   {
     title: 'Datum nabavke',
     accessor: 'date_of_purchase',

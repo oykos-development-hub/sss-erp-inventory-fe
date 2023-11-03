@@ -38,7 +38,7 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
   const {options: amortizationGroupOptions} = useGetSettings({entity: 'deprecation_types'});
 
   const {options: classOptions} = useGetSettings({entity: 'inventory_class_type'});
-  const {mutate} = useInventoryInsert();
+  const {mutate, loading} = useInventoryInsert();
 
   const updatedTableHeads = tableHeads
     .filter(item => {
@@ -88,6 +88,7 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
                   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                   // @ts-ignore
                   error={errors?.items?.[index]?.[`${head.accessor}`]?.message}
+                  rightContent={head.accessor === 'gross_price' ? <div>€</div> : undefined}
                 />
               );
             },
@@ -234,7 +235,7 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
 
           <ButtonContainer>
             <Button content="Odustani" onClick={clearButtonClick} />
-            <Button content="Sačuvaj" onClick={handleSubmit(onSubmit)} variant="primary" />
+            <Button content="Sačuvaj" onClick={handleSubmit(onSubmit)} variant="primary" loader={loading} />
           </ButtonContainer>
         </>
       )}
