@@ -17,6 +17,7 @@ const InventoryOverview = ({context, type}: InventoryProps) => {
     type,
     source_type: filterValues.source_type?.id,
     class_type_id: filterValues.class_type_id?.id,
+    status: filterValues.status?.id,
     search: debouncedSearch,
     office_id: filterValues.office_id?.id,
     depreciation_type_id: filterValues.depreciation_type_id?.id,

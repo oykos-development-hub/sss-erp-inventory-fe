@@ -154,6 +154,7 @@ const InventoryDetails = ({context, type}: InventoryProps) => {
               id={id}
               refetch={refetch}
               sourceType={data?.items.source_type}
+              currentItem={data?.items}
               inventoryType={type}
               status={data?.items?.status || ''}
               openReceiveModal={id => {

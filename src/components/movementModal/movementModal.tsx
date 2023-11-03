@@ -14,6 +14,7 @@ import {parseDate, parseDateForBackend} from '../../utils/dateUtils';
 import {immovableTransactionOptions, movableTransactionOptions, smallTransactionOptions} from './constants';
 import {MovementForm} from './styles';
 import ReceiveInventoryModal from '../receiveInventoryModal/receiveInventoryModal';
+import {InventoryDetails} from '../../types/graphQL/inventoryDetails';
 
 interface MovementModalProps {
   context: MicroserviceProps;
@@ -24,7 +25,7 @@ interface MovementModalProps {
   refetch: () => void;
   returnOrgUnitId?: number;
   inventoryType: InventoryTypeEnum | `${InventoryTypeEnum}`;
-  currentItem?: InventoryItem;
+  currentItem?: InventoryItem | InventoryDetails;
   status: string;
   openReceiveModal?: (id: number) => void;
 }
@@ -119,11 +120,11 @@ const MovementModal = ({
     }
   };
 
-  const isReversDone = (row: InventoryItem) => {
+  const isReversDone = (row: InventoryItem | InventoryDetails) => {
     return (
       row.source_type?.includes('1') &&
       row.organization_unit?.id !== row.target_organization_unit?.id &&
-      row.target_organization_unit !== null
+      row.target_organization_unit?.id !== 0
     );
   };
 
@@ -135,20 +136,21 @@ const MovementModal = ({
         ? immovableTransactionOptions
         : smallTransactionOptions;
 
+    const optionsToRemove = [currentItem?.status === 'Lager' ? 'return' : 'allocation'];
+
+    if (
+      sourceType?.includes('2') ||
+      currentItem?.source_type.includes('2') ||
+      (currentItem && isReversDone(currentItem)) ||
+      currentItem?.status === 'Zadužen'
+    ) {
+      optionsToRemove.push('revers');
+    }
+    if (sourceType?.includes('1') || currentItem?.status === 'Zadužen') {
+      optionsToRemove.push('return-revers');
+    }
+
     return options.filter(option => {
-      const optionsToRemove = [currentItem?.status === 'Lager' ? 'return' : 'allocation'];
-
-      if (
-        sourceType?.includes('2') ||
-        currentItem?.source_type.includes('2') ||
-        (currentItem && isReversDone(currentItem))
-      ) {
-        optionsToRemove.push('revers');
-      }
-      if (sourceType?.includes('1')) {
-        optionsToRemove.push('return-revers');
-      }
-
       return optionsToRemove.every(optionToRemove => optionToRemove !== option.id);
     });
   }, [sourceType, inventoryType, initialDispatchType]);
@@ -182,21 +184,23 @@ const MovementModal = ({
       leftButtonText="Otkaži"
       content={
         <MovementForm>
-          <Controller
-            name="transaction"
-            control={control}
-            rules={{required: 'Ovo polje je obavezno'}}
-            render={({field: {name, value, onChange}}) => (
-              <Dropdown
-                name={name}
-                value={value}
-                onChange={onChange}
-                options={transactionOptionsToShow}
-                label="TIP KRETANJA:"
-                error={errors.transaction?.message}
-              />
-            )}
-          />
+          {currentItem?.status !== 'Zadužen' && (
+            <Controller
+              name="transaction"
+              control={control}
+              rules={{required: 'Ovo polje je obavezno'}}
+              render={({field: {name, value, onChange}}) => (
+                <Dropdown
+                  name={name}
+                  value={value}
+                  onChange={onChange}
+                  options={transactionOptionsToShow}
+                  label="TIP KRETANJA:"
+                  error={errors.transaction?.message}
+                />
+              )}
+            />
+          )}
 
           {transactionType === 'revers' && (
             <Controller

@@ -13,6 +13,7 @@ const useInventoryOverview = ({
   office_id,
   search,
   type,
+  status = '',
   source_type = '',
   depreciation_type_id,
 }: InventoryOverviewParams) => {
@@ -31,6 +32,7 @@ const useInventoryOverview = ({
         office_id,
         search,
         type,
+        status,
         source_type,
         depreciation_type_id,
       });
@@ -44,7 +46,7 @@ const useInventoryOverview = ({
 
   useEffect(() => {
     fetchInventoryOverview();
-  }, [page, size, class_type_id, id, office_id, search, type, source_type, depreciation_type_id]);
+  }, [page, size, class_type_id, id, office_id, search, type, source_type, depreciation_type_id, status]);
 
   return {data, loading, refetch: fetchInventoryOverview};
 };

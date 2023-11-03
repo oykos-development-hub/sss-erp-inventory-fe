@@ -5,6 +5,7 @@ export enum InventoryFiltersEnum {
   CLASS = 'class',
   LOCATION = 'location',
   SEARCH = 'search',
+  STATUS = 'status',
   AMORTIZATION_GROUP = 'amortization_group',
 }
 
@@ -14,4 +15,5 @@ export interface InventoryFilters {
   source_type?: DropdownDataString | null;
   depreciation_type_id?: DropdownDataNumber | null;
   class_type_id?: DropdownDataNumber | null;
+  status?: DropdownDataString | null;
 }

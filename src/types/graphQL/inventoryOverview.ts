@@ -40,6 +40,7 @@ export interface InventoryOverviewParams {
   class_type_id?: number;
   office_id?: number;
   search?: string;
+  status?: string;
 }
 
 export interface InventoryInsertData {
@@ -57,6 +58,7 @@ export interface InventoryInsertData {
   office_id?: number;
   location?: string;
   target_user_profile_id?: number;
+  target_organization_unit_id?: number;
   unit?: string;
   amount?: number;
   net_price?: number;

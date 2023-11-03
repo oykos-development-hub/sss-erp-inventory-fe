@@ -21,6 +21,7 @@ import {FilterDropdown, FilterInput, Filters, ReversButtonContainer} from './sty
 import useInventoryDeactivate from '../../services/graphQL/inventoryDeactivate/useInventoryDeactivate';
 import ReceiveInventoryModal from '../receiveInventoryModal/receiveInventoryModal';
 import {parseDateForBackend} from '../../utils/dateUtils';
+import {filterStatusOptions} from '../movementModal/constants';
 
 interface InventoryListProps {
   context: MicroserviceProps;
@@ -111,6 +112,16 @@ const InventoryList = ({
         options={[{id: 0, title: 'Sve lokacije'}, ...officeOptions]}
         placeholder="Odaberi lokaciju"
         label="LOKACIJA:"
+      />
+    ),
+    status: (
+      <FilterDropdown
+        name="status"
+        value={filterValues.status}
+        onChange={value => onFilter(value, 'status')}
+        options={[{id: '', title: 'Sve statusi'}, ...filterStatusOptions]}
+        placeholder="Odaberi status"
+        label="STATUS:"
       />
     ),
     search: (
@@ -209,7 +220,7 @@ const InventoryList = ({
   };
 
   const isCheckboxDisabled = (row: InventoryItem) => {
-    if (isReversDone(row)) {
+    if (isReversDone(row) || !row.active) {
       return true;
     }
 
@@ -258,15 +269,18 @@ const InventoryList = ({
                   name: 'print',
                   onClick: row => console.log('print'),
                   icon: <PrinterIcon stroke={Theme.palette.gray600} />,
+                  disabled: (item: any) => !item.active,
                 },
                 {
                   name: 'Alokacija',
                   onClick: row => onAddMovement(row),
+                  disabled: (item: any) => !item.active,
                 },
                 {
                   name: 'Dodaj procjenu',
                   onClick: row => onAddEstimation(row),
                   shouldRender: (item: any) => item.source_type?.includes('1'),
+                  disabled: (item: any) => !item.active,
                 },
                 {
                   name: 'Deaktivacija',
@@ -274,7 +288,7 @@ const InventoryList = ({
                     setCurrentInventoryId([row.id]);
                     setDeactivateModal(true);
                   },
-                  disabled: (item: any) => item.source_type?.includes('2'),
+                  disabled: (item: any) => item.source_type?.includes('2') || item.status !== 'Lager' || !item.active,
                 },
               ]
             : [
@@ -282,10 +296,12 @@ const InventoryList = ({
                   name: 'print',
                   onClick: row => console.log('print'),
                   icon: <PrinterIcon stroke={Theme.palette.gray600} />,
+                  disabled: (item: any) => !item.active,
                 },
                 {
                   name: 'Alokacija',
                   onClick: row => onAddMovement(row),
+                  disabled: (item: any) => !item.active,
                 },
                 {
                   name: 'Deaktivacija',
@@ -293,16 +309,18 @@ const InventoryList = ({
                     setCurrentInventoryId([row.id]);
                     setDeactivateModal(true);
                   },
-                  disabled: (item: any) => item.source_type?.includes('2'),
+                  disabled: (item: any) => item.source_type?.includes('2') || item.status !== 'Lager' || !item.active,
                 },
               ]
         }
         onRowClick={(item: InventoryItem) => {
-          navigate(`/inventory/${type}-inventory/${item.id}`);
-          context.breadcrumbs.add({
-            name: `${item.title}`,
-            to: `/inventory/${type}-inventory/${item.id}`,
-          });
+          if (item.active) {
+            navigate(`/inventory/${type}-inventory/${item.id}`);
+            context.breadcrumbs.add({
+              name: `${item.title}`,
+              to: `/inventory/${type}-inventory/${item.id}`,
+            });
+          }
         }}
         disabledCheckbox={isCheckboxDisabled}
       />

@@ -51,6 +51,7 @@ const MovableDetailsForm = ({data, context, inventoryType, refetch, inventoryId}
         organization_unit_id: data?.organization_unit?.id,
         location: '',
         target_user_profile_id: values?.target_user_profile_id || 0,
+        target_organization_unit_id: data?.target_organization_unit?.id || 0,
         unit: values?.unit || '',
         amount: values?.amount || 0,
         net_price: 0,
