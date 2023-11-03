@@ -125,10 +125,8 @@ export const immovableInventoryTableHeads: TableHead[] = [
     renderContents: organization_unit => <Typography content={organization_unit?.title} />,
   },
   {
-    title: 'Alokacija',
-    accessor: 'target_organization_unit_id',
-    type: 'custom',
-    renderContents: target_organization_unit => <Typography content={target_organization_unit?.title} />,
+    title: 'Status',
+    accessor: 'status',
   },
 ];
 
