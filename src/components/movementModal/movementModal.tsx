@@ -136,7 +136,7 @@ const MovementModal = ({
         : smallTransactionOptions;
 
     return options.filter(option => {
-      const optionsToRemove = ['return'];
+      const optionsToRemove = [currentItem?.status === 'Lager' ? 'return' : 'allocation'];
 
       if (
         sourceType?.includes('2') ||
@@ -182,23 +182,22 @@ const MovementModal = ({
       leftButtonText="Otkaži"
       content={
         <MovementForm>
-          {status == 'Lager' && (
-            <Controller
-              name="transaction"
-              control={control}
-              rules={{required: 'Ovo polje je obavezno'}}
-              render={({field: {name, value, onChange}}) => (
-                <Dropdown
-                  name={name}
-                  value={value}
-                  onChange={onChange}
-                  options={transactionOptionsToShow}
-                  label="TIP KRETANJA:"
-                  error={errors.transaction?.message}
-                />
-              )}
-            />
-          )}
+          <Controller
+            name="transaction"
+            control={control}
+            rules={{required: 'Ovo polje je obavezno'}}
+            render={({field: {name, value, onChange}}) => (
+              <Dropdown
+                name={name}
+                value={value}
+                onChange={onChange}
+                options={transactionOptionsToShow}
+                label="TIP KRETANJA:"
+                error={errors.transaction?.message}
+              />
+            )}
+          />
+
           {transactionType === 'revers' && (
             <Controller
               name="target_organization_unit_id"
