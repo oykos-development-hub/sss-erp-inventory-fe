@@ -1,11 +1,12 @@
 import {Datepicker, Dropdown, Modal} from 'client-library';
-import {useEffect, useMemo, useState} from 'react';
+import {useEffect, useMemo} from 'react';
 import {Controller, useForm} from 'react-hook-form';
 import useDispatchInsert from '../../services/graphQL/dispatchInsert/useDispatchInsert';
 import useOrgUnitOfficesGet from '../../services/graphQL/organizationUnitOffices/useOrganizationUnitOfficesGet';
 import useOrganizationUnits from '../../services/graphQL/organizationUnits/useOrganizationUnits';
 import useUserProfiles from '../../services/graphQL/userProfileOverview/useUserProfileOverview';
 import {DropdownDataNumber, DropdownDataString} from '../../types/dropdownData';
+import {InventoryDetails} from '../../types/graphQL/inventoryDetails';
 import {DispatchType} from '../../types/graphQL/inventoryDispatch';
 import {InventoryItem, SourceType} from '../../types/graphQL/inventoryOverview';
 import {InventoryTypeEnum} from '../../types/inventoryType';
@@ -13,8 +14,6 @@ import {MicroserviceProps} from '../../types/micro-service-props';
 import {parseDate, parseDateForBackend} from '../../utils/dateUtils';
 import {immovableTransactionOptions, movableTransactionOptions, smallTransactionOptions} from './constants';
 import {MovementForm} from './styles';
-import ReceiveInventoryModal from '../receiveInventoryModal/receiveInventoryModal';
-import {InventoryDetails} from '../../types/graphQL/inventoryDetails';
 
 interface MovementModalProps {
   context: MicroserviceProps;
@@ -184,7 +183,7 @@ const MovementModal = ({
       leftButtonText="Otkaži"
       content={
         <MovementForm>
-          {currentItem?.status !== 'Zadužen' && (
+          {currentItem?.status !== 'Zadužen' && initialDispatchType !== 'revers' && (
             <Controller
               name="transaction"
               control={control}
