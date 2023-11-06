@@ -149,7 +149,7 @@ const ImmovableDetailsForm = ({context, data, refetch, inventoryId}: DetailsForm
         />
       </ImmovableDetailsInputWrapper>
       <ImmovableDetailsInputWrapper>
-        <Input {...register('gross_price')} label="NABAVNA VRIJEDNOST:" disabled={true} />
+        <Input {...register('gross_price')} label="NABAVNA VRIJEDNOST:" disabled={true} rightContent={<div>€</div>} />
         <Input
           {...register('document', {required: 'Ovo polje je obavezno'})}
           error={errors.document?.message}

@@ -17,14 +17,24 @@ export const estimationTableHeads: TableHead[] = [
       />
     ),
   },
-  {title: 'Vrijednost procjene', accessor: 'gross_price_difference'},
+  {
+    title: 'Vrijednost procjene',
+    accessor: 'gross_price_difference',
+    type: 'custom',
+    renderContents: data => <Typography content={`${data || '0'}€`} />,
+  },
   {
     title: 'Datum procjene',
     accessor: 'date_of_assessment',
     type: 'custom',
     renderContents: date => <Typography variant="bodyMedium" content={date ? parseDate(date) : ''} />,
   },
-  {title: 'Ispravka vrijednosti', accessor: 'gross_price_new'},
+  {
+    title: 'Ispravka vrijednosti',
+    accessor: 'gross_price_new',
+    type: 'custom',
+    renderContents: data => <Typography content={`${data || '0'}€`} />,
+  },
   {
     title: '',
     accessor: 'TABLE_ACTIONS',

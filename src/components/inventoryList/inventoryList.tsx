@@ -220,7 +220,7 @@ const InventoryList = ({
   };
 
   const isCheckboxDisabled = (row: InventoryItem) => {
-    if (isReversDone(row) || !row.active) {
+    if (isReversDone(row) || !row.active || row.status === 'Revers') {
       return true;
     }
 
@@ -269,18 +269,18 @@ const InventoryList = ({
                   name: 'print',
                   onClick: row => console.log('print'),
                   icon: <PrinterIcon stroke={Theme.palette.gray600} />,
-                  disabled: (item: any) => !item.active,
+                  disabled: (item: any) => item.status === 'Revers' || !item.active,
                 },
                 {
                   name: 'Alokacija',
                   onClick: row => onAddMovement(row),
-                  disabled: (item: any) => !item.active,
+                  disabled: (item: any) => item.status === 'Revers' || !item.active,
                 },
                 {
                   name: 'Dodaj procjenu',
                   onClick: row => onAddEstimation(row),
                   shouldRender: (item: any) => item.source_type?.includes('1'),
-                  disabled: (item: any) => !item.active,
+                  disabled: (item: any) => item.status === 'Revers' || !item.active,
                 },
                 {
                   name: 'Deaktivacija',
@@ -288,7 +288,11 @@ const InventoryList = ({
                     setCurrentInventoryId([row.id]);
                     setDeactivateModal(true);
                   },
-                  disabled: (item: any) => item.source_type?.includes('2') || item.status !== 'Lager' || !item.active,
+                  disabled: (item: any) =>
+                    item.source_type?.includes('2') ||
+                    item.status !== 'Lager' ||
+                    item.status === 'Revers' ||
+                    !item.active,
                 },
               ]
             : [
@@ -296,12 +300,12 @@ const InventoryList = ({
                   name: 'print',
                   onClick: row => console.log('print'),
                   icon: <PrinterIcon stroke={Theme.palette.gray600} />,
-                  disabled: (item: any) => !item.active,
+                  disabled: (item: any) => item.status === 'Revers' || !item.active,
                 },
                 {
                   name: 'Alokacija',
                   onClick: row => onAddMovement(row),
-                  disabled: (item: any) => !item.active,
+                  disabled: (item: any) => item.status === 'Revers' || !item.active,
                 },
                 {
                   name: 'Deaktivacija',
@@ -309,7 +313,11 @@ const InventoryList = ({
                     setCurrentInventoryId([row.id]);
                     setDeactivateModal(true);
                   },
-                  disabled: (item: any) => item.source_type?.includes('2') || item.status !== 'Lager' || !item.active,
+                  disabled: (item: any) =>
+                    item.source_type?.includes('2') ||
+                    item.status !== 'Lager' ||
+                    item.status === 'Revers' ||
+                    !item.active,
                 },
               ]
         }

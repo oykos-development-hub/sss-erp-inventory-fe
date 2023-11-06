@@ -139,6 +139,7 @@ const ImmovableAddForm = ({context}: {context: MicroserviceProps}) => {
             label="NABAVNA VRIJEDNOST:"
             error={errors.gross_price?.message}
             type="number"
+            rightContent={<div>€</div>}
           />
         </FormRow>
 
