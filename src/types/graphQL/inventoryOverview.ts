@@ -77,4 +77,5 @@ export interface InventoryInsertData {
   invoice_file_id?: number;
   file_id?: number;
   organization_unit_id?: number;
+  order_list_id?: number;
 }

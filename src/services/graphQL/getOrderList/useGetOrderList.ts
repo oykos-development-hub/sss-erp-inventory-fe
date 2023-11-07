@@ -10,9 +10,10 @@ interface ParamsUseGetOrderList {
   supplier_id?: number;
   status?: string;
   search?: string;
+  active_plan?: boolean;
 }
 
-const useGetOrderList = ({page, size, id, supplier_id, status, search}: ParamsUseGetOrderList) => {
+const useGetOrderList = ({page, size, id, supplier_id, status, search, active_plan}: ParamsUseGetOrderList) => {
   const [totalNumOfOrders, setTotalNumOfOrders] = useState<number>(0);
   const [orders, setOrders] = useState<OrderListItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -28,6 +29,7 @@ const useGetOrderList = ({page, size, id, supplier_id, status, search}: ParamsUs
       supplier_id,
       status,
       search,
+      active_plan,
     });
     const numOfOrders = response?.orderList_Overview?.total;
     setTotalNumOfOrders(numOfOrders as number);

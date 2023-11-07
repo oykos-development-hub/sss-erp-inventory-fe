@@ -137,6 +137,7 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
         deactivation_description: '',
         invoice_file_id: 0,
         file_id: 0,
+        order_list_id: values?.order_list?.id,
       }));
 
       await mutate(

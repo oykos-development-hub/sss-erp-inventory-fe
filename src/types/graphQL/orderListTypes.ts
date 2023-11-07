@@ -21,9 +21,9 @@ export interface OrderListItem {
 export interface OrderListArticleType {
   id: number;
   title: string;
-  description: string;
-  manufacturer: string;
-  unit: string;
+  description?: string;
+  manufacturer?: string;
+  unit?: string;
   amount: number;
   total_price: number;
   available?: number;

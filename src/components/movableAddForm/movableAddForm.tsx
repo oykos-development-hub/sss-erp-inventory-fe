@@ -1,7 +1,7 @@
 import {Datepicker, Dropdown, Input, Tooltip} from 'client-library';
 import {Controller, useFormContext} from 'react-hook-form';
 import {inventorySourceOptions} from '../../screens/inventoryAdd/constants';
-import {AddInventoryFormProps} from '../../screens/inventoryAdd/types';
+import {AddInventoryFormProps, TableItemValues} from '../../screens/inventoryAdd/types';
 import useGetOrderList from '../../services/graphQL/getOrderList/useGetOrderList';
 import useSuppliersOverview from '../../services/graphQL/getSuppliers/useGetSuppliers';
 import useOrgUnitOfficesGet from '../../services/graphQL/organizationUnitOffices/useOrganizationUnitOfficesGet';
@@ -12,6 +12,7 @@ import {parseDate} from '../../utils/dateUtils';
 import {TooltipWrapper} from './styles';
 import {MovableAddFormProps} from './types';
 import {useEffect} from 'react';
+import {OrderListArticleType} from '../../types/graphQL/orderListTypes';
 
 const MovableAddForm = ({onFormSubmit, context}: AddInventoryFormProps) => {
   const {
@@ -36,7 +37,7 @@ const MovableAddForm = ({onFormSubmit, context}: AddInventoryFormProps) => {
   useEffect(() => {
     setValue('order_list', {id: 0, title: 'Bez narudžbenice'});
   }, []);
-  const {orders, orderListOptions} = useGetOrderList({page: 1, size: 1000});
+  const {orders, orderListOptions} = useGetOrderList({page: 1, size: 1000, active_plan: true});
 
   const {suppliers} = useSuppliersOverview();
 
@@ -59,9 +60,23 @@ const MovableAddForm = ({onFormSubmit, context}: AddInventoryFormProps) => {
       setValue('source', {id: 'budzet', title: 'Budžet'});
       // fill some of the fields
       const order = orders.find(item => item.id === selectedOrderList.id);
+      const articles: OrderListArticleType[] = [];
+
+      order?.articles?.forEach(article => {
+        for (let i = 0; i < article.amount; i++) {
+          articles.push({
+            id: 0,
+            title: article.title,
+            total_price: article?.total_price / article.amount,
+            description: '',
+            amount: article.amount,
+          });
+        }
+      });
+
       const updatedData = {
         order_list: selectedOrderList,
-        articles: order?.articles || [],
+        articles: articles || [],
         supplier: order?.supplier || {id: 0, title: ''},
       };
       Object.keys(updatedData).forEach(key => {
