@@ -14,7 +14,7 @@ export const immovableTransactionOptions: DropdownDataString[] = [
 
 export const smallTransactionOptions: DropdownDataString[] = [
   {id: 'return', title: 'Povrat sredstava'},
-  {id: 'allocation', title: 'Premještaj sredstava'},
+  {id: 'allocation', title: 'Zaduženje sredstava'},
 ];
 
 export const filterStatusOptions: DropdownDataString[] = [

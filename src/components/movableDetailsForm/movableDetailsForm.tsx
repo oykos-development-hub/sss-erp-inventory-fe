@@ -148,7 +148,12 @@ const MovableDetailsForm = ({data, context, inventoryType, refetch, inventoryId}
           rightContent={<div>€</div>}
         />
         <Input {...register('lifetime_of_assessment_in_months')} label="VIJEK TRAJANJA:" disabled={true} />
-        <Input {...register('depreciation_rate')} label="AMORTIZACIONA STOPA:" disabled={true} />
+        <Input
+          {...register('depreciation_rate')}
+          label="AMORTIZACIONA STOPA:"
+          disabled={true}
+          rightContent={<div>%</div>}
+        />
         <Input {...register('amortization_value')} label="VRIJEDNOST AMORTIZACIJE:" disabled={true} />
       </InputWrapper>
 

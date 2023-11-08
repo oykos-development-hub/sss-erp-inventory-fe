@@ -134,27 +134,33 @@ const ImmovableDetailsForm = ({context, data, refetch, inventoryId}: DetailsForm
           error={errors.property_document?.message}
           label="ISPRAVE O SVOJINI:"
         />
-
+      </ImmovableDetailsInputWrapper>
+      <ImmovableDetailsInputWrapper>
         <Input
           {...register('ownership_scope', {required: 'Ovo polje je obavezno'})}
           label="OBIM PRAVA:"
           error={errors.ownership_scope?.message}
         />
-      </ImmovableDetailsInputWrapper>
-      <ImmovableDetailsInputWrapper>
         <Input
           {...register('ownership_investment_scope', {required: 'Ovo polje je obavezno'})}
           error={errors.ownership_investment_scope?.message}
           label="OBIM PRAVA ZA IMOVINU STEČENU ZAJEDNIČKIM ULAGANJEM:"
         />
-      </ImmovableDetailsInputWrapper>
-      <ImmovableDetailsInputWrapper>
-        <Input {...register('gross_price')} label="NABAVNA VRIJEDNOST:" disabled={true} rightContent={<div>€</div>} />
         <Input
           {...register('document', {required: 'Ovo polje je obavezno'})}
           error={errors.document?.message}
           label="LIST NEPOKRETNOSTI:"
         />
+      </ImmovableDetailsInputWrapper>
+      <ImmovableDetailsInputWrapper>
+        <Input
+          {...register('purchase_gross_price')}
+          label="NABAVNA VRIJEDNOST:"
+          disabled={true}
+          rightContent={<div>€</div>}
+        />
+        <Input {...register('gross_price')} label="TRENUTNA VRIJEDNOST:" disabled={true} rightContent={<div>€</div>} />
+
         <Controller
           name="limitation"
           rules={{required: 'Ovo polje je obavezno'}}
@@ -194,7 +200,12 @@ const ImmovableDetailsForm = ({context, data, refetch, inventoryId}: DetailsForm
           )}
         />
         <Input {...register('lifetime_of_assessment_in_months')} label="VIJEK TRAJANJA:" disabled={true} />
-        <Input {...register('depreciation_rate')} label="AMORTIZACIONA STOPA:" disabled={true} />
+        <Input
+          {...register('depreciation_rate')}
+          label="AMORTIZACIONA STOPA:"
+          disabled={true}
+          rightContent={<div>%</div>}
+        />
       </ImmovableDetailsInputWrapper>
 
       <ButtonWrapper>
