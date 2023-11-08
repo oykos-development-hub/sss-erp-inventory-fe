@@ -9,6 +9,7 @@ import inventoryDispatchOverview from './inventoryDispatchOverview/inventoryDisp
 import inventoryDispatchDelete from './inventoryDispatchReject/inventoryDispatchReject';
 import inventoryInsert from './inventoryInsert/inventoryInsert';
 import inventoryOverview from './inventoryOverview/inventoryOverview';
+import basicInventoryPS1PDF from './inventoryPS1PDF/inventoryPS1PDF';
 import organizationUnitOfficesGet from './organizationUnitOffices/organizationUnitOfficesGet';
 import realEstateGet from './realEstate/realEstateGet';
 import userProfileOverview from './userProfileOverview/userProfileOverview';
@@ -34,4 +35,5 @@ export const GraphQL = {
   inventoryDispatchAccept: inventoryDispatchAccept,
   userProfileOverview: userProfileOverview,
   getOrderList: getOrderList,
+  basicInventoryPS1PDF: basicInventoryPS1PDF,
 };

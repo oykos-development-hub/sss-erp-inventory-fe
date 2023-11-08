@@ -22,6 +22,7 @@ import useInventoryDeactivate from '../../services/graphQL/inventoryDeactivate/u
 import ReceiveInventoryModal from '../receiveInventoryModal/receiveInventoryModal';
 import {parseDateForBackend} from '../../utils/dateUtils';
 import {filterStatusOptions} from '../movementModal/constants';
+import useInventoryPS1PDF from '../../services/graphQL/inventoryPS1PDF/useInventoryPS1PDF';
 
 interface InventoryListProps {
   context: MicroserviceProps;
@@ -59,6 +60,7 @@ const InventoryList = ({
   const orgUnitId = context?.contextMain?.organization_unit?.id;
 
   const {options: officeOptions} = useOrgUnitOfficesGet({page: 1, size: 1000, organization_unit_id: Number(orgUnitId)});
+  const {fetchPDFUrl} = useInventoryPS1PDF();
 
   const {options: amortizationGroupOptions} = useGetSettings({
     entity: 'deprecation_types',
@@ -267,9 +269,8 @@ const InventoryList = ({
             ? [
                 {
                   name: 'print',
-                  onClick: row => console.log('print'),
+                  onClick: row => fetchPDFUrl(row.id),
                   icon: <PrinterIcon stroke={Theme.palette.gray600} />,
-                  disabled: (item: any) => item.status === 'Revers' || !item.active,
                 },
                 {
                   name: 'Alokacija',
@@ -298,9 +299,8 @@ const InventoryList = ({
             : [
                 {
                   name: 'print',
-                  onClick: row => console.log('print'),
+                  onClick: row => fetchPDFUrl(row.id),
                   icon: <PrinterIcon stroke={Theme.palette.gray600} />,
-                  disabled: (item: any) => item.status === 'Revers' || !item.active,
                 },
                 {
                   name: 'Alokacija',
