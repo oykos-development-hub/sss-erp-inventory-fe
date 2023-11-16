@@ -22,7 +22,11 @@ import useInventoryDeactivate from '../../services/graphQL/inventoryDeactivate/u
 import ReceiveInventoryModal from '../receiveInventoryModal/receiveInventoryModal';
 import {parseDateForBackend} from '../../utils/dateUtils';
 import {filterStatusOptions} from '../movementModal/constants';
-import useInventoryPS1PDF from '../../services/graphQL/inventoryPS1PDF/useInventoryPS1PDF';
+import {usePDF} from '@react-pdf/renderer';
+import BasicInventoryImmovablePDF from '../../services/graphQL/inventoryImmovablePDF/inventoryImmovablePDF';
+import useInventoryDetails from '../../services/graphQL/inventoryDetails/useInventoryDetailsGet';
+import BasicInventoryMovablePDF from '../../services/graphQL/inventoryMovablePDF/inventoryMovablePDF';
+// import useInventoryPS1PDF from '../../services/graphQL/inventoryPS1PDF/useInventoryPS1PDF';
 
 interface InventoryListProps {
   context: MicroserviceProps;
@@ -60,7 +64,9 @@ const InventoryList = ({
   const orgUnitId = context?.contextMain?.organization_unit?.id;
 
   const {options: officeOptions} = useOrgUnitOfficesGet({page: 1, size: 1000, organization_unit_id: Number(orgUnitId)});
-  const {fetchPDFUrl} = useInventoryPS1PDF();
+
+  const [inventoryPDF, updatePDF] = usePDF({});
+  const {refetch: fetchDetails} = useInventoryDetails();
 
   const {options: amortizationGroupOptions} = useGetSettings({
     entity: 'deprecation_types',
@@ -145,9 +151,29 @@ const InventoryList = ({
     }
   };
 
-  const onDeactivate = () => {
-    console.log('deactivating');
+  const fetchPDFUrl = (id: number) => {
+    fetchDetails(id, data => {
+      const myPDF = data.source_type.includes('NS') ? (
+        <BasicInventoryImmovablePDF item={data} />
+      ) : (
+        <BasicInventoryMovablePDF item={data} />
+      );
+
+      updatePDF(myPDF);
+    });
   };
+
+  useEffect(() => {
+    if (!inventoryPDF.blob) return;
+    const blobUrl = URL.createObjectURL(inventoryPDF.blob);
+    const link = document.createElement('a');
+    link.href = blobUrl;
+    link.download = 'izvještaj.pdf';
+    link.style.display = 'none';
+    document.body.appendChild(link);
+    link.click();
+    URL.revokeObjectURL(blobUrl);
+  }, [inventoryPDF]);
 
   const onAddEstimation = (row: InventoryItem) => {
     setCurrentInventoryId([row.id]);
