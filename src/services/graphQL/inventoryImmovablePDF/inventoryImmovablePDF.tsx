@@ -5,12 +5,12 @@ import {InventoryDetails} from '../../../types/graphQL/inventoryDetails';
 // Register custom fonts
 Font.register({
   family: 'RobotoSlab',
-  src: '/fonts/RobotoSlab-VariableFont_wght.ttf', // Adjust the path as needed
+  src: '/pdf-fonts/RobotoSlab-VariableFont_wght.ttf', // Adjust the path as needed
   fontWeight: 'bold',
 });
 Font.register({
   family: 'RobotoSlabBold',
-  src: '/fonts/RobotoSlab-Bold.ttf', // Adjust the path as needed
+  src: '/pdf-fonts/RobotoSlab-Bold.ttf', // Adjust the path as needed
 });
 // Stilovi za dokument
 const styles = StyleSheet.create({
