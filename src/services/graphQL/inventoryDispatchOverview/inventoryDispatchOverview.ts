@@ -39,8 +39,6 @@ const InventoryDispatchOverview = `query BasicInventoryDispatchOverview($page: I
               serial_number
               location
           }
-          city
-          date
           created_at
           updated_at
           file_id

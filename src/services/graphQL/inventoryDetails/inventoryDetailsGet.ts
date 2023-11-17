@@ -52,8 +52,6 @@ const inventoryDetailsGet = `query BasicInventoryDetails($id: Int!) {
                 id
                 title
             }
-            address
-            city
             location
             target_user_profile {
                 id

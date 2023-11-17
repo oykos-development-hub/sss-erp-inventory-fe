@@ -310,7 +310,7 @@ const InventoryList = ({
                   disabled: (item: any) => item.status === 'Revers' || !item.active,
                 },
                 {
-                  name: 'Deaktivacija',
+                  name: 'Otpis',
                   onClick: row => {
                     setCurrentInventoryId([row.id]);
                     setDeactivateModal(true);
@@ -334,7 +334,7 @@ const InventoryList = ({
                   disabled: (item: any) => item.status === 'Revers' || !item.active,
                 },
                 {
-                  name: 'Deaktivacija',
+                  name: 'Otpis',
                   onClick: row => {
                     setCurrentInventoryId([row.id]);
                     setDeactivateModal(true);

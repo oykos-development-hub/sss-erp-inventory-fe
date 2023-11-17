@@ -69,6 +69,7 @@ const styles = StyleSheet.create({
 });
 
 const BasicInventoryMovablePDF = ({item}: {item?: InventoryDetails}) => {
+  const indexTable = 7;
   return (
     <Document>
       <Page size="A4" style={styles.page}>
@@ -93,11 +94,11 @@ const BasicInventoryMovablePDF = ({item}: {item?: InventoryDetails}) => {
           </View>
           <View style={styles.tableRow}>
             <Text style={styles.content}>2. Sjedište (mjesto, opština): </Text>
-            <Text style={styles.contentBold}>{item?.city}</Text>
+            <Text style={styles.contentBold}>{item?.organization_unit?.title}</Text>
           </View>
           <View style={styles.tableRow}>
             <Text style={styles.content}>3. Adresa (ulica, broj, sprat, kancelarija): </Text>
-            <Text style={styles.contentBold}>{item?.address}</Text>
+            <Text style={styles.contentBold}>{item?.organization_unit?.title}</Text>
           </View>
           <View style={styles.tableRow}>
             <Text style={styles.content}>4. Djelatnost (šifra): </Text>
