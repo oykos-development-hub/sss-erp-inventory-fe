@@ -1,5 +1,5 @@
-import {Table, TableHead, Typography} from 'client-library';
-import {useState} from 'react';
+import {Table, TableHead, Typography, PrinterIcon, Theme} from 'client-library';
+import {useEffect, useState} from 'react';
 import useOrganizationUnits from '../../services/graphQL/organizationUnits/useOrganizationUnits';
 import {InventoryDispatch} from '../../types/graphQL/inventoryDispatch';
 import {MicroserviceProps} from '../../types/micro-service-props';
@@ -8,6 +8,9 @@ import ReceiveInventoryModal from '../receiveInventoryModal/receiveInventoryModa
 import {receiveInventoryStatus, receiveInventoryType} from './constants';
 import {FilterDropdown, Filters} from './styles';
 import {InventoryDispatchFilters} from '../../screens/inventoryDispatch/types';
+import {usePDF} from '@react-pdf/renderer';
+import useInventoryDispatchDetails from '../../services/graphQL/inventoryDispatchOverview/useInventoryDispatchDetails';
+import BasicReversPDF from '../../services/graphQL/reversPDF/reversPDF';
 
 interface InventoryDispatchList {
   context: MicroserviceProps;
@@ -30,6 +33,10 @@ const InventoryDispatchList = ({
   const [currentId, setCurrentId] = useState<number>();
   const [targetOrgID, setTargetOrgID] = useState<number>();
   const {options: locationOptions} = useOrganizationUnits();
+
+  const {fetchDispatch} = useInventoryDispatchDetails();
+
+  const [dispatchPDF, updatePDF] = usePDF({});
 
   const receiveInventoryTableHeads: TableHead[] = [
     {
@@ -63,6 +70,24 @@ const InventoryDispatchList = ({
 
     {title: '', accessor: 'TABLE_ACTIONS', type: 'tableActions'},
   ];
+
+  const fetchPDFUrl = (id: number) => {
+    fetchDispatch(id, data => {
+      updatePDF(<BasicReversPDF item={data} />);
+    });
+  };
+
+  useEffect(() => {
+    if (!dispatchPDF.blob) return;
+    const blobUrl = URL.createObjectURL(dispatchPDF.blob);
+    const link = document.createElement('a');
+    link.href = blobUrl;
+    link.download = 'izvještaj.pdf';
+    link.style.display = 'none';
+    document.body.appendChild(link);
+    link.click();
+    URL.revokeObjectURL(blobUrl);
+  }, [dispatchPDF]);
 
   const onRowClick = (item: InventoryDispatch) => {
     if ((item.type === 'revers' || item.type === 'return-revers') && !item.is_accepted) {
@@ -102,7 +127,19 @@ const InventoryDispatchList = ({
           placeholder="Odaberi organizacionu jedinicu"
         />
       </Filters>
-      <Table isLoading={loading} tableHeads={receiveInventoryTableHeads} data={tableData} onRowClick={onRowClick} />
+      <Table
+        isLoading={loading}
+        tableHeads={receiveInventoryTableHeads}
+        data={tableData}
+        onRowClick={onRowClick}
+        tableActions={[
+          {
+            name: 'print',
+            onClick: row => fetchPDFUrl(row.id),
+            icon: <PrinterIcon stroke={Theme.palette.gray600} />,
+          },
+        ]}
+      />
       {receiveModal && (
         <ReceiveInventoryModal
           refetch={refetch}
