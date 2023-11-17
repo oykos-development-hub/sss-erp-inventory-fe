@@ -17,6 +17,8 @@ export interface InventoryDetails {
   internal_ownership: string;
   office: DropdownDataNumber;
   target_organization_unit?: DropdownDataNumber;
+  address?: string;
+  city?: string;
   organization_unit?: DropdownDataNumber;
   location: number;
   target_user_profile: DropdownDataNumber;

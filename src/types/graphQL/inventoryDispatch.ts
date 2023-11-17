@@ -16,6 +16,8 @@ export interface InventoryDispatch {
   created_at: string;
   updated_at: string;
   file_id: number;
+  date?: string;
+  city?: string;
   inventory: {
     id: number;
     type: InventoryTypeEnum | `${InventoryTypeEnum}`;
