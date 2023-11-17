@@ -1,23 +1,18 @@
 import React from 'react';
-import { View, Text, StyleSheet } from '@react-pdf/renderer';
+import {View, Text, StyleSheet} from '@react-pdf/renderer';
 
 interface VerticalTableProps {
   data: Record<string, string | number>;
 }
 
-const VerticalTable: React.FC<VerticalTableProps> = ({ data }) => {
+const VerticalTable: React.FC<VerticalTableProps> = ({data}) => {
   const entries = Object.entries(data);
   return (
     <View style={styles.container}>
       {entries.map(([key, value], index) => (
         <View
-          style={[
-            styles.row,
-            index === 0 ? styles.firstRow : {},
-            index === entries.length - 1 ? styles.lastRow : {}
-          ]}
-          key={key}
-        >
+          style={[styles.row, index === 0 ? styles.firstRow : {}, index === entries.length - 1 ? styles.lastRow : {}]}
+          key={key}>
           <Text style={styles.key}>{key}:</Text>
           <Text style={styles.value}>{value}</Text>
         </View>
@@ -25,7 +20,6 @@ const VerticalTable: React.FC<VerticalTableProps> = ({ data }) => {
     </View>
   );
 };
-
 
 const styles = StyleSheet.create({
   container: {
@@ -54,7 +48,7 @@ const styles = StyleSheet.create({
     width: '20%',
     padding: 6,
     borderRight: 1,
-    borderColor: 'black'
+    borderColor: 'black',
   },
   value: {
     fontSize: 12,
