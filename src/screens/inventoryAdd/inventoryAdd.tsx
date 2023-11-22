@@ -173,7 +173,7 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
           class_type: {id: 1, title: 'Class 1'},
           depreciation_type: {id: 1, title: 'Amortizaciona grupa'},
           inventory_number: '',
-          title: values.articles.title,
+          title: values?.articles?.title,
           serial_number: '',
           gross_price: values.articles?.total_price?.toString(),
           description: '',

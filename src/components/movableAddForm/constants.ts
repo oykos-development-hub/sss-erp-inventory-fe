@@ -1,11 +1,10 @@
 import {MovableAddFormProps} from './types';
 
 export const initialValues: MovableAddFormProps = {
-  office: null,
-  order_list: null,
+  office: undefined,
   invoice_number: '',
-  supplier: null,
-  date_of_purchase: '',
-  source: null,
-  articles: [],
+  supplier: undefined,
+  date_of_purchase: undefined,
+  source: undefined,
+  articles: undefined,
 };

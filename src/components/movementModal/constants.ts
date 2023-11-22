@@ -1,10 +1,10 @@
 import {DropdownDataString} from '../../types/dropdownData';
 
 export const movableTransactionOptions: DropdownDataString[] = [
-  {id: 'revers', title: 'Interni revers'},
-  {id: 'allocation', title: 'Eksterni revers'},
-  {id: 'return', title: 'Razduženje sredstva'},
-  {id: 'return-revers', title: 'Povrat reversa'},
+  {id: 'revers', title: 'Eksterni revers'},
+  {id: 'allocation', title: 'Interni revers'},
+  {id: 'return', title: 'Razduženje'},
+  {id: 'return-revers', title: 'Povrat sredstva'},
 ];
 
 export const immovableTransactionOptions: DropdownDataString[] = [
@@ -13,8 +13,8 @@ export const immovableTransactionOptions: DropdownDataString[] = [
 ];
 
 export const smallTransactionOptions: DropdownDataString[] = [
-  {id: 'return', title: 'Povrat sredstava'},
-  {id: 'allocation', title: 'Eksterni revers'},
+  {id: 'return', title: 'Razduženje'},
+  {id: 'allocation', title: 'Interni revers'},
 ];
 
 export const filterStatusOptions: DropdownDataString[] = [
