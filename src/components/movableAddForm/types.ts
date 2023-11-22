@@ -16,5 +16,5 @@ export interface MovableAddFormProps {
 export const VisibilityType = {
   None: 0,
   Accounting: 2,
-  Inventory: 3
+  Inventory: 3,
 };
