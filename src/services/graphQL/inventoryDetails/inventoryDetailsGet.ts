@@ -125,11 +125,7 @@ const inventoryDetailsGet = `query BasicInventoryDetails($id: Int!) {
             created_at
             updated_at
             invoice_file_id
-            file {
-                id
-                name
-                type
-            }
+            file_id
         }
     }
 }`;

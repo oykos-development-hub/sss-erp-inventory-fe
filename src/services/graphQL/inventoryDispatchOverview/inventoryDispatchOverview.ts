@@ -43,7 +43,11 @@ const InventoryDispatchOverview = `query BasicInventoryDispatchOverview($page: I
           date
           created_at
           updated_at
-          file_id
+          file {
+            id
+            name
+            type
+          }
       }
   }
 }`;

@@ -27,6 +27,7 @@ const InventoryDetails = ({context, type}: InventoryProps) => {
   const {data: depreciationTypes} = useGetSettings({entity: 'deprecation_types'});
 
   const id = context.navigation.location.pathname.split('/').pop();
+  const orgUnitId = context?.contextMain?.organization_unit?.id;
 
   const {data, refetch, loading} = useInventoryDetails(id);
 
@@ -60,6 +61,12 @@ const InventoryDetails = ({context, type}: InventoryProps) => {
 
   const onCloseMovementModal = () => {
     setMovementModal(false);
+  };
+
+  const checkSetMovementModal = (): boolean => {
+    if (!data?.items.target_organization_unit?.id) return false;
+    if (data?.items.target_organization_unit?.id !== orgUnitId) return true;
+    return false;
   };
 
   return (
@@ -127,7 +134,7 @@ const InventoryDetails = ({context, type}: InventoryProps) => {
           <div>
             <TableHeader>
               <Typography variant="caption" content="kretanje sredstva" />
-              {data?.items?.status !== 'Revers' && <PlusButton onClick={() => setMovementModal(true)} />}
+              <PlusButton disabled={checkSetMovementModal()} onClick={() => setMovementModal(true)} />
             </TableHeader>
             <Table
               tableHeads={movementsTableHeads}

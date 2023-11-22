@@ -248,7 +248,11 @@ const InventoryList = ({
   };
 
   const isCheckboxDisabled = (row: InventoryItem) => {
-    if (isReversDone(row) || !row.active || row.status === 'Revers') {
+    if (
+      isReversDone(row) ||
+      !row.active ||
+      (row?.target_organization_unit?.id && row?.target_organization_unit?.id !== orgUnitId)
+    ) {
       return true;
     }
 

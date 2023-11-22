@@ -29,7 +29,11 @@ const dispatchInsert = `mutation($data: BasicInventoryDispatchMutation!) {
             dispatch_description
             created_at
             updated_at
-            file_id
+            file {
+                id
+                name
+                type
+            }
         }
     }
 }`;
