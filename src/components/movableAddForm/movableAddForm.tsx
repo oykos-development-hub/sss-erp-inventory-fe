@@ -14,7 +14,7 @@ import {PublicProcurementContracts} from '../../types/graphQL/publicProcurmentCo
 import {PublicProcurementContractArticles} from '../../types/graphQL/publicProcurmentContractArticles';
 import {parseDate} from '../../utils/dateUtils';
 import {TooltipWrapper} from './styles';
-import {MovableAddFormProps} from './types';
+import {MovableAddFormProps, VisibilityType} from './types';
 
 const MovableAddForm = ({onFormSubmit, context}: AddInventoryFormProps) => {
   const {
@@ -58,7 +58,7 @@ const MovableAddForm = ({onFormSubmit, context}: AddInventoryFormProps) => {
   }, [supplier]);
 
   useEffect(() => {
-    if (contract?.id) fetchArticles(contract?.id);
+    if (contract?.id) fetchArticles(contract?.id, VisibilityType.Inventory);
     const fullContract = contracts?.items?.find((item: PublicProcurementContracts) => item.id === contract?.id);
     if (fullContract) {
       setValue('date_of_contract_signing', new Date(fullContract.date_of_signing));

@@ -1,7 +1,6 @@
-import {useEffect, useState} from 'react';
+import {useState} from 'react';
 import useAppContext from '../../../context/useAppContext';
 import {DropdownDataNumber} from '../../../types/dropdownData';
-import {PublicProcurementContracts} from '../../../types/graphQL/publicProcurmentContract';
 import {GraphQLResponse} from '../../../types/graphQL/response';
 import {initialOverviewData} from '../../constants';
 import {GraphQL} from '..';
@@ -13,9 +12,9 @@ const useProcurementContractArticles = () => {
   const [options, setOptions] = useState<DropdownDataNumber[]>([]);
   const {fetch} = useAppContext();
 
-  const fetchProcurementContractsArticles = async (contract_id: number) => {
+  const fetchProcurementContractsArticles = async (contract_id: number, visibility_type: number) => {
     try {
-      const response = await fetch(GraphQL.getPublicProcurementContractArticles, {contract_id});
+      const response = await fetch(GraphQL.getPublicProcurementContractArticles, {contract_id, visibility_type});
 
       const options = response?.publicProcurementContractArticles_Overview?.items
         .filter((item: PublicProcurementContractArticles) => item.amount > item.used_articles)

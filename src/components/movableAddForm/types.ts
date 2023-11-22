@@ -12,3 +12,9 @@ export interface MovableAddFormProps {
   source?: DropdownDataString;
   articles?: OrderListArticleType;
 }
+
+export const VisibilityType = {
+  None: 0,
+  Accounting: 2,
+  Inventory: 3
+};

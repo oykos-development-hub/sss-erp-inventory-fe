@@ -1,5 +1,5 @@
-const getPublicProcurementContractArticles = `query ContractArticles($contract_id: Int) {
-    publicProcurementContractArticles_Overview(contract_id: $contract_id) {
+const getPublicProcurementContractArticles = `query ContractArticles($contract_id: Int, $visibility_type: Int) {
+    publicProcurementContractArticles_Overview(contract_id: $contract_id, visibility_type: $visibility_type) {
         status 
         message
         items {
