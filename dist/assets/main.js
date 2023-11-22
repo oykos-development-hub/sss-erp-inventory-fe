@@ -2665,7 +2665,11 @@ See https://reactjs.org/docs/forms.html#controlled-components`);let r;e.initialP
             created_at
             updated_at
             invoice_file_id
-            file_id
+            file {
+                id
+                name
+                type
+            }
         }
     }
 }`,Zue=`mutation($dispatch_id: Int!) {
