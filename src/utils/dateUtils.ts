@@ -15,7 +15,7 @@ export const calculateExperience = (startDate: Date | string, endDate: Date | st
   return diffInMonths;
 };
 
-export const parseDateForBackend = (date: Date | null): string | undefined => {
+export const parseDateForBackend = (date?: Date): string | undefined => {
   if (!date) return undefined;
 
   const pickedDate = new Date(date);

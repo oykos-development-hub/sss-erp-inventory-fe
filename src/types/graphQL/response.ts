@@ -5,6 +5,8 @@ import {InventoryDispatch} from './inventoryDispatch';
 import {InventoryItem} from './inventoryOverview';
 import {Office} from './organizationUnitOffices';
 import {OrganizationUnit} from './organizationUnits';
+import {PublicProcurementContracts} from './publicProcurmentContract';
+import {PublicProcurementContractArticles} from './publicProcurmentContractArticles';
 import {RealEstate} from './realEstateOverview';
 import {Supplier} from './suppliersOverviewTypes';
 import {UserProfile} from './userProfileOverview';
@@ -34,6 +36,8 @@ export interface GraphQLResponse {
     basicInventoryRealEstates_Overview: OverviewResponse<RealEstate>;
     officesOfOrganizationUnits_Overview: OverviewResponse<Office>;
     settingsDropdown_Overview: OverviewResponse<SettingsDropdownOverview>;
+    publicProcurementContracts_Overview: OverviewResponse<PublicProcurementContracts>;
+    publicProcurementContractArticles_Overview: OverviewResponse<PublicProcurementContractArticles>;
     basicInventoryAssessments_Insert: InsertResponse<InventoryAssessment>;
     basicInventoryDispatch_Insert: InsertResponse<InventoryDispatch>;
     basicInventory_Details: {

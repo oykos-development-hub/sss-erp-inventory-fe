@@ -10,10 +10,11 @@ const useDispatchAccept = () => {
     const response = await fetch(GraphQL.inventoryDispatchAccept, {dispatch_id: id});
     if (response.basicInventoryDispatch_Accept.status === 'success') {
       onSuccess && onSuccess();
+      setLoading(false);
     } else {
       onError && onError();
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return {loading, mutate: acceptDispatch};

@@ -19,13 +19,13 @@ export interface OrderListItem {
 }
 
 export interface OrderListArticleType {
-  id: number;
+  id?: number;
   title: string;
   description?: string;
   manufacturer?: string;
   unit?: string;
-  amount: number;
-  total_price: number;
+  amount?: number;
+  total_price?: number;
   available?: number;
 }
 

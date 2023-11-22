@@ -135,7 +135,7 @@ const MovementModal = ({
         ? immovableTransactionOptions
         : smallTransactionOptions;
 
-    const optionsToRemove = [currentItem?.status === 'Lager' ? 'return' : 'allocation'];
+    const optionsToRemove = [currentItem?.status === 'Nezadužen' ? 'return' : 'allocation'];
 
     if (
       sourceType?.includes('2') ||

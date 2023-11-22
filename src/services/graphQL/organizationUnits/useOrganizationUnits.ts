@@ -1,10 +1,9 @@
 import {useEffect, useState} from 'react';
-import {GraphQL} from '..';
-import {initialOverviewData} from '../../constants';
+import useAppContext from '../../../context/useAppContext';
+import {DropdownDataNumber} from '../../../types/dropdownData';
 import {OrganizationUnit} from '../../../types/graphQL/organizationUnits';
 import {GraphQLResponse} from '../../../types/graphQL/response';
-import {DropdownDataNumber} from '../../../types/dropdownData';
-import useAppContext from '../../../context/useAppContext';
+import {initialOverviewData} from '../../constants';
 
 const useOrganizationUnits = (onlyParent?: boolean) => {
   const [data, setData] = useState<GraphQLResponse['data']['organizationUnits']>(initialOverviewData);

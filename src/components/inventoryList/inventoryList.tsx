@@ -301,13 +301,13 @@ const InventoryList = ({
                 {
                   name: 'Alokacija',
                   onClick: row => onAddMovement(row),
-                  disabled: (item: any) => item.status === 'Revers' || !item.active,
+                  disabled: (item: InventoryItem) => orgUnitId !== item.target_organization_unit.id || !item.active,
                 },
                 {
                   name: 'Dodaj procjenu',
                   onClick: row => onAddEstimation(row),
                   shouldRender: (item: any) => item.source_type?.includes('1'),
-                  disabled: (item: any) => item.status === 'Revers' || !item.active,
+                  disabled: (item: InventoryItem) => orgUnitId !== item.target_organization_unit.id || !item.active,
                 },
                 {
                   name: 'Otpis',
@@ -315,10 +315,10 @@ const InventoryList = ({
                     setCurrentInventoryId([row.id]);
                     setDeactivateModal(true);
                   },
-                  disabled: (item: any) =>
+                  disabled: (item: InventoryItem) =>
                     item.source_type?.includes('2') ||
-                    item.status !== 'Lager' ||
-                    item.status === 'Revers' ||
+                    item.status !== 'Nezadužen' ||
+                    orgUnitId !== item.target_organization_unit.id ||
                     !item.active,
                 },
               ]
@@ -331,7 +331,7 @@ const InventoryList = ({
                 {
                   name: 'Alokacija',
                   onClick: row => onAddMovement(row),
-                  disabled: (item: any) => item.status === 'Revers' || !item.active,
+                  disabled: (item: InventoryItem) => orgUnitId !== item.target_organization_unit.id || !item.active,
                 },
                 {
                   name: 'Otpis',
@@ -339,10 +339,10 @@ const InventoryList = ({
                     setCurrentInventoryId([row.id]);
                     setDeactivateModal(true);
                   },
-                  disabled: (item: any) =>
+                  disabled: (item: InventoryItem) =>
                     item.source_type?.includes('2') ||
-                    item.status !== 'Lager' ||
-                    item.status === 'Revers' ||
+                    item.status !== 'Nezadužen' ||
+                    orgUnitId !== item.target_organization_unit.id ||
                     !item.active,
                 },
               ]

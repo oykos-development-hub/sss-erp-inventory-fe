@@ -70,9 +70,9 @@ export const movableInventoryTableHeads: TableHead[] = [
     type: 'custom',
     renderContents: (_: any, item: InventoryItem) => {
       const title =
-        item.status === 'Revers' && item?.target_organization_unit
+        item?.target_organization_unit?.id && item?.target_organization_unit?.id !== item?.organization_unit?.id
           ? item?.target_organization_unit?.title
-          : item.office.title;
+          : item?.office?.title;
       return <Typography content={title} />;
     },
   },

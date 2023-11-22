@@ -10,8 +10,9 @@ export interface TableItemValues {
   inventory_number?: string;
   title?: string;
   serial_number?: string;
-  gross_price: string;
+  gross_price?: string;
   description?: string;
+  contract_article_id?: number;
 }
 
 export type TableValues = {

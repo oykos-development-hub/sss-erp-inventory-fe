@@ -11,10 +11,11 @@ const useAssessmentInsert = () => {
     const response = await fetch(GraphQL.assessmentInsert, {data});
     if (response.basicInventoryAssessments_Insert.status === 'success') {
       onSuccess && onSuccess();
+      setLoading(false);
     } else {
       onError && onError();
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return {loading, mutate: insertAssessment};

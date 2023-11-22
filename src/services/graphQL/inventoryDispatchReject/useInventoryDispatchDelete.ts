@@ -10,10 +10,11 @@ const UseDispatchDelete = () => {
     const response = await fetch(GraphQL.inventoryDispatchDelete, {id});
     if (response.basicInventoryDispatch_Delete.status === 'success') {
       onSuccess && onSuccess();
+      setLoading(false);
     } else {
       onError && onError();
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return {loading, mutate: deleteDispatch};

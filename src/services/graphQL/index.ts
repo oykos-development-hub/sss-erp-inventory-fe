@@ -13,6 +13,8 @@ import basicInventoryPS1PDF from './inventoryMovablePDF/inventoryMovablePDF';
 import organizationUnitOfficesGet from './organizationUnitOffices/organizationUnitOfficesGet';
 import realEstateGet from './realEstate/realEstateGet';
 import userProfileOverview from './userProfileOverview/userProfileOverview';
+import getPublicProcurementContracts from './publicProcurementContracts/publicProcurementContracts';
+import getPublicProcurementContractArticles from './publicProcurementContractArticles/getPublicProcurementContractArticles';
 
 export const BFF_URL = {
   local: 'http://localhost:8080',
@@ -36,4 +38,6 @@ export const GraphQL = {
   userProfileOverview: userProfileOverview,
   getOrderList: getOrderList,
   basicInventoryPS1PDF: basicInventoryPS1PDF,
+  getPublicProcurementContracts: getPublicProcurementContracts,
+  getPublicProcurementContractArticles: getPublicProcurementContractArticles,
 };

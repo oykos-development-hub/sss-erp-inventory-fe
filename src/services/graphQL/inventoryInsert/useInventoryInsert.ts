@@ -12,10 +12,11 @@ const useInventoryInsert = () => {
     const response = await fetch(GraphQL.inventoryInsert, {data});
     if (response?.basicInventory_Insert?.status === 'success') {
       onSuccess && onSuccess();
+      setLoading(false);
     } else {
       onError && onError();
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return {loading, mutate: insertInventory};

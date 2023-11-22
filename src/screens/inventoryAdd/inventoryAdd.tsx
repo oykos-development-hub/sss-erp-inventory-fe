@@ -11,6 +11,7 @@ import {parseDateForBackend} from '../../utils/dateUtils';
 import {newTableItem, tableHeads} from './constants';
 import {ButtonContainer, StyledTable} from './styles';
 import {DropdownName, InputName, TableItemValues, TableValues, valuesType} from './types';
+import {MovableAddFormProps} from '../../components/movableAddForm/types';
 
 const InventoryAdd = ({context, type}: InventoryProps) => {
   const [isOrderListSelected, setIsOrderListSelected] = useState(false);
@@ -36,6 +37,7 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
     name: 'items',
   });
   const {options: amortizationGroupOptions} = useGetSettings({entity: 'deprecation_types'});
+  const [movableValues, setMovableValues] = useState<MovableAddFormProps>();
 
   const {options: classOptions} = useGetSettings({entity: 'inventory_class_type'});
   const {mutate, loading} = useInventoryInsert();
@@ -53,9 +55,10 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
         if (head.accessor === 'class_type' || head.accessor === 'depreciation_type') {
           return {
             ...head,
-            renderContents: (_: any, __: any, index: any) => {
+            renderContents: (item: any, __: any, index: any) => {
               return (
                 <Controller
+                  key={item.id}
                   name={`items.${index}.${head.accessor}` as DropdownName}
                   rules={{required: 'Ovo polje je obavezno'}}
                   control={control}
@@ -77,9 +80,10 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
         } else {
           return {
             ...head,
-            renderContents: (_: any, __: any, index: any) => {
+            renderContents: (item: any, __: any, index: any) => {
               return (
                 <Input
+                  key={item.id}
                   type={head.accessor === 'gross_price' ? 'number' : 'text'}
                   {...register(`items.${index}.${head.accessor}` as InputName, {
                     required: head.accessor !== 'description' ? 'Ovo polje je obavezno' : false,
@@ -104,11 +108,11 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
       const data = values.items.map((item: any) => ({
         // form data
         id: 0,
-        date_of_purchase: parseDateForBackend(values.date_of_purchase) || '',
-        source: values.source.id,
-        office_id: values.office.id,
-        invoice_number: values.invoice_number,
-        supplier_id: values.supplier.id,
+        date_of_purchase: parseDateForBackend(movableValues?.date_of_purchase) || '',
+        source: movableValues?.source?.id,
+        office_id: movableValues?.office?.id,
+        invoice_number: movableValues?.invoice_number,
+        supplier_id: movableValues?.supplier?.id,
 
         // item data
         depreciation_type_id: item?.depreciation_type?.id,
@@ -137,7 +141,8 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
         deactivation_description: '',
         invoice_file_id: 0,
         file_id: 0,
-        order_list_id: values?.order_list?.id,
+        contract_id: movableValues?.contract?.id,
+        contract_article_id: item?.contract_article_id,
       }));
 
       await mutate(
@@ -159,25 +164,22 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
 
   const handleFormSubmit = (values: valuesType) => {
     if (!isImmovable) {
-      if (values && 'order_list' in values && values.order_list && values.order_list.id !== 0) {
-        remove(); // clear table
+      if (values && 'contract' in values && values.contract && values.contract.id !== 0) {
         setIsOrderListSelected(true);
-        const articles: TableItemValues[] =
-          values?.articles?.map(item => ({
-            id: 0,
-            class_type: {id: 1, title: 'Class 1'},
-            depreciation_type: {id: 1, title: 'Amortizaciona grupa'},
-            inventory_number: '',
-            title: item.title,
-            serial_number: '',
-            gross_price: item?.total_price?.toString(),
-            description: '',
-          })) || [];
-        append(articles); // should append data from selected order_list
-      } else if (!values?.invoice_number) {
-        remove();
-        setIsOrderListSelected(false);
-      } else append(newTableItem);
+        setMovableValues({...values});
+
+        append({
+          id: Math.floor(Math.random() * 1000),
+          class_type: {id: 1, title: 'Class 1'},
+          depreciation_type: {id: 1, title: 'Amortizaciona grupa'},
+          inventory_number: '',
+          title: values.articles.title,
+          serial_number: '',
+          gross_price: values.articles?.total_price?.toString(),
+          description: '',
+          contract_article_id: values?.articles?.id,
+        });
+      }
     }
   };
 

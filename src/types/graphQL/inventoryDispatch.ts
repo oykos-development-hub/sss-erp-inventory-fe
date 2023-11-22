@@ -48,10 +48,10 @@ export enum DispatchType {
 }
 
 export const DispatchTypeTitles = {
-  [DispatchType.revers]: 'Revers',
-  [DispatchType.returnRevers]: 'Povrat reversa',
-  [DispatchType.allocation]: 'Zaduženje',
-  [DispatchType.return]: 'Povrat sredstava',
+  [DispatchType.revers]: 'Eksterni revers',
+  [DispatchType.returnRevers]: 'Povrat sredstva',
+  [DispatchType.allocation]: 'Interni revers',
+  [DispatchType.return]: 'Razduženje ',
 };
 
 export interface InventoryDispatchOverviewParams {
