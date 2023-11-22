@@ -81,8 +81,6 @@ const MovementModal = ({
   const {mutate, loading: isSaving} = useDispatchInsert();
 
   const onSubmit = (values: MovementModalForm) => {
-    if (!currentItem?.inventory_number)
-      return alert.error('Kretanje sredstva nije moguće. Dodijelite sredstvu inventarski broj!');
     if (isValid && !isSaving) {
       const data = {
         source_user_profile_id: 1,
