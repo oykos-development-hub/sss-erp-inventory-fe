@@ -213,7 +213,7 @@ const MovableAddForm = ({onFormSubmit, context}: AddInventoryFormProps) => {
           className="width200"
         />
         {contract && contract.id !== 0 ? (
-          <PlusButton onClick={handleSubmit(onSubmit)} />
+          <PlusButton disabled={!article.id} onClick={handleSubmit(onSubmit)} />
         ) : (
           <Tooltip
             style={{width: '200px'}}
