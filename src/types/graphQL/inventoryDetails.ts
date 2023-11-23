@@ -2,6 +2,8 @@ import {DropdownDataNumber} from '../dropdownData';
 import {SourceType} from './inventoryOverview';
 import {RealEstate} from './realEstateOverview';
 
+export type FileItem = {id: number; name: string; type: string};
+
 export interface InventoryDetails {
   id: number;
   article_id: number;
