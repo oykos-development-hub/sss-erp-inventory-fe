@@ -35,7 +35,7 @@ const MovableAddForm = ({onFormSubmit, context}: AddInventoryFormProps) => {
       values.articles = {
         id: articleFind.public_procurement_article.id,
         title: articleFind.public_procurement_article.title,
-        total_price: Number(articleFind.gross_value) / articleFind.amount,
+        gross_value: Number(articleFind.gross_value) / articleFind.amount,
       };
       useArticle(articleFind.id);
       setArticle({id: 0, title: ''});
@@ -58,7 +58,7 @@ const MovableAddForm = ({onFormSubmit, context}: AddInventoryFormProps) => {
   }, [supplier]);
 
   useEffect(() => {
-    if (contract?.id) fetchArticles(contract?.id, VisibilityType.Inventory);
+    if (contract?.id) fetchArticles(contract?.id, orgUnitId);
     const fullContract = contracts?.items?.find((item: PublicProcurementContracts) => item.id === contract?.id);
     if (fullContract) {
       setValue('date_of_contract_signing', new Date(fullContract.date_of_signing));

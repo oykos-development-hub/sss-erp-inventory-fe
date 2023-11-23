@@ -96,12 +96,6 @@ export const movableInventoryTableHeads: TableHead[] = [
     renderContents: date => <Typography content={parseDate(date)} />,
   },
   {
-    title: 'Procjene',
-    accessor: 'has_assessments',
-    type: 'custom',
-    renderContents: has_assessments => (has_assessments ? <Typography content="Da" /> : <Typography content="Ne" />),
-  },
-  {
     title: 'Status',
     accessor: 'status',
   },

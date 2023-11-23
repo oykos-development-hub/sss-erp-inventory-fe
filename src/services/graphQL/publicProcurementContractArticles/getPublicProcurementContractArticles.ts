@@ -1,5 +1,5 @@
-const getPublicProcurementContractArticles = `query ContractArticles($contract_id: Int, $visibility_type: Int) {
-    publicProcurementContractArticles_Overview(contract_id: $contract_id, visibility_type: $visibility_type) {
+const getPublicProcurementContractArticles = `query ContractArticlesOrganizationUnit($contract_id: Int, $organization_unit_id: Int) {
+    publicProcurementContractArticlesOrganizationUnit_Overview(contract_id: $contract_id, organization_unit_id: $organization_unit_id) {
         status 
         message
         items {
@@ -22,7 +22,6 @@ const getPublicProcurementContractArticles = `query ContractArticles($contract_i
             }
             overage_total
             amount
-            used_articles
             net_value
             gross_value
         }

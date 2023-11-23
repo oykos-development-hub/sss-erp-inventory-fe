@@ -78,7 +78,6 @@ const inventoryOverview = `query BasicInventoryOverview(
             source
             status
             active
-            has_assessments
         }
     }
 }`;

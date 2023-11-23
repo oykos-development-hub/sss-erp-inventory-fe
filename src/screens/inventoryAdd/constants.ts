@@ -49,3 +49,8 @@ export const restrictionOptions = [
   {id: true, title: 'Da'},
   {id: false, title: 'Ne'},
 ];
+
+export const propertyDocumentOptions = [
+  {id: 'Raspolaganje', title: 'Raspolaganje'},
+  {id: 'Svojina', title: 'Svojina'},
+];

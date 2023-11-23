@@ -12,9 +12,9 @@ const useProcurementContractArticles = () => {
   const [options, setOptions] = useState<DropdownDataNumber[]>([]);
   const {fetch} = useAppContext();
 
-  const fetchProcurementContractsArticles = async (contract_id: number, visibility_type: number) => {
+  const fetchProcurementContractsArticles = async (contract_id: number, organization_unit_id: number) => {
     try {
-      const response = await fetch(GraphQL.getPublicProcurementContractArticles, {contract_id, visibility_type});
+      const response = await fetch(GraphQL.getPublicProcurementContractArticles, {contract_id, organization_unit_id});
 
       const options = response?.publicProcurementContractArticles_Overview?.items
         .filter((item: PublicProcurementContractArticles) => item.amount > item.used_articles)
