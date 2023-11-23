@@ -98,7 +98,7 @@ export const movableInventoryTableHeads: TableHead[] = [
   {
     title: 'Procjene',
     accessor: 'has_assessments',
-    type: 'text',
+    type: 'custom',
     renderContents: has_assessments => (has_assessments ? <Typography content="Da" /> : <Typography content="Ne" />),
   },
   {
