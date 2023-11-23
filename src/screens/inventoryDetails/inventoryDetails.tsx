@@ -1,4 +1,4 @@
-import {Divider, Table, TableHead, Theme, PrinterIcon, Typography, FileIcon} from 'client-library';
+import {Divider, Table, TableHead, Theme, PrinterIcon, Typography} from 'client-library';
 import {useMemo, useState} from 'react';
 import AssessmentModal from '../../components/assessmentModal/assessmentModal';
 import ImmovableDetailsForm from '../../components/immovableDetailsForm/immovableDetailsForm';
@@ -17,15 +17,12 @@ import {InventoryAssessment} from '../../types/graphQL/inventoryAssessment';
 import {SettingsDropdownOverview} from '../../types/graphQL/classTypes';
 import useGetSettings from '../../services/graphQL/getSettings/useGetSettings';
 import ReceiveInventoryModal from '../../components/receiveInventoryModal/receiveInventoryModal';
-import FileModalView from '../../components/fileModalView/fileModalView';
-import {FileItem} from '../../types/graphQL/inventoryDetails';
 
 const InventoryDetails = ({context, type}: InventoryProps) => {
   const [assessmentModal, setAssessmentModal] = useState(false);
   const [movementModal, setMovementModal] = useState(false);
   const [receiveModal, setReceiveModal] = useState(false);
   const [currentId, setCurrentId] = useState<number>();
-  const [fileToView, setFileToView] = useState<FileItem>();
 
   const {data: depreciationTypes} = useGetSettings({entity: 'deprecation_types'});
 
@@ -145,14 +142,6 @@ const InventoryDetails = ({context, type}: InventoryProps) => {
               isLoading={loading}
               tableActions={[
                 {
-                  name: 'showFile',
-                  icon: <FileIcon stroke={Theme.palette.gray600} />,
-                  onClick: (row: any) => {
-                    setFileToView(row?.file);
-                  },
-                  shouldRender: (row: any) => row?.file?.id !== 0,
-                },
-                {
                   name: 'print',
                   icon: <PrinterIcon stroke={Theme.palette.gray600} />,
                   onClick: () => {
@@ -162,7 +151,6 @@ const InventoryDetails = ({context, type}: InventoryProps) => {
               ]}
             />
           </div>
-          {fileToView && <FileModalView file={fileToView} onClose={() => setFileToView(undefined)} />}
           {assessmentModal && (
             <AssessmentModal refetch={refetch} onClose={() => setAssessmentModal(false)} context={context} id={id} />
           )}

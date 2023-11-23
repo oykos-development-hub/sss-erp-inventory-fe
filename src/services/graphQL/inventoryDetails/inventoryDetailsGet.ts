@@ -117,11 +117,6 @@ const inventoryDetailsGet = `query BasicInventoryDetails($id: Int!) {
                     id
                     title
                 }
-                file {
-                  id
-                  name
-                  type
-                }
                 is_accepted
                 serial_number
                 dispatch_description

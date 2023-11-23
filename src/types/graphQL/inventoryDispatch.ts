@@ -15,6 +15,7 @@ export interface InventoryDispatch {
   dispatch_description: string;
   created_at: string;
   updated_at: string;
+  file_id: number;
   date?: string;
   city?: string;
   inventory: {
@@ -24,11 +25,6 @@ export interface InventoryDispatch {
     title: string;
     gross_price: number;
   }[];
-  file: {
-    id: number;
-    name: string;
-    type: string;
-  };
 }
 
 export interface InventoryDispatchData {
@@ -42,7 +38,6 @@ export interface InventoryDispatchData {
   inventory_id: number[];
   type: DispatchType | `${DispatchType}`;
   date?: string;
-  file_id?: number;
 }
 
 export enum DispatchType {

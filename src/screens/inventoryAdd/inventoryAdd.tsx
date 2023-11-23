@@ -86,7 +86,7 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
                   key={item.id}
                   type={head.accessor === 'gross_price' ? 'number' : 'text'}
                   {...register(`items.${index}.${head.accessor}` as InputName, {
-                    required: head.accessor === 'serial_number' ? 'Ovo polje je obavezno' : false,
+                    required: head.accessor !== 'description' ? 'Ovo polje je obavezno' : false,
                   })}
                   disabled={isDisabled}
                   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -175,7 +175,7 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
           inventory_number: '',
           title: values?.articles?.title,
           serial_number: '',
-          gross_price: values.articles?.gross_value?.toString(),
+          gross_price: values.articles?.total_price?.toString(),
           description: '',
           contract_article_id: values?.articles?.id,
         });

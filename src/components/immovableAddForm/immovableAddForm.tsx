@@ -1,6 +1,6 @@
 import {Button, Dropdown, Input} from 'client-library';
 import {Controller, useForm} from 'react-hook-form';
-import {propertyDocumentOptions, realEstateTypeOptions, restrictionOptions} from '../../screens/inventoryAdd/constants';
+import {realEstateTypeOptions, restrictionOptions, rightPropertyOptions} from '../../screens/inventoryAdd/constants';
 import {ButtonContainer} from '../../screens/inventoryAdd/styles';
 import useInventoryInsert from '../../services/graphQL/inventoryInsert/useInventoryInsert';
 import {FieldsContainer, Form, FormRow} from '../../shared/formStyles';
@@ -29,8 +29,6 @@ const ImmovableAddForm = ({context}: {context: MicroserviceProps}) => {
   const {options: amortizationGroupOptions} = useGetSettings({entity: 'deprecation_types'});
   const {mutate, loading} = useInventoryInsert();
 
-  const propertyDocument = watch('property_document');
-
   const {limitation} = watch();
   //handlers
 
@@ -51,17 +49,17 @@ const ImmovableAddForm = ({context}: {context: MicroserviceProps}) => {
             id: 0,
             square_area: values?.square_area || 0,
             land_serial_number: values?.land_serial_number || '',
-            estate_serial_number: '',
-            ownership_type: '',
+            estate_serial_number: ' ',
+            ownership_type: ' ',
             ownership_scope: values?.ownership_scope || '',
             ownership_investment_scope: values?.ownership_investment_scope || '',
-            limitations_description: values?.limitations_description || '',
+            limitations_description: values?.limitations_description || ' ',
             file_id: 0,
             type_id: values?.type?.id || '',
-            property_document: values?.property_document?.id || '',
+            property_document: values?.property_document || '',
             limitation_id: values?.limitation?.id || false,
             document: values?.document || '',
-            title: '',
+            title: ' ',
           },
           depreciation_type_id: values?.depreciation_type?.id || 0,
           file_id: 0,
@@ -117,20 +115,11 @@ const ImmovableAddForm = ({context}: {context: MicroserviceProps}) => {
             label="BROJ KATASTARSKE PARCELE:"
             error={errors.land_serial_number?.message}
           />
-          <Controller
-            name="property_document"
-            rules={{required: 'Ovo polje je obavezno'}}
-            control={control}
-            render={({field: {name, value, onChange}}) => (
-              <Dropdown
-                name={name}
-                value={value}
-                onChange={onChange}
-                label="ISPRAVE O SVOJINI:"
-                options={propertyDocumentOptions}
-                error={errors.property_document?.message}
-              />
-            )}
+
+          <Input
+            {...register('property_document', {required: 'Ovo polje je obavezno'})}
+            label="ISPRAVE O SVOJINI:"
+            error={errors.property_document?.message}
           />
         </FormRow>
 
@@ -139,7 +128,11 @@ const ImmovableAddForm = ({context}: {context: MicroserviceProps}) => {
             {...register('ownership_scope', {required: 'Ovo polje je obavezno'})}
             label="OBIM PRAVA:"
             error={errors.ownership_scope?.message}
-            disabled={propertyDocument?.id !== 'Svojina'}
+          />
+          <Input
+            {...register('ownership_investment_scope', {required: 'Ovo polje je obavezno'})}
+            label="OBIM PRAVA ZA IMOVINU STEČENU ZAJEDNIČKIM ULAGANJEM:"
+            error={errors.ownership_investment_scope?.message}
           />
           <Input
             {...register('gross_price', {required: 'Ovo polje je obavezno'})}

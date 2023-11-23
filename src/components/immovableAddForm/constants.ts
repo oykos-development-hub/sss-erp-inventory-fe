@@ -10,7 +10,7 @@ export const initialValues: ImmovableAddFormProps = {
   limitations_description: '',
   depreciation_type: null,
   type: null,
-  property_document: null,
+  property_document: '',
   limitation: null,
   document: '',
   limitation_id: false,
