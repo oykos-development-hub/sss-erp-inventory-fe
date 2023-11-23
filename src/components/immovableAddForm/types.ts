@@ -10,7 +10,7 @@ export interface ImmovableAddFormProps {
   limitations_description: string;
   depreciation_type: DropdownDataNumber | null;
   type: DropdownDataString | null;
-  property_document: string;
+  property_document: DropdownDataString | null;
   limitation: DropdownDataBoolean | null;
   limitation_id: boolean;
   document: string;
