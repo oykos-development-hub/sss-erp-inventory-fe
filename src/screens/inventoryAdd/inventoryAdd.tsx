@@ -86,7 +86,7 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
                   key={item.id}
                   type={head.accessor === 'gross_price' ? 'number' : 'text'}
                   {...register(`items.${index}.${head.accessor}` as InputName, {
-                    required: head.accessor !== 'description' ? 'Ovo polje je obavezno' : false,
+                    required: head.accessor === 'serial_number' ? 'Ovo polje je obavezno' : false,
                   })}
                   disabled={isDisabled}
                   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
