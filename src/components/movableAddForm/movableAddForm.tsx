@@ -204,7 +204,7 @@ const MovableAddForm = ({onFormSubmit, context}: AddInventoryFormProps) => {
           onChange={item => {
             setArticle({id: Number(item.id), title: item.title?.toString() || ''});
           }}
-          options={articlesOptions}
+          options={articlesOptions || []}
           placeholder="Izaberi artikal"
           label="Artikli"
           value={article}
