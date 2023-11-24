@@ -41,6 +41,7 @@ export interface InventoryOverviewParams {
   office_id?: number;
   search?: string;
   status?: string;
+  has_assessments?: boolean;
 }
 
 export interface InventoryInsertData {
