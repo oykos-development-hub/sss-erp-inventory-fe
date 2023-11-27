@@ -16,7 +16,7 @@ const useProcurementContractArticles = () => {
     try {
       const response = await fetch(GraphQL.getPublicProcurementContractArticles, {contract_id, organization_unit_id});
 
-      const options = response?.publicProcurementContractArticles_Overview?.items
+      const options = response?.publicProcurementContractArticlesOrganizationUnit_Overview?.items
         .filter((item: PublicProcurementContractArticles) => item.amount > item.used_articles)
         .map((item: PublicProcurementContractArticles) => ({
           id: item.id,
@@ -25,7 +25,7 @@ const useProcurementContractArticles = () => {
 
       setOptions(options);
 
-      setData(response?.publicProcurementContractArticles_Overview);
+      setData(response?.publicProcurementContractArticlesOrganizationUnit_Overview);
     } catch (e) {
       console.log(e);
     }

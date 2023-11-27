@@ -20,6 +20,7 @@ const getPublicProcurementContractArticles = `query ContractArticlesOrganization
                 created_at
                 updated_at
             }
+            used_articles
             overage_total
             amount
             net_value
