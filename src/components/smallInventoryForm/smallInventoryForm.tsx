@@ -42,7 +42,7 @@ const SmallInventoryForm = ({onFormSubmit, context}: AddInventoryFormProps) => {
             render={({field: {name, value, onChange}}) => (
               <Datepicker
                 name={name}
-                value={value ? parseDate(value) : ''}
+                selected={value ? new Date(value) : ''}
                 onChange={onChange}
                 label="DATUM NABAVKE:"
                 error={errors.date_of_purchase?.message}

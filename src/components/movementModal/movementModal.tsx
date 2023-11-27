@@ -314,7 +314,7 @@ const MovementModal = ({
                       status == 'Zadužen' ? 'RAZDUŽENJA' : transactionType === 'revers' ? 'REVERSA' : 'ZADUŽENJA'
                     }:`}
                     name={name}
-                    value={value ? parseDate(value) : ''}
+                    selected={value ? new Date(value) : ''}
                     error={errors.date?.message}
                   />
                 </>

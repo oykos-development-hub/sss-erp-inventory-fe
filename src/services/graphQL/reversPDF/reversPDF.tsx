@@ -1,8 +1,5 @@
-import React from 'react';
-import {Document, Page, Text, View, StyleSheet, Font, Image} from '@react-pdf/renderer';
-import {InventoryDetails} from '../../../types/graphQL/inventoryDetails';
-import {InventoryDispatch, InventoryDispatchData} from '../../../types/graphQL/inventoryDispatch';
-import Logo from './image.png';
+import {Document, Font, Image, Page, StyleSheet, Text, View} from '@react-pdf/renderer';
+import {InventoryDispatch} from '../../../types/graphQL/inventoryDispatch';
 import {formatDateForPDF} from '../../../utils/dateUtils';
 import {PDFTable, TableColumn} from '../../pdf/pdfTable';
 

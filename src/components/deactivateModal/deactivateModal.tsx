@@ -43,7 +43,7 @@ const DeactivateModal = ({onClose, onDeactivate, loading}: DeactivateModalProps)
             render={({field: {name, value, onChange}}) => (
               <Datepicker
                 name={name}
-                value={value ? parseDate(value) : ''}
+                selected={value ? new Date(value) : ''}
                 onChange={onChange}
                 options={[]}
                 label="DATUM:"

@@ -7,14 +7,6 @@ export const parseDate = (date: Date | string, parseForBFF?: boolean) => {
   return parseForBFF ? `${godina}-${mjesec}-${dan}` : `${dan}/${mjesec}/${godina}`;
 };
 
-export const calculateExperience = (startDate: Date | string, endDate: Date | string) => {
-  const start = new Date(startDate);
-  const end = new Date(endDate);
-  const diffInMonths = end.getMonth() - start.getMonth() + 12 * (end.getFullYear() - start.getFullYear());
-
-  return diffInMonths;
-};
-
 export const parseDateForBackend = (date?: Date): string | undefined => {
   if (!date) return undefined;
 

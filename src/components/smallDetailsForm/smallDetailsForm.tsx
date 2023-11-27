@@ -141,7 +141,7 @@ const SmallDetailsForm = ({context, data, inventoryType, refetch, inventoryId}: 
           render={({field: {name, value, onChange}}) => (
             <Datepicker
               name={name}
-              value={value ? parseDate(value) : ''}
+              selected={value ? new Date(value) : ''}
               onChange={onChange}
               options={[]}
               label="DATUM NABAVKE:"

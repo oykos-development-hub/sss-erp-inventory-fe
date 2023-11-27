@@ -35,7 +35,7 @@ const MovableAddForm = ({onFormSubmit, context, selectedArticles}: AddInventoryF
       values.articles = {
         id: articleFind.public_procurement_article.id,
         title: articleFind.public_procurement_article.title,
-        gross_value: articleFind.gross_value,
+        gross_value: Number(articleFind.gross_value) / articleFind.amount,
       };
       useArticle(articleFind.id);
       setArticle({id: 0, title: ''});
@@ -115,7 +115,7 @@ const MovableAddForm = ({onFormSubmit, context, selectedArticles}: AddInventoryF
             render={({field: {name, value, onChange}}) => (
               <Datepicker
                 name={name}
-                value={value ? parseDate(value) : ''}
+                selected={value ? new Date(value) : ''}
                 onChange={onChange}
                 placeholder=""
                 label="DATUM POTPISIVANJA UGOVORA:"
@@ -132,7 +132,7 @@ const MovableAddForm = ({onFormSubmit, context, selectedArticles}: AddInventoryF
             render={({field: {name, value, onChange}}) => (
               <Datepicker
                 name={name}
-                value={value ? parseDate(value) : ''}
+                selected={value ? new Date(value) : ''}
                 onChange={onChange}
                 placeholder=""
                 label="DATUM ZAKLJUČENJA UGOVORA:"
@@ -156,7 +156,7 @@ const MovableAddForm = ({onFormSubmit, context, selectedArticles}: AddInventoryF
             render={({field: {name, value, onChange}}) => (
               <Datepicker
                 name={name}
-                value={value ? parseDate(value) : ''}
+                selected={value ? new Date(value) : ''}
                 onChange={onChange}
                 placeholder=""
                 label="DATUM NABAVKE"

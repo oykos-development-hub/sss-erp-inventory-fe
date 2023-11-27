@@ -107,7 +107,7 @@ const AssessmentModal = ({context, onClose, id, refetch}: AssessmentModalProps) 
                 onChange={onChange}
                 label="DATUM PROCJENE:"
                 name={name}
-                value={value ? parseDate(value) : ''}
+                selected={value ? new Date(value) : ''}
                 error={errors.date_of_assessment?.message}
               />
             )}
