@@ -13,5 +13,5 @@ export interface PublicProcurementContractArticles {
   used_articles: number;
   overage_total: number;
   net_value: string;
-  gross_value: string;
+  gross_value: number;
 }

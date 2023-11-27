@@ -35,7 +35,7 @@ const MovableAddForm = ({onFormSubmit, context, selectedArticles}: AddInventoryF
       values.articles = {
         id: articleFind.public_procurement_article.id,
         title: articleFind.public_procurement_article.title,
-        gross_value: Number(articleFind.gross_value) / articleFind.amount,
+        gross_value: articleFind.gross_value,
       };
       useArticle(articleFind.id);
       setArticle({id: 0, title: ''});
