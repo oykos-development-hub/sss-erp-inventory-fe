@@ -22,6 +22,7 @@ export type TableValues = {
 export interface AddInventoryFormProps {
   onFormSubmit: any;
   context: MicroserviceProps;
+  selectedArticles?: TableItemValues[];
 }
 export type valuesType = MovableAddFormProps | SmallInventoryAddFormProps | null;
 export type DropdownName = `items.${number}.${'class_type' | 'depreciation_type'}`;

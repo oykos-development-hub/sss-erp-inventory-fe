@@ -5,6 +5,7 @@ import {GraphQLResponse} from '../../../types/graphQL/response';
 import {initialOverviewData} from '../../constants';
 import {GraphQL} from '..';
 import {PublicProcurementContractArticles} from '../../../types/graphQL/publicProcurmentContractArticles';
+import {TableItemValues} from '../../../screens/inventoryAdd/types';
 
 const useProcurementContractArticles = () => {
   const [data, setData] =
@@ -12,10 +13,25 @@ const useProcurementContractArticles = () => {
   const [options, setOptions] = useState<DropdownDataNumber[]>([]);
   const {fetch} = useAppContext();
 
-  const fetchProcurementContractsArticles = async (contract_id: number, organization_unit_id: number) => {
+  const fetchProcurementContractsArticles = async (
+    contract_id: number,
+    organization_unit_id: number,
+    selectedArticles?: TableItemValues[],
+  ) => {
     try {
       const response = await fetch(GraphQL.getPublicProcurementContractArticles, {contract_id, organization_unit_id});
 
+      if (selectedArticles && selectedArticles?.length > 0) {
+        selectedArticles.forEach((item: TableItemValues) => {
+          response?.publicProcurementContractArticlesOrganizationUnit_Overview?.items.forEach(
+            (article: PublicProcurementContractArticles) => {
+              if (item.contract_article_id === article.public_procurement_article.id) {
+                article.used_articles++;
+              }
+            },
+          );
+        });
+      }
       const options = response?.publicProcurementContractArticlesOrganizationUnit_Overview?.items
         .filter((item: PublicProcurementContractArticles) => item.amount > item.used_articles)
         .map((item: PublicProcurementContractArticles) => ({

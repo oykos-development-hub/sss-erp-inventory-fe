@@ -16,7 +16,7 @@ import {parseDate} from '../../utils/dateUtils';
 import {TooltipWrapper} from './styles';
 import {MovableAddFormProps, VisibilityType} from './types';
 
-const MovableAddForm = ({onFormSubmit, context}: AddInventoryFormProps) => {
+const MovableAddForm = ({onFormSubmit, context, selectedArticles}: AddInventoryFormProps) => {
   const {
     register,
     handleSubmit,
@@ -58,7 +58,7 @@ const MovableAddForm = ({onFormSubmit, context}: AddInventoryFormProps) => {
   }, [supplier]);
 
   useEffect(() => {
-    if (contract?.id) fetchArticles(contract?.id, orgUnitId);
+    if (contract?.id) fetchArticles(contract?.id, orgUnitId, selectedArticles);
     const fullContract = contracts?.items?.find((item: PublicProcurementContracts) => item.id === contract?.id);
     if (fullContract) {
       setValue('date_of_contract_signing', new Date(fullContract.date_of_signing));

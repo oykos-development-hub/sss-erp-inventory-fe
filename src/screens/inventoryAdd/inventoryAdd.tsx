@@ -196,7 +196,7 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
   };
 
   const renderFormByType = {
-    movable: <MovableAddForm context={context} onFormSubmit={handleFormSubmit} />,
+    movable: <MovableAddForm context={context} onFormSubmit={handleFormSubmit} selectedArticles={fields} />,
     immovable: <ImmovableAddForm context={context} />,
     small: <SmallInventoryForm context={context} onFormSubmit={handleFormSubmit} />,
   };
