@@ -90,7 +90,7 @@ export const movableInventoryTableHeads: TableHead[] = [
     renderContents: data => <Typography content={`${data || '0'}€`} />,
   },
   {
-    title: 'Datum nabavke',
+    title: 'Obračun amortizacije',
     accessor: 'date_of_purchase',
     type: 'custom',
     renderContents: date => <Typography content={parseDate(date)} />,
