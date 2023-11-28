@@ -13,7 +13,8 @@ const useInventoryDetails = (id?: number) => {
     if (!id && !rowId) return;
     try {
       const response = await fetch(GraphQL.inventoryDetailsGet, {id: id || rowId});
-
+      if (response?.basicInventory_Details?.items?.assessments.length > 0)
+        response?.basicInventory_Details?.items.assessments.pop();
       onSuccess && onSuccess(response?.basicInventory_Details?.items);
       setData(response?.basicInventory_Details);
       setLoading(false);
