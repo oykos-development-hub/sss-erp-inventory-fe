@@ -136,7 +136,6 @@ const ImmovableAddForm = ({context}: {context: MicroserviceProps}) => {
 
         <FormRow>
           <Input
-            {...register('ownership_scope', {required: 'Ovo polje je obavezno'})}
             label="OBIM PRAVA:"
             error={errors.ownership_scope?.message}
             disabled={propertyDocument?.id !== 'Svojina'}
