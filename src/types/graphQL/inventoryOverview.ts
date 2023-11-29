@@ -21,6 +21,7 @@ export interface InventoryItem {
   source_type: SourceType | `${SourceType}`;
   organization_unit: DropdownDataNumber;
   target_organization_unit: DropdownDataNumber;
+  expire: boolean;
 }
 
 export enum SourceType {
@@ -42,6 +43,7 @@ export interface InventoryOverviewParams {
   search?: string;
   status?: string;
   has_assessments?: boolean;
+  expire?: boolean;
 }
 
 export interface InventoryInsertData {

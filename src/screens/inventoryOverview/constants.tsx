@@ -12,6 +12,7 @@ export const movableFilters: `${InventoryFiltersEnum}`[] = [
   'location',
   'status',
   'search',
+  'expire',
 ];
 export const immovableFilters: `${InventoryFiltersEnum}`[] = ['type', 'class', 'location', 'search'];
 export const smallFilters: `${InventoryFiltersEnum}`[] = ['class', 'location', 'search'];
@@ -28,6 +29,7 @@ const initialMovableFilters = {
   office_id: null,
   status: null,
   search: '',
+  expire: null,
 };
 
 const initialImmovableFilters = {

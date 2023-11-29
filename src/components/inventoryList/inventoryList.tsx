@@ -21,7 +21,7 @@ import {FilterDropdown, FilterInput, Filters, ReversButtonContainer} from './sty
 import useInventoryDeactivate from '../../services/graphQL/inventoryDeactivate/useInventoryDeactivate';
 import ReceiveInventoryModal from '../receiveInventoryModal/receiveInventoryModal';
 import {parseDateForBackend} from '../../utils/dateUtils';
-import {filterStatusOptions} from '../movementModal/constants';
+import {filterExpireOptions, filterStatusOptions} from '../movementModal/constants';
 import {usePDF} from '@react-pdf/renderer';
 import BasicInventoryImmovablePDF from '../../services/graphQL/inventoryImmovablePDF/inventoryImmovablePDF';
 import useInventoryDetails from '../../services/graphQL/inventoryDetails/useInventoryDetailsGet';
@@ -139,6 +139,16 @@ const InventoryList = ({
         label="PRETRAGA:"
         placeholder="Pretraga"
         onChange={value => onFilter(value, 'search')}
+      />
+    ),
+    expire: (
+      <FilterDropdown
+        name="expire"
+        value={filterValues.expire}
+        onChange={value => onFilter(value, 'expire')}
+        options={[...filterExpireOptions]}
+        placeholder="Odaberi"
+        label="VIJEK TRAJANJA:"
       />
     ),
   };

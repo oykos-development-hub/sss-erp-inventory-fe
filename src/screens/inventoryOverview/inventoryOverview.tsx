@@ -21,6 +21,7 @@ const InventoryOverview = ({context, type}: InventoryProps) => {
     search: debouncedSearch,
     office_id: filterValues.office_id?.id,
     depreciation_type_id: filterValues.depreciation_type_id?.id,
+    expire: filterValues.expire?.id,
   });
 
   const onPageChange = (page: number) => {

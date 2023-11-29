@@ -16,6 +16,7 @@ const useInventoryOverview = ({
   status = '',
   source_type = '',
   depreciation_type_id,
+  expire = false,
 }: InventoryOverviewParams) => {
   const [data, setData] = useState<GraphQLResponse['data']['basicInventory_Overview']>(initialOverviewData);
   const [loading, setLoading] = useState(true);
@@ -35,6 +36,7 @@ const useInventoryOverview = ({
         status,
         source_type,
         depreciation_type_id,
+        expire,
       });
 
       setData(response?.basicInventory_Overview);
@@ -46,7 +48,7 @@ const useInventoryOverview = ({
 
   useEffect(() => {
     fetchInventoryOverview();
-  }, [page, size, class_type_id, id, office_id, search, type, source_type, depreciation_type_id, status]);
+  }, [page, size, class_type_id, id, office_id, search, type, source_type, depreciation_type_id, status, expire]);
 
   return {data, loading, refetch: fetchInventoryOverview};
 };

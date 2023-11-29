@@ -1,4 +1,4 @@
-import {DropdownDataNumber, DropdownDataString} from '../../types/dropdownData';
+import {DropdownDataBoolean, DropdownDataNumber, DropdownDataString} from '../../types/dropdownData';
 
 export enum InventoryFiltersEnum {
   TYPE = 'type',
@@ -7,6 +7,7 @@ export enum InventoryFiltersEnum {
   SEARCH = 'search',
   STATUS = 'status',
   AMORTIZATION_GROUP = 'amortization_group',
+  EXPIRE = 'expire',
 }
 
 export interface InventoryFilters {
@@ -16,4 +17,5 @@ export interface InventoryFilters {
   depreciation_type_id?: DropdownDataNumber | null;
   class_type_id?: DropdownDataNumber | null;
   status?: DropdownDataString | null;
+  expire?: DropdownDataBoolean | null;
 }

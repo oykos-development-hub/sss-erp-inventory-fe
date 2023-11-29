@@ -1,4 +1,4 @@
-import {DropdownDataString} from '../../types/dropdownData';
+import {DropdownDataBoolean, DropdownDataString} from '../../types/dropdownData';
 
 export const movableTransactionOptions: DropdownDataString[] = [
   {id: 'revers', title: 'Eksterni revers'},
@@ -21,4 +21,9 @@ export const filterStatusOptions: DropdownDataString[] = [
   {id: 'Nezadužen', title: 'Nezadužen'},
   {id: 'Zadužen', title: 'Zadužen'},
   {id: 'Deaktiviran', title: 'Deaktiviran'},
+];
+
+export const filterExpireOptions: DropdownDataBoolean[] = [
+  {id: false, title: 'Svi artikli'},
+  {id: true, title: 'Artikli isteklog vijeka'},
 ];

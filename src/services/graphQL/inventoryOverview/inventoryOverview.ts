@@ -9,7 +9,8 @@ const inventoryOverview = `query BasicInventoryOverview(
     $office_id: Int,  
     $search: String,
     $source_type: String,
-    $depreciation_type_id: Int
+    $depreciation_type_id: Int,
+    $expire: Boolean
     ) {
     basicInventory_Overview(
         page: $page, 
@@ -22,7 +23,8 @@ const inventoryOverview = `query BasicInventoryOverview(
         office_id: $office_id, 
         search: $search,
         source_type: $source_type,
-        depreciation_type_id: $depreciation_type_id
+        depreciation_type_id: $depreciation_type_id,
+        expire: $expire
         ) {
         status 
         message
