@@ -25,5 +25,5 @@ export const filterStatusOptions: DropdownDataString[] = [
 
 export const filterExpireOptions: DropdownDataBoolean[] = [
   {id: false, title: 'Svi artikli'},
-  {id: true, title: 'Artikli isteklog vijeka'},
+  {id: true, title: 'Istek amortizacije'},
 ];

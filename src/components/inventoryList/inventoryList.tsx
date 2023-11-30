@@ -148,7 +148,7 @@ const InventoryList = ({
         onChange={value => onFilter(value, 'expire')}
         options={[...filterExpireOptions]}
         placeholder="Odaberi"
-        label="VIJEK TRAJANJA:"
+        label="OBRAČUN AMORTIZACIJE:"
       />
     ),
   };
@@ -315,13 +315,17 @@ const InventoryList = ({
                 {
                   name: 'Alokacija',
                   onClick: row => onAddMovement(row),
-                  disabled: (item: InventoryItem) => orgUnitId !== item.target_organization_unit.id || !item.active,
+                  disabled: (item: InventoryItem) =>
+                    (item.target_organization_unit.id && orgUnitId !== item.target_organization_unit.id) ||
+                    !item.active,
                 },
                 {
                   name: 'Dodaj procjenu',
                   onClick: row => onAddEstimation(row),
                   shouldRender: (item: any) => item.source_type?.includes('1'),
-                  disabled: (item: InventoryItem) => orgUnitId !== item.target_organization_unit.id || !item.active,
+                  disabled: (item: InventoryItem) =>
+                    (item.target_organization_unit.id && orgUnitId !== item.target_organization_unit.id) ||
+                    !item.active,
                 },
                 {
                   name: 'Otpis',
@@ -332,7 +336,7 @@ const InventoryList = ({
                   disabled: (item: InventoryItem) =>
                     item.source_type?.includes('2') ||
                     item.status !== 'Nezadužen' ||
-                    orgUnitId !== item.target_organization_unit.id ||
+                    (item.target_organization_unit.id && orgUnitId !== item.target_organization_unit.id) ||
                     !item.active,
                 },
               ]

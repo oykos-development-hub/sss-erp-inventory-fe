@@ -15,6 +15,7 @@ export interface InventoryItem {
   target_user_profile: DropdownDataNumber;
   gross_price: number;
   date_of_purchase: string;
+  date_of_assessments: string;
   source: string;
   status: string;
   active: boolean;
