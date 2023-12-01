@@ -12,6 +12,7 @@ interface AssessmentModalProps {
   context: MicroserviceProps;
   onClose: () => void;
   id: number;
+  depreciation_type_id: number;
   refetch?: () => void;
 }
 
@@ -19,11 +20,10 @@ interface AssessmentModalForm {
   type: DropdownDataString;
   gross_price_difference: string;
   date_of_assessment: Date;
-  depreciation_type_id: DropdownDataNumber;
   gross_price_new: string;
 }
 
-const AssessmentModal = ({context, onClose, id, refetch}: AssessmentModalProps) => {
+const AssessmentModal = ({context, onClose, id, depreciation_type_id, refetch}: AssessmentModalProps) => {
   const {
     register,
     handleSubmit,
@@ -42,7 +42,7 @@ const AssessmentModal = ({context, onClose, id, refetch}: AssessmentModalProps) 
     if (isValid && !isSaving) {
       await mutate(
         {
-          depreciation_type_id: data.depreciation_type_id.id,
+          depreciation_type_id: depreciation_type_id,
           gross_price_difference: parseFloat(data.gross_price_difference),
           gross_price_new: 0,
           date_of_assessment: parseDateForBackend(data?.date_of_assessment),
@@ -109,21 +109,6 @@ const AssessmentModal = ({context, onClose, id, refetch}: AssessmentModalProps) 
                 name={name}
                 selected={value ? new Date(value) : ''}
                 error={errors.date_of_assessment?.message}
-              />
-            )}
-          />
-          <Controller
-            name="depreciation_type_id"
-            control={control}
-            rules={{required: 'Ovo polje je obavezno'}}
-            render={({field: {name, value, onChange}}) => (
-              <Dropdown
-                name={name}
-                value={value}
-                onChange={onChange}
-                options={depreciationTypeOptions}
-                label="AMORTIZACIONA GRUPA:"
-                error={errors.depreciation_type_id?.message}
               />
             )}
           />

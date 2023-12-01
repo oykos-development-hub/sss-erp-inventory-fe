@@ -163,6 +163,7 @@ const InventoryList = ({
 
   const fetchPDFUrl = (id: number) => {
     fetchDetails(id, data => {
+      setSourceType(data.source_type);
       const myPDF = data.source_type.includes('NS') ? (
         <BasicInventoryImmovablePDF item={data} />
       ) : (
@@ -178,7 +179,7 @@ const InventoryList = ({
     const blobUrl = URL.createObjectURL(inventoryPDF.blob);
     const link = document.createElement('a');
     link.href = blobUrl;
-    link.download = 'izvještaj.pdf';
+    link.download = `${sourceType}.pdf`;
     link.style.display = 'none';
     document.body.appendChild(link);
     link.click();
@@ -410,7 +411,12 @@ const InventoryList = ({
         />
       )}
       {estimationModal && (
-        <AssessmentModal context={context} onClose={() => setEstimationModal(false)} id={currentInventoryId[0]} />
+        <AssessmentModal
+          context={context}
+          onClose={() => setEstimationModal(false)}
+          id={currentInventoryId[0]}
+          depreciation_type_id={currentItem?.depreciation_type?.id || 0}
+        />
       )}
 
       {receiveModal && currentId && (

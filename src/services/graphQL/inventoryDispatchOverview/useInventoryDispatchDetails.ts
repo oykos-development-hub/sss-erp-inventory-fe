@@ -12,6 +12,7 @@ const useInventoryDispatchDetails = () => {
       const response = await fetch(GraphQL.inventoryDispatchOverview, {
         id,
       });
+
       onSuccess && onSuccess(response?.basicInventoryDispatch_Overview?.items[0]);
       setLoading(false);
     } catch (err) {

@@ -31,6 +31,7 @@ const InventoryDispatchList = ({
 }: InventoryDispatchList) => {
   const [receiveModal, setReceiveModal] = useState(false);
   const [currentId, setCurrentId] = useState<number>();
+  const [currentItem, setCurrentItem] = useState<InventoryDispatch>();
   const [targetOrgID, setTargetOrgID] = useState<number>();
   const {options: locationOptions} = useOrganizationUnits();
 
@@ -73,6 +74,7 @@ const InventoryDispatchList = ({
 
   const fetchPDFUrl = (id: number) => {
     fetchDispatch(id, data => {
+      setCurrentItem(data);
       updatePDF(<BasicReversPDF item={data} />);
     });
   };
@@ -82,7 +84,7 @@ const InventoryDispatchList = ({
     const blobUrl = URL.createObjectURL(dispatchPDF.blob);
     const link = document.createElement('a');
     link.href = blobUrl;
-    link.download = 'izvještaj.pdf';
+    link.download = `revers_${currentItem?.target_organization_unit.title}.pdf`;
     link.style.display = 'none';
     document.body.appendChild(link);
     link.click();

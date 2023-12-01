@@ -257,7 +257,7 @@ const MovementModal = ({
                   name={name}
                   value={value}
                   onChange={onChange}
-                  options={locationOptions}
+                  options={locationOptions.filter(item => item.id !== orgUnitId)}
                   label="LOKACIJA:"
                   error={errors.target_organization_unit_id?.message}
                 />

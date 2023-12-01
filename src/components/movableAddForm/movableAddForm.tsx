@@ -58,6 +58,13 @@ const MovableAddForm = ({onFormSubmit, context, selectedArticles}: AddInventoryF
   }, [supplier]);
 
   useEffect(() => {
+    if (locationOptions?.length > 0) {
+      const lager = locationOptions.find((item: DropdownDataNumber) => item.title === 'Lager');
+      if (lager) setValue('office', lager);
+    }
+  }, [locationOptions]);
+
+  useEffect(() => {
     if (contract?.id) fetchArticles(contract?.id, orgUnitId, selectedArticles);
     const fullContract = contracts?.items?.find((item: PublicProcurementContracts) => item.id === contract?.id);
     if (fullContract) {

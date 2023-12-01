@@ -170,8 +170,6 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
 
         append({
           id: Math.floor(Math.random() * 1000),
-          class_type: {id: 1, title: 'Class 1'},
-          depreciation_type: {id: 1, title: 'Amortizaciona grupa'},
           inventory_number: '',
           title: values?.articles?.title,
           serial_number: '',
