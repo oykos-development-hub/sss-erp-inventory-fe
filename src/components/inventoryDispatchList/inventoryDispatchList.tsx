@@ -1,5 +1,8 @@
-import {Table, TableHead, Typography, PrinterIcon, Theme} from 'client-library';
-import {useEffect, useState} from 'react';
+import {PrinterIcon, Table, TableHead, Theme, Typography} from 'client-library';
+import {useState} from 'react';
+import useAppContext from '../../context/useAppContext';
+import {InventoryDispatchFilters} from '../../screens/inventoryDispatch/types';
+import useInventoryDispatchDetails from '../../services/graphQL/inventoryDispatchOverview/useInventoryDispatchDetails';
 import useOrganizationUnits from '../../services/graphQL/organizationUnits/useOrganizationUnits';
 import {InventoryDispatch} from '../../types/graphQL/inventoryDispatch';
 import {MicroserviceProps} from '../../types/micro-service-props';
@@ -7,10 +10,6 @@ import {parseDate} from '../../utils/dateUtils';
 import ReceiveInventoryModal from '../receiveInventoryModal/receiveInventoryModal';
 import {receiveInventoryStatus, receiveInventoryType} from './constants';
 import {FilterDropdown, Filters} from './styles';
-import {InventoryDispatchFilters} from '../../screens/inventoryDispatch/types';
-import {usePDF} from '@react-pdf/renderer';
-import useInventoryDispatchDetails from '../../services/graphQL/inventoryDispatchOverview/useInventoryDispatchDetails';
-import BasicReversPDF from '../../services/graphQL/reversPDF/reversPDF';
 
 interface InventoryDispatchList {
   context: MicroserviceProps;
@@ -31,13 +30,13 @@ const InventoryDispatchList = ({
 }: InventoryDispatchList) => {
   const [receiveModal, setReceiveModal] = useState(false);
   const [currentId, setCurrentId] = useState<number>();
-  const [currentItem, setCurrentItem] = useState<InventoryDispatch>();
   const [targetOrgID, setTargetOrgID] = useState<number>();
   const {options: locationOptions} = useOrganizationUnits();
+  const {
+    reportService: {generatePdf},
+  } = useAppContext();
 
   const {fetchDispatch} = useInventoryDispatchDetails();
-
-  const [dispatchPDF, updatePDF] = usePDF({});
 
   const receiveInventoryTableHeads: TableHead[] = [
     {
@@ -74,22 +73,9 @@ const InventoryDispatchList = ({
 
   const fetchPDFUrl = (id: number) => {
     fetchDispatch(id, data => {
-      setCurrentItem(data);
-      updatePDF(<BasicReversPDF item={data} />);
+      generatePdf('REVERS', data);
     });
   };
-
-  useEffect(() => {
-    if (!dispatchPDF.blob) return;
-    const blobUrl = URL.createObjectURL(dispatchPDF.blob);
-    const link = document.createElement('a');
-    link.href = blobUrl;
-    link.download = `revers_${currentItem?.target_organization_unit.title}.pdf`;
-    link.style.display = 'none';
-    document.body.appendChild(link);
-    link.click();
-    URL.revokeObjectURL(blobUrl);
-  }, [dispatchPDF]);
 
   const onRowClick = (item: InventoryDispatch) => {
     if ((item.type === 'revers' || item.type === 'return-revers') && !item.is_accepted) {

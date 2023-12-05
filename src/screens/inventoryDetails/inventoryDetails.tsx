@@ -1,5 +1,5 @@
 import {Divider, Table, TableHead, Theme, PrinterIcon, Typography, FileIcon} from 'client-library';
-import {useEffect, useMemo, useState} from 'react';
+import {useMemo, useState} from 'react';
 import AssessmentModal from '../../components/assessmentModal/assessmentModal';
 import ImmovableDetailsForm from '../../components/immovableDetailsForm/immovableDetailsForm';
 import {ScreenTitle} from '../../components/inventoryTabs/styles';
@@ -19,10 +19,8 @@ import useGetSettings from '../../services/graphQL/getSettings/useGetSettings';
 import ReceiveInventoryModal from '../../components/receiveInventoryModal/receiveInventoryModal';
 import FileModalView from '../../components/fileModalView/fileModalView';
 import {FileItem} from '../../types/graphQL/inventoryDetails';
-import {usePDF} from '@react-pdf/renderer';
 import useInventoryDispatchDetails from '../../services/graphQL/inventoryDispatchOverview/useInventoryDispatchDetails';
-import BasicReversPDF from '../../services/graphQL/reversPDF/reversPDF';
-import {InventoryDispatch} from '../../types/graphQL/inventoryDispatch';
+import useAppContext from '../../context/useAppContext';
 
 const InventoryDetails = ({context, type}: InventoryProps) => {
   const [assessmentModal, setAssessmentModal] = useState(false);
@@ -30,14 +28,15 @@ const InventoryDetails = ({context, type}: InventoryProps) => {
   const [receiveModal, setReceiveModal] = useState(false);
   const [currentId, setCurrentId] = useState<number>();
   const [fileToView, setFileToView] = useState<FileItem>();
-  const [currentItem, setCurrentItem] = useState<InventoryDispatch>();
-  const [dispatchPDF, updatePDF] = usePDF({});
   const {fetchDispatch} = useInventoryDispatchDetails();
+
+  const {
+    reportService: {generatePdf},
+  } = useAppContext();
 
   const fetchPDFUrl = (id: number) => {
     fetchDispatch(id, data => {
-      setCurrentItem(data);
-      updatePDF(<BasicReversPDF item={data} />);
+      generatePdf('REVERS', data);
     });
   };
 
@@ -85,18 +84,6 @@ const InventoryDetails = ({context, type}: InventoryProps) => {
     if (data?.items.target_organization_unit?.id !== orgUnitId) return true;
     return false;
   };
-
-  useEffect(() => {
-    if (!dispatchPDF.blob) return;
-    const blobUrl = URL.createObjectURL(dispatchPDF.blob);
-    const link = document.createElement('a');
-    link.href = blobUrl;
-    link.download = `revers_${currentItem?.target_organization_unit.title}.pdf`;
-    link.style.display = 'none';
-    document.body.appendChild(link);
-    link.click();
-    URL.revokeObjectURL(blobUrl);
-  }, [dispatchPDF]);
 
   return (
     <ScreenWrapper>
