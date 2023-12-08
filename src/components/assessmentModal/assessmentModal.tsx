@@ -87,6 +87,7 @@ const AssessmentModal = ({context, onClose, id, depreciation_type_id, refetch}: 
                 onChange={onChange}
                 options={estimationTypeOptions}
                 label="TIP PROCJENE:"
+                isRequired
                 error={errors.type?.message}
               />
             )}
@@ -94,6 +95,7 @@ const AssessmentModal = ({context, onClose, id, depreciation_type_id, refetch}: 
           <Input
             {...register('gross_price_difference', {required: 'Ovo polje je obavezno'})}
             label="VRIJEDNOST PROCJENE:"
+            isRequired
             error={errors.gross_price_difference?.message}
             type="number"
             rightContent={<div>€</div>}
@@ -108,6 +110,7 @@ const AssessmentModal = ({context, onClose, id, depreciation_type_id, refetch}: 
                 label="DATUM PROCJENE:"
                 name={name}
                 selected={value ? new Date(value) : ''}
+                isRequired
                 error={errors.date_of_assessment?.message}
               />
             )}

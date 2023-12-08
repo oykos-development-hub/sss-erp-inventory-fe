@@ -45,6 +45,7 @@ const SmallInventoryForm = ({onFormSubmit, context}: AddInventoryFormProps) => {
                 selected={value ? new Date(value) : ''}
                 onChange={onChange}
                 label="DATUM NABAVKE:"
+                isRequired
                 error={errors.date_of_purchase?.message}
               />
             )}
@@ -63,6 +64,7 @@ const SmallInventoryForm = ({onFormSubmit, context}: AddInventoryFormProps) => {
                 onChange={onChange}
                 options={inventorySourceOptions}
                 label="IZVOR SREDSTAVA:"
+                isRequired
                 error={errors.source?.message}
               />
             )}
@@ -80,6 +82,7 @@ const SmallInventoryForm = ({onFormSubmit, context}: AddInventoryFormProps) => {
                 options={suppliers}
                 placeholder=""
                 label="DOBAVLJAČ:"
+                isRequired
                 error={errors.supplier?.message}
               />
             )}
@@ -98,6 +101,7 @@ const SmallInventoryForm = ({onFormSubmit, context}: AddInventoryFormProps) => {
                 onChange={onChange}
                 options={locationOptions}
                 label="Lokacija:"
+                isRequired
                 error={errors.office?.message}
               />
             )}

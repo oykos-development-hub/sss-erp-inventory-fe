@@ -88,16 +88,19 @@ const MovableDetailsForm = ({data, context, inventoryType, refetch, inventoryId}
       <InputWrapper>
         <Input
           {...register('inventory_number', {required: 'Ovo polje je obavezno'})}
+          isRequired
           error={errors.inventory_number?.message}
           label="INV. BROJ:"
         />
         <Input
           {...register('title', {required: 'Ovo polje je obavezno'})}
+          isRequired
           error={errors.title?.message}
           label="NAZIV:"
         />
         <Input
           {...register('serial_number', {required: 'Ovo polje je obavezno'})}
+          isRequired
           error={errors.serial_number?.message}
           label="SERIJSKI BR:"
         />

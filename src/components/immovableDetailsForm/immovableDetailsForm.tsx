@@ -113,6 +113,7 @@ const ImmovableDetailsForm = ({context, data, refetch, inventoryId}: DetailsForm
               onChange={onChange}
               options={ownershipTypeOptions}
               label="VRSTA NEPOKRETNOSTI:"
+              isRequired
               error={errors.type?.message}
             />
           )}
@@ -121,17 +122,20 @@ const ImmovableDetailsForm = ({context, data, refetch, inventoryId}: DetailsForm
         <Input
           {...register('square_area', {required: 'Ovo polje je obavezno'})}
           type="number"
+          isRequired
           error={errors.square_area?.message}
           label="POVRŠINA M2:"
         />
         <Input
           {...register('land_serial_number', {required: 'Ovo polje je obavezno'})}
           error={errors.land_serial_number?.message}
+          isRequired
           label="BROJ KATASTARSKE PARCELE:"
         />
         <Input
           {...register('property_document', {required: 'Ovo polje je obavezno'})}
           error={errors.property_document?.message}
+          isRequired
           label="ISPRAVE O SVOJINI:"
         />
       </ImmovableDetailsInputWrapper>
@@ -139,15 +143,18 @@ const ImmovableDetailsForm = ({context, data, refetch, inventoryId}: DetailsForm
         <Input
           {...register('ownership_scope', {required: 'Ovo polje je obavezno'})}
           label="OBIM PRAVA:"
+          isRequired
           error={errors.ownership_scope?.message}
         />
         <Input
           {...register('ownership_investment_scope', {required: 'Ovo polje je obavezno'})}
           error={errors.ownership_investment_scope?.message}
+          isRequired
           label="OBIM PRAVA ZA IMOVINU STEČENU ZAJEDNIČKIM ULAGANJEM:"
         />
         <Input
           {...register('document', {required: 'Ovo polje je obavezno'})}
+          isRequired
           error={errors.document?.message}
           label="LIST NEPOKRETNOSTI:"
         />
@@ -172,6 +179,7 @@ const ImmovableDetailsForm = ({context, data, refetch, inventoryId}: DetailsForm
               onChange={onChange}
               options={restrictionOptions}
               error={errors.limitation?.message}
+              isRequired
               label="TERETI OGRANIČENJA:"
             />
           )}
@@ -181,6 +189,7 @@ const ImmovableDetailsForm = ({context, data, refetch, inventoryId}: DetailsForm
           {...register('limitations_description')}
           error={errors.limitations_description?.message}
           disabled={!limitation?.id}
+          isRequired
           label="OPIS TERETA OGRANIČENJA:"
         />
       </ImmovableDetailsInputWrapper>

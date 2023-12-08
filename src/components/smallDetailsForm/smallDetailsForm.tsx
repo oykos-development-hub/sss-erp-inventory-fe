@@ -99,6 +99,7 @@ const SmallDetailsForm = ({context, data, inventoryType, refetch, inventoryId}: 
         <Input
           {...register('title', {required: 'Ovo polje je obavezno'})}
           error={errors.title?.message}
+          isRequired
           label="NAZIV:"
         />
         <Controller
@@ -133,6 +134,7 @@ const SmallDetailsForm = ({context, data, inventoryType, refetch, inventoryId}: 
         <Input
           {...register('invoice_number', {required: 'Ovo polje je obavezno'})}
           error={errors.invoice_number?.message}
+          isRequired
           label="BROJ RAČUNA NABAVKE:"
         />
         <Controller
@@ -187,6 +189,7 @@ const SmallDetailsForm = ({context, data, inventoryType, refetch, inventoryId}: 
         <Input
           {...register('amount', {required: 'Ovo polje je obavezno'})}
           type="number"
+          isRequired
           error={errors.amount?.message}
           label="KOLIČINA:"
         />

@@ -93,6 +93,7 @@ const MovableAddForm = ({onFormSubmit, context, selectedArticles}: AddInventoryF
                 options={suppliers}
                 placeholder=""
                 label="DOBAVLJAČ:"
+                isRequired
                 error={errors.supplier?.message}
               />
             )}
@@ -108,6 +109,7 @@ const MovableAddForm = ({onFormSubmit, context, selectedArticles}: AddInventoryF
                 options={contractOptions as any}
                 onChange={onChange}
                 label="UGOVORI:"
+                isRequired
                 error={errors.supplier?.message}
               />
             )}
@@ -126,6 +128,7 @@ const MovableAddForm = ({onFormSubmit, context, selectedArticles}: AddInventoryF
                 onChange={onChange}
                 placeholder=""
                 label="DATUM POTPISIVANJA UGOVORA:"
+                isRequired
                 error={errors.date_of_contract_signing?.message}
                 disabled={!!contract?.id}
               />
@@ -143,6 +146,7 @@ const MovableAddForm = ({onFormSubmit, context, selectedArticles}: AddInventoryF
                 onChange={onChange}
                 placeholder=""
                 label="DATUM ZAKLJUČENJA UGOVORA:"
+                isRequired
                 error={errors.date_of_conclusion?.message}
                 disabled={!!contract?.id}
               />
@@ -151,6 +155,7 @@ const MovableAddForm = ({onFormSubmit, context, selectedArticles}: AddInventoryF
           <Input
             {...register('invoice_number', {required: 'Ovo polje je obavezno'})}
             label="BROJ RAČUNA NABAVKE:"
+            isRequired
             error={errors.invoice_number?.message}
             disabled={!!contract?.id}
           />
@@ -167,6 +172,7 @@ const MovableAddForm = ({onFormSubmit, context, selectedArticles}: AddInventoryF
                 onChange={onChange}
                 placeholder=""
                 label="DATUM NABAVKE"
+                isRequired
                 error={errors.date_of_purchase?.message}
               />
             )}
@@ -183,6 +189,7 @@ const MovableAddForm = ({onFormSubmit, context, selectedArticles}: AddInventoryF
                 options={inventorySourceOptions}
                 placeholder=""
                 label="IZVOR SREDSTAVA:"
+                isRequired
                 error={errors.source?.message}
                 isDisabled={!!contract?.id}
               />
@@ -199,6 +206,7 @@ const MovableAddForm = ({onFormSubmit, context, selectedArticles}: AddInventoryF
                 onChange={onChange}
                 options={locationOptions}
                 label="LOKACIJA:"
+                isRequired
                 error={errors.office?.message}
               />
             )}

@@ -47,12 +47,15 @@ const DeactivateModal = ({onClose, onDeactivate, loading}: DeactivateModalProps)
                 onChange={onChange}
                 options={[]}
                 label="DATUM:"
+                isRequired
+                error={errors.inactive?.message}
               />
             )}
           />
           <Input
             {...register('description', {required: 'Ovo polje je obavezno'})}
             label="OPIS:"
+            isRequired
             error={errors.description?.message}
             textarea={true}
           />

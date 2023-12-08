@@ -241,6 +241,7 @@ const MovementModal = ({
                   onChange={onChange}
                   options={transactionOptionsToShow}
                   label="TIP KRETANJA:"
+                  isRequired
                   error={errors.transaction?.message}
                 />
               )}
@@ -259,6 +260,7 @@ const MovementModal = ({
                   onChange={onChange}
                   options={locationOptions.filter(item => item.id !== orgUnitId)}
                   label="LOKACIJA:"
+                  isRequired
                   error={errors.target_organization_unit_id?.message}
                 />
               )}
@@ -277,6 +279,7 @@ const MovementModal = ({
                   onChange={onChange}
                   options={userOptions}
                   label="PRIMALAC:"
+                  isRequired
                   error={errors.target_user_profile_id?.message}
                 />
               )}
@@ -294,6 +297,7 @@ const MovementModal = ({
                   onChange={onChange}
                   options={officeOptions}
                   label="LOKACIJA:"
+                  isRequired
                   error={errors.office_id?.message}
                 />
               )}
@@ -313,6 +317,7 @@ const MovementModal = ({
                     }:`}
                     name={name}
                     selected={value ? new Date(value) : ''}
+                    isRequired
                     error={errors.date?.message}
                   />
                 </>

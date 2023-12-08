@@ -94,6 +94,7 @@ const ImmovableAddForm = ({context}: {context: MicroserviceProps}) => {
                 onChange={onChange}
                 label="VRSTA NEPOKRETNOSTI:"
                 options={realEstateTypeOptions}
+                isRequired
                 error={errors.type?.message}
               />
             )}
@@ -102,6 +103,7 @@ const ImmovableAddForm = ({context}: {context: MicroserviceProps}) => {
           <Input
             {...register('location', {required: 'Ovo polje je obavezno'})}
             label="LOKACIJA:"
+            isRequired
             error={errors.location?.message}
           />
 
@@ -109,12 +111,14 @@ const ImmovableAddForm = ({context}: {context: MicroserviceProps}) => {
             {...register('square_area', {required: 'Ovo polje je obavezno'})}
             label="POVRŠINA M2:"
             type="number"
+            isRequired
             error={errors.square_area?.message}
           />
 
           <Input
             {...register('land_serial_number', {required: 'Ovo polje je obavezno'})}
             label="BROJ KATASTARSKE PARCELE:"
+            isRequired
             error={errors.land_serial_number?.message}
           />
           <Controller
@@ -128,6 +132,7 @@ const ImmovableAddForm = ({context}: {context: MicroserviceProps}) => {
                 onChange={onChange}
                 label="ISPRAVE O SVOJINI:"
                 options={propertyDocumentOptions}
+                isRequired
                 error={errors.property_document?.message}
               />
             )}
@@ -138,11 +143,13 @@ const ImmovableAddForm = ({context}: {context: MicroserviceProps}) => {
           <Input
             label="OBIM PRAVA:"
             error={errors.ownership_scope?.message}
+            isRequired
             disabled={propertyDocument?.id !== 'Svojina'}
           />
           <Input
             {...register('gross_price', {required: 'Ovo polje je obavezno'})}
             label="NABAVNA VRIJEDNOST:"
+            isRequired
             error={errors.gross_price?.message}
             type="number"
             rightContent={<div>€</div>}
@@ -153,6 +160,7 @@ const ImmovableAddForm = ({context}: {context: MicroserviceProps}) => {
           <Input
             {...register('document', {required: 'Ovo polje je obavezno'})}
             label="LIST NEPOKRETNOSTI:"
+            isRequired
             error={errors.document?.message}
           />
           <Controller
@@ -166,6 +174,7 @@ const ImmovableAddForm = ({context}: {context: MicroserviceProps}) => {
                 onChange={onChange}
                 options={restrictionOptions}
                 label="TERETI I OGRANIČENJA:"
+                isRequired
                 error={errors.limitation?.message}
               />
             )}
@@ -175,6 +184,7 @@ const ImmovableAddForm = ({context}: {context: MicroserviceProps}) => {
             {...register('limitations_description')}
             label="OPIS TERETA OGRANIČENJA:"
             disabled={!limitation?.id}
+            isRequired
             error={errors.limitations_description?.message}
           />
           <Controller
@@ -188,6 +198,7 @@ const ImmovableAddForm = ({context}: {context: MicroserviceProps}) => {
                 onChange={onChange}
                 options={amortizationGroupOptions}
                 label="AMORTIZACIONA GRUPA:"
+                isRequired
                 error={errors.depreciation_type?.message}
               />
             )}
