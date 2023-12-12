@@ -1,4 +1,4 @@
-import {Button, PrinterIcon, Table, TableHead, Theme} from 'client-library';
+import {Button, DownloadIcon, Table, TableHead, Theme} from 'client-library';
 import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {
   immovableInventoryTableHeads,
@@ -327,7 +327,7 @@ const InventoryList = ({
                 {
                   name: 'print',
                   onClick: row => fetchPDFUrl(row.id),
-                  icon: <PrinterIcon stroke={Theme.palette.gray600} />,
+                  icon: <DownloadIcon stroke={Theme.palette.gray600} />,
                 },
                 {
                   name: 'Alokacija',
@@ -361,7 +361,7 @@ const InventoryList = ({
                 {
                   name: 'print',
                   onClick: row => fetchPDFUrl(row.id),
-                  icon: <PrinterIcon stroke={Theme.palette.gray600} />,
+                  icon: <DownloadIcon stroke={Theme.palette.gray600} />,
                 },
                 {
                   name: 'Alokacija',

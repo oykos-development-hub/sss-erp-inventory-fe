@@ -1,4 +1,4 @@
-import {Divider, Table, TableHead, Theme, PrinterIcon, Typography, FileIcon} from 'client-library';
+import {Divider, Table, TableHead, Theme, DownloadIcon, Typography, FileIcon} from 'client-library';
 import {useMemo, useState} from 'react';
 import AssessmentModal from '../../components/assessmentModal/assessmentModal';
 import ImmovableDetailsForm from '../../components/immovableDetailsForm/immovableDetailsForm';
@@ -137,7 +137,7 @@ const InventoryDetails = ({context, type}: InventoryProps) => {
                 tableActions={[
                   {
                     name: 'print',
-                    icon: <PrinterIcon stroke={Theme.palette.gray600} />,
+                    icon: <DownloadIcon stroke={Theme.palette.gray600} />,
                     onClick: () => {
                       console.log('printed estimation test');
                     },
@@ -167,7 +167,7 @@ const InventoryDetails = ({context, type}: InventoryProps) => {
                 },
                 {
                   name: 'print',
-                  icon: <PrinterIcon stroke={Theme.palette.gray600} />,
+                  icon: <DownloadIcon stroke={Theme.palette.gray600} />,
                   onClick: row => fetchPDFUrl(row?.id),
                 },
               ]}

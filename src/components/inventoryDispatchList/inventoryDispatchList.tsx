@@ -1,4 +1,4 @@
-import {PrinterIcon, Table, TableHead, Theme, Typography} from 'client-library';
+import {DownloadIcon, Table, TableHead, Theme, Typography} from 'client-library';
 import {useState} from 'react';
 import useAppContext from '../../context/useAppContext';
 import {InventoryDispatchFilters} from '../../screens/inventoryDispatch/types';
@@ -124,7 +124,7 @@ const InventoryDispatchList = ({
           {
             name: 'print',
             onClick: row => fetchPDFUrl(row.id),
-            icon: <PrinterIcon stroke={Theme.palette.gray600} />,
+            icon: <DownloadIcon stroke={Theme.palette.gray600} />,
           },
         ]}
       />
