@@ -197,6 +197,7 @@ const InventoryDetails = ({context, type}: InventoryProps) => {
                 setCurrentId(id);
                 setReceiveModal(true);
               }}
+              minDate={data?.items?.movements && data?.items?.movements[0] ? data?.items?.movements[0].date : undefined}
             />
           )}
           {receiveModal && currentId && (

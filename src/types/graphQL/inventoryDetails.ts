@@ -64,6 +64,7 @@ export interface InventoryDetails {
     serial_number: string;
     dispatch_description: string;
     created_at?: string;
+    date?: string;
   }[];
   created_at: string;
   updated_at: string;

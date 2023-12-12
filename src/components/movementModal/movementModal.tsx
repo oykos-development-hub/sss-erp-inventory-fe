@@ -27,6 +27,7 @@ interface MovementModalProps {
   currentItem?: InventoryItem | InventoryDetails;
   status: string;
   openReceiveModal?: (id: number) => void;
+  minDate?: string;
 }
 
 const initialFormData: MovementModalForm = {
@@ -61,6 +62,7 @@ const MovementModal = ({
   currentItem,
   status,
   openReceiveModal,
+  minDate,
 }: MovementModalProps) => {
   const {
     handleSubmit,
@@ -200,6 +202,12 @@ const MovementModal = ({
   }, [initialDispatchType, transactionOptionsToShow]);
 
   useEffect(() => {
+    if (minDate) {
+      setValue('date', new Date(minDate));
+    }
+  }, [minDate]);
+
+  useEffect(() => {
     if (locationOptions.length && initialDispatchType && returnOrgUnitId && initialDispatchType === 'return-revers') {
       setValue('target_organization_unit_id', locationOptions.find(option => option.id === returnOrgUnitId)!);
     }
@@ -316,6 +324,7 @@ const MovementModal = ({
                       status == 'Zadužen' ? 'RAZDUŽENJA' : transactionType === 'revers' ? 'REVERSA' : 'ZADUŽENJA'
                     }:`}
                     name={name}
+                    minDate={minDate ? new Date(minDate) : undefined}
                     selected={value ? new Date(value) : ''}
                     isRequired
                     error={errors.date?.message}

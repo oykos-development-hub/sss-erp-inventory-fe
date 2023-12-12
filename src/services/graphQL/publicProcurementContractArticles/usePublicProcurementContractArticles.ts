@@ -62,7 +62,13 @@ const useProcurementContractArticles = () => {
       setOptions(options);
     }
   };
-  return {data, fetch: fetchProcurementContractsArticles, options, useArticle};
+
+  const cleanData = () => {
+    setOptions([]);
+    setData(initialOverviewData);
+  };
+
+  return {data, fetch: fetchProcurementContractsArticles, options, useArticle, cleanData};
 };
 
 export default useProcurementContractArticles;

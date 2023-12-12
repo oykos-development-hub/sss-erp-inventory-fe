@@ -9,24 +9,23 @@ import {
 } from '../../screens/inventoryOverview/constants';
 import {InventoryFilters, InventoryFiltersEnum} from '../../screens/inventoryOverview/types';
 import useGetSettings from '../../services/graphQL/getSettings/useGetSettings';
+import useInventoryDeactivate from '../../services/graphQL/inventoryDeactivate/useInventoryDeactivate';
 import useOrgUnitOfficesGet from '../../services/graphQL/organizationUnitOffices/useOrganizationUnitOfficesGet';
 import {DispatchType} from '../../types/graphQL/inventoryDispatch';
 import {InventoryItem, SourceType} from '../../types/graphQL/inventoryOverview';
 import {InventoryTypeEnum} from '../../types/inventoryType';
 import {MicroserviceProps} from '../../types/micro-service-props';
+import {parseDateForBackend} from '../../utils/dateUtils';
 import AssessmentModal from '../assessmentModal/assessmentModal';
 import DeactivateModal from '../deactivateModal/deactivateModal';
-import MovementModal from '../movementModal/movementModal';
-import {FilterDropdown, FilterInput, Filters, ReversButtonContainer} from './styles';
-import useInventoryDeactivate from '../../services/graphQL/inventoryDeactivate/useInventoryDeactivate';
-import ReceiveInventoryModal from '../receiveInventoryModal/receiveInventoryModal';
-import {parseDateForBackend} from '../../utils/dateUtils';
 import {filterExpireOptions, filterStatusOptions} from '../movementModal/constants';
+import MovementModal from '../movementModal/movementModal';
+import ReceiveInventoryModal from '../receiveInventoryModal/receiveInventoryModal';
+import {FilterDropdown, FilterInput, Filters, ReversButtonContainer} from './styles';
 
-import BasicInventoryImmovablePDF from '../../services/graphQL/inventoryImmovablePDF/inventoryImmovablePDF';
-import useInventoryDetails from '../../services/graphQL/inventoryDetails/useInventoryDetailsGet';
-import BasicInventoryMovablePDF from '../../services/graphQL/inventoryMovablePDF/inventoryMovablePDF';
 import useAppContext from '../../context/useAppContext';
+import useInventoryDetails from '../../services/graphQL/inventoryDetails/useInventoryDetailsGet';
+import useInventoriesExpireOverview from '../../services/graphQL/inventoryOverview/useInventoriesExpireOverview';
 // import useInventoryPS1PDF from '../../services/graphQL/inventoryPS1PDF/useInventoryPS1PDF';
 
 interface InventoryListProps {
@@ -54,6 +53,7 @@ const InventoryList = ({
   const [movementType, setMovementType] = useState<DispatchType | `${DispatchType}`>();
   const [deactivateModal, setDeactivateModal] = useState(false);
   const [movementModal, setMovementModal] = useState(false);
+  const [inventoriesExpire, setInventoriesExpire] = useState<InventoryItem[]>([]);
   const [estimationModal, setEstimationModal] = useState(false);
   const [currentInventoryId, setCurrentInventoryId] = useState<number[]>([]);
   const [currentItem, setCurrentItem] = useState<InventoryItem>();
@@ -68,6 +68,7 @@ const InventoryList = ({
 
   const {
     reportService: {generatePdf},
+    spreadsheetService: {openImportModal},
   } = useAppContext();
   const {refetch: fetchDetails} = useInventoryDetails();
 
@@ -164,6 +165,8 @@ const InventoryList = ({
     }
   };
 
+  const {fetch: fetchInventoriesExpire} = useInventoriesExpireOverview();
+
   const fetchPDFUrl = (id: number) => {
     fetchDetails(id, data => {
       setSourceType(data.source_type);
@@ -209,6 +212,26 @@ const InventoryList = ({
     setMovementModal(true);
   };
 
+  const onSubmitUploadedTable = () => {
+    console.log('exel');
+  };
+  const handleUploadTable = () => {
+    console.log('exel');
+  };
+
+  const onDispatchClick = () => {
+    fetchInventoriesExpire(items => {
+      const props = {
+        type: 'EXPIRE_INVENTORIES',
+        data: items,
+        onSubmit: onSubmitUploadedTable,
+        handleUpload: handleUploadTable,
+      };
+
+      openImportModal(props);
+    });
+  };
+
   const getTableHeads = useMemo(() => {
     const heads: TableHead[] =
       type === 'movable'
@@ -224,6 +247,10 @@ const InventoryList = ({
         customElement:
           type === 'small' ? null : (
             <ReversButtonContainer>
+              {type === 'movable' && (
+                <Button content={'Amortizacija'} variant="primary" size="sm" onClick={onDispatchClick} />
+              )}
+
               <Button
                 content={sourceType?.includes('2') ? 'Povrat' : 'Revers'}
                 variant="primary"

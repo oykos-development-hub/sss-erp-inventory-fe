@@ -12,7 +12,7 @@ const useOrganizationUnits = (onlyParent?: boolean) => {
 
   const fetchOrganizationUnits = async () => {
     try {
-      const response = await fetch(graphQl.getOrganizationUnits);
+      const response = await fetch(graphQl.getOrganizationUnits, {settings: true});
 
       const options = response?.organizationUnits?.items
         .filter((item: OrganizationUnit) => (!item.parent_id && onlyParent) || !onlyParent)

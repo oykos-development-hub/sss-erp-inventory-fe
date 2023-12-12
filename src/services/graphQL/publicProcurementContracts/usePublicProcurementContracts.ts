@@ -28,7 +28,12 @@ const usePublicProcurementContracts = () => {
     }
   };
 
-  return {data, fetch: fetchProcurementContracts, options};
+  const cleanData = () => {
+    setOptions([]);
+    setData(initialOverviewData);
+  };
+
+  return {data, fetch: fetchProcurementContracts, options, cleanData};
 };
 
 export default usePublicProcurementContracts;

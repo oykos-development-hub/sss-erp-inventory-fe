@@ -50,11 +50,24 @@ const MovableAddForm = ({onFormSubmit, context, selectedArticles}: AddInventoryF
     organization_unit_id: Number(orgUnitId),
   });
 
-  const {data: contracts, options: contractOptions, fetch: fetchContracts} = usePublicProcurementContracts();
-  const {data: articles, options: articlesOptions, fetch: fetchArticles, useArticle} = useProcurementContractArticles();
+  const {
+    data: contracts,
+    options: contractOptions,
+    fetch: fetchContracts,
+    cleanData: cleanDataContracts,
+  } = usePublicProcurementContracts();
+  const {
+    data: articles,
+    options: articlesOptions,
+    fetch: fetchArticles,
+    useArticle,
+    cleanData: cleanDataArticles,
+  } = useProcurementContractArticles();
 
   useEffect(() => {
     if (supplier?.id) fetchContracts(supplier?.id);
+    cleanDataArticles();
+    cleanDataContracts();
   }, [supplier]);
 
   useEffect(() => {
