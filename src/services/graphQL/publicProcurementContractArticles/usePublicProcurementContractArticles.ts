@@ -46,11 +46,11 @@ const useProcurementContractArticles = () => {
       console.log(e);
     }
   };
-  const useArticle = (id: number) => {
+  const useArticle = (id: number, amount: number) => {
     const dataCopy = {...data};
     const index = dataCopy?.items?.findIndex((item: PublicProcurementContractArticles) => item.id === id);
     if (index > -1) {
-      dataCopy.items[index].used_articles++;
+      dataCopy.items[index].used_articles += amount;
       setData(dataCopy);
       const options = dataCopy?.items
         .filter((item: PublicProcurementContractArticles) => item.amount > item.used_articles)

@@ -14,3 +14,8 @@ export const TooltipWrapper = styled.div`
     width: 200px;
   }
 `;
+
+export const Links = styled.div`
+  color: #c99234;
+  cursor: pointer;
+`;

@@ -12,9 +12,8 @@ import PlusButton from '../../shared/plusButton';
 import {DropdownDataNumber} from '../../types/dropdownData';
 import {PublicProcurementContracts} from '../../types/graphQL/publicProcurmentContract';
 import {PublicProcurementContractArticles} from '../../types/graphQL/publicProcurmentContractArticles';
-import {parseDate} from '../../utils/dateUtils';
-import {TooltipWrapper} from './styles';
-import {MovableAddFormProps, VisibilityType} from './types';
+import {Links, TooltipWrapper} from './styles';
+import {MovableAddFormProps} from './types';
 
 const MovableAddForm = ({onFormSubmit, context, selectedArticles}: AddInventoryFormProps) => {
   const {
@@ -32,12 +31,14 @@ const MovableAddForm = ({onFormSubmit, context, selectedArticles}: AddInventoryF
     const articleFind = articles.items.find((item: PublicProcurementContractArticles) => item.id === article?.id);
 
     if (articleFind) {
+      const amount = values.all_items ? articleFind.amount : 1;
       values.articles = {
         id: articleFind.public_procurement_article.id,
         title: articleFind.public_procurement_article.title,
         gross_value: articleFind.gross_value,
+        amount: amount,
       };
-      useArticle(articleFind.id);
+      useArticle(articleFind.id, amount);
       setArticle({id: 0, title: ''});
     }
 
@@ -248,9 +249,24 @@ const MovableAddForm = ({onFormSubmit, context, selectedArticles}: AddInventoryF
             variant="filled"
             position="topLeft"
             content={'Funkcionalnost je onemogućena zbog odabira ugovora.'}>
-            <PlusButton onClick={handleSubmit(onSubmit)} disabled={!!contract && contract?.id !== 0} />
+            <PlusButton
+              onClick={handleSubmit(values => {
+                values.all_items = false;
+                onSubmit(values);
+              })}
+              disabled={!!contract && contract?.id !== 0}
+            />
           </Tooltip>
         )}
+      </TooltipWrapper>
+      <TooltipWrapper>
+        <Links
+          onClick={handleSubmit(values => {
+            values.all_items = true;
+            onSubmit(values);
+          })}>
+          Učitaj sve
+        </Links>
       </TooltipWrapper>
     </Form>
   );

@@ -11,6 +11,7 @@ export interface MovableAddFormProps {
   date_of_conclusion?: Date;
   source?: DropdownDataString;
   articles?: OrderListArticleType;
+  all_items?: boolean;
 }
 
 export const VisibilityType = {
