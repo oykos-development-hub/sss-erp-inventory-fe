@@ -221,14 +221,17 @@ const InventoryList = ({
 
   const onDispatchClick = () => {
     fetchInventoriesExpire(items => {
-      const props = {
-        type: 'EXPIRE_INVENTORIES',
-        data: items,
-        onSubmit: onSubmitUploadedTable,
-        handleUpload: handleUploadTable,
-      };
-
-      openImportModal(props);
+      if (items.length > 0) {
+        const props = {
+          type: 'EXPIRE_INVENTORIES',
+          data: items,
+          onSubmit: onSubmitUploadedTable,
+          handleUpload: handleUploadTable,
+        };
+        openImportModal(props);
+      } else {
+        alert.info('Nema artikala kojima ističe amortizacije na 31.12. tekuće godine.');
+      }
     });
   };
 
