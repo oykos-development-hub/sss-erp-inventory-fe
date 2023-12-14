@@ -78,7 +78,22 @@ export const movableInventoryTableHeads: TableHead[] = [
       return <Typography content={title} />;
     },
   },
-  {title: 'Inv. broj', accessor: 'inventory_number'},
+  {
+    title: 'Klasa sredstava',
+    accessor: 'class_type',
+    type: 'custom',
+    renderContents: (class_type: DropdownDataNumber) => {
+      return <Typography content={class_type?.title} />;
+    },
+  },
+  {
+    title: 'Amortizaciona grupa',
+    accessor: 'depreciation_type',
+    type: 'custom',
+    renderContents: (depreciation_type: DropdownDataNumber) => {
+      return <Typography content={depreciation_type?.title} />;
+    },
+  },
   {
     title: 'Nabavna Cijena',
     accessor: 'purchase_gross_price',

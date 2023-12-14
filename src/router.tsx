@@ -5,6 +5,7 @@ import {NotFound404} from './screens/404';
 import Inventory from './screens';
 import InventoryDetails from './screens/inventoryDetails/inventoryDetails';
 import useAppContext from './context/useAppContext';
+import {InventoryReports} from './screens/reports/reports';
 
 const movableRegex = /^\/inventory\/movable-inventory/;
 const immovableRegex = /^\/inventory\/immovable-inventory/;
@@ -33,6 +34,8 @@ export const Router: React.FC<MicroserviceProps> = props => {
     if (movableRegex.test(pathname)) return <Inventory context={context} type="movable" />;
     if (immovableRegex.test(pathname)) return <Inventory context={context} type="immovable" />;
     if (smallRegex.test(pathname)) return <Inventory context={context} type="small" />;
+
+    if (pathname === '/inventory/reports') return <InventoryReports />;
 
     return <NotFound404 context={context} />;
   };
