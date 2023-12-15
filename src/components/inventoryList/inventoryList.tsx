@@ -227,6 +227,7 @@ const InventoryList = ({
           data: items,
           onSubmit: onSubmitUploadedTable,
           handleUpload: handleUploadTable,
+          content: 'Tabela amortizacije',
         };
         openImportModal(props);
       } else {

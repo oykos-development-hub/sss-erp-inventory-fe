@@ -1,18 +1,22 @@
-import {Datepicker, Dropdown, Input, Tooltip} from 'client-library';
+import {Button, Datepicker, Dropdown, Input, Tooltip} from 'client-library';
 import {useEffect, useState} from 'react';
 import {Controller, useForm} from 'react-hook-form';
+import useAppContext from '../../context/useAppContext';
 import {inventorySourceOptions} from '../../screens/inventoryAdd/constants';
 import {AddInventoryFormProps} from '../../screens/inventoryAdd/types';
+import {REQUEST_STATUSES} from '../../services/constants';
 import useSuppliersOverview from '../../services/graphQL/getSuppliers/useGetSuppliers';
 import useOrgUnitOfficesGet from '../../services/graphQL/organizationUnitOffices/useOrganizationUnitOfficesGet';
 import useProcurementContractArticles from '../../services/graphQL/publicProcurementContractArticles/usePublicProcurementContractArticles';
 import usePublicProcurementContracts from '../../services/graphQL/publicProcurementContracts/usePublicProcurementContracts';
+import {uploadDonateInventoryXls} from '../../services/uploadDonateInventoryXls';
 import {FieldsContainer, Form, FormRow} from '../../shared/formStyles';
 import PlusButton from '../../shared/plusButton';
 import {DropdownDataNumber} from '../../types/dropdownData';
+import {InventoryDonationItem} from '../../types/files';
 import {PublicProcurementContracts} from '../../types/graphQL/publicProcurmentContract';
 import {PublicProcurementContractArticles} from '../../types/graphQL/publicProcurmentContractArticles';
-import {Links, TooltipWrapper} from './styles';
+import {ButtonWrapper, LeftWrapper, Links, TooltipWrapper} from './styles';
 import {MovableAddFormProps} from './types';
 
 const MovableAddForm = ({onFormSubmit, context, selectedArticles}: AddInventoryFormProps) => {
@@ -27,6 +31,8 @@ const MovableAddForm = ({onFormSubmit, context, selectedArticles}: AddInventoryF
   const [article, setArticle] = useState<DropdownDataNumber>({id: 0, title: ''});
   const supplier = watch('supplier');
   const contract = watch('contract');
+  const invoice_number = watch('invoice_number');
+
   const onSubmit = (values: MovableAddFormProps) => {
     const articleFind = articles.items.find((item: PublicProcurementContractArticles) => item.id === article?.id);
 
@@ -50,6 +56,12 @@ const MovableAddForm = ({onFormSubmit, context, selectedArticles}: AddInventoryF
     size: 1000,
     organization_unit_id: Number(orgUnitId),
   });
+
+  const {
+    spreadsheetService: {openImportModal, closeImportModal},
+    alert,
+    contextMain: {token},
+  } = useAppContext();
 
   const {
     data: contracts,
@@ -90,6 +102,48 @@ const MovableAddForm = ({onFormSubmit, context, selectedArticles}: AddInventoryF
   }, [contract]);
 
   const {suppliers} = useSuppliersOverview();
+
+  const onSubmitUploadedTable = async (articles: InventoryDonationItem[]) => {
+    for (const article of articles) {
+      const values: MovableAddFormProps = {
+        invoice_number: invoice_number,
+        source: {id: 'donacija', title: 'Donacija'},
+      };
+
+      values.articles = {
+        id: 0,
+        title: article.title,
+        gross_value: article.net_price,
+        amount: 1,
+      };
+
+      await onFormSubmit(values);
+    }
+
+    alert.success('Artiki iz exela su dodati');
+    closeImportModal();
+  };
+  const handleUploadTable = async (files: FileList) => {
+    const response = await uploadDonateInventoryXls(files[0], token);
+
+    if (response?.status === REQUEST_STATUSES.success) {
+      if (response?.data?.length) {
+        return response.data;
+      }
+      return null;
+    } else {
+      alert.error('Došlo je do greške prilikom učitavanja fajla!');
+    }
+  };
+
+  const openDonationUpload = () => {
+    const props = {
+      type: 'DONATING_INVENTORIES',
+      onSubmit: onSubmitUploadedTable,
+      handleUpload: handleUploadTable,
+    };
+    openImportModal(props);
+  };
 
   return (
     <Form>
@@ -229,37 +283,43 @@ const MovableAddForm = ({onFormSubmit, context, selectedArticles}: AddInventoryF
       </FieldsContainer>
 
       <TooltipWrapper>
-        <Dropdown
-          onChange={item => {
-            setArticle({id: Number(item.id), title: item.title?.toString() || ''});
-          }}
-          options={articlesOptions || []}
-          placeholder="Izaberi artikal"
-          label="Artikli"
-          value={article}
-          error={errors.source?.message}
-          isDisabled={!articlesOptions || articlesOptions.length == 0}
-          className="width200"
-        />
-        {contract && contract.id !== 0 ? (
-          <PlusButton disabled={!article.id} onClick={handleSubmit(onSubmit)} />
-        ) : (
-          <Tooltip
-            style={{width: '200px'}}
-            variant="filled"
-            position="topLeft"
-            content={'Funkcionalnost je onemogućena zbog odabira ugovora.'}>
-            <PlusButton
-              onClick={handleSubmit(values => {
-                values.all_items = false;
-                onSubmit(values);
-              })}
-              disabled={!!contract && contract?.id !== 0}
-            />
-          </Tooltip>
-        )}
+        <ButtonWrapper>
+          <Button content="Donacija" onClick={openDonationUpload} variant="primary" />
+        </ButtonWrapper>
+        <LeftWrapper>
+          <Dropdown
+            onChange={item => {
+              setArticle({id: Number(item.id), title: item.title?.toString() || ''});
+            }}
+            options={articlesOptions || []}
+            placeholder="Izaberi artikal"
+            label="Artikli"
+            value={article}
+            error={errors.source?.message}
+            isDisabled={!articlesOptions || articlesOptions.length == 0}
+            className="width200"
+          />
+          {contract && contract.id !== 0 ? (
+            <PlusButton disabled={!article.id} onClick={handleSubmit(onSubmit)} />
+          ) : (
+            <Tooltip
+              style={{width: '200px'}}
+              variant="filled"
+              position="topLeft"
+              content={'Funkcionalnost je onemogućena zbog odabira ugovora.'}>
+              <PlusButton
+                onClick={handleSubmit(values => {
+                  values.all_items = false;
+                  onSubmit(values);
+                })}
+                disabled={!!contract && contract?.id !== 0}
+              />
+            </Tooltip>
+          )}
+        </LeftWrapper>
       </TooltipWrapper>
-      <TooltipWrapper>
+
+      <LeftWrapper>
         <Links
           onClick={handleSubmit(values => {
             values.all_items = true;
@@ -267,7 +327,7 @@ const MovableAddForm = ({onFormSubmit, context, selectedArticles}: AddInventoryF
           })}>
           Učitaj sve
         </Links>
-      </TooltipWrapper>
+      </LeftWrapper>
     </Form>
   );
 };
