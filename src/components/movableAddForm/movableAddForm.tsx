@@ -33,22 +33,35 @@ const MovableAddForm = ({onFormSubmit, context, selectedArticles}: AddInventoryF
   const contract = watch('contract');
   const invoice_number = watch('invoice_number');
 
-  const onSubmit = (values: MovableAddFormProps) => {
-    const articleFind = articles.items.find((item: PublicProcurementContractArticles) => item.id === article?.id);
+  const onSubmit = async (values: MovableAddFormProps) => {
+    if (values.all_items) {
+      for (const article of articles.items) {
+        values.articles = {
+          id: article.public_procurement_article.id,
+          title: article.public_procurement_article.title,
+          gross_value: article.gross_value,
+          amount: article.amount,
+        };
+        useArticle(article.id, article.amount);
+        setArticle({id: 0, title: ''});
+        await onFormSubmit(values);
+      }
+    } else {
+      const articleFind = articles.items.find((item: PublicProcurementContractArticles) => item.id === article?.id);
 
-    if (articleFind) {
-      const amount = values.all_items ? articleFind.amount : 1;
-      values.articles = {
-        id: articleFind.public_procurement_article.id,
-        title: articleFind.public_procurement_article.title,
-        gross_value: articleFind.gross_value,
-        amount: amount,
-      };
-      useArticle(articleFind.id, amount);
-      setArticle({id: 0, title: ''});
+      if (articleFind) {
+        values.articles = {
+          id: articleFind.public_procurement_article.id,
+          title: articleFind.public_procurement_article.title,
+          gross_value: articleFind.gross_value,
+          amount: 1,
+        };
+        useArticle(articleFind.id, 1);
+        setArticle({id: 0, title: ''});
+      }
+
+      await onFormSubmit(values);
     }
-
-    onFormSubmit(values);
   };
   const orgUnitId = context.contextMain.organization_unit.id;
   const {options: locationOptions} = useOrgUnitOfficesGet({
@@ -103,17 +116,19 @@ const MovableAddForm = ({onFormSubmit, context, selectedArticles}: AddInventoryF
 
   const {suppliers} = useSuppliersOverview();
 
-  const onSubmitUploadedTable = async (articles: InventoryDonationItem[]) => {
-    for (const article of articles) {
+  const onSubmitUploadedTable = async (articlesArr: InventoryDonationItem[]) => {
+    for (const article of articlesArr) {
       const values: MovableAddFormProps = {
         invoice_number: invoice_number,
-        source: {id: 'donacija', title: 'Donacija'},
+        source: contract?.id ? {id: 'budzet', title: 'Budžet'} : {id: 'donacija', title: 'Donacija'},
       };
 
       values.articles = {
         id: 0,
         title: article.title,
-        gross_value: article.net_price,
+        gross_value: article.gross_price,
+        serial_number: article.serial_number,
+        description: article.description,
         amount: 1,
       };
 
@@ -138,7 +153,8 @@ const MovableAddForm = ({onFormSubmit, context, selectedArticles}: AddInventoryF
 
   const openDonationUpload = () => {
     const props = {
-      type: 'DONATING_INVENTORIES',
+      type: 'IMPORT_INVENTORIES',
+      data: contract?.id ? articles.items : [],
       onSubmit: onSubmitUploadedTable,
       handleUpload: handleUploadTable,
     };
@@ -284,7 +300,11 @@ const MovableAddForm = ({onFormSubmit, context, selectedArticles}: AddInventoryF
 
       <TooltipWrapper>
         <ButtonWrapper>
-          <Button content="Donacija" onClick={openDonationUpload} variant="primary" />
+          <Button
+            content={contract?.id ? 'Generisi Exel' : 'Donacija'}
+            onClick={openDonationUpload}
+            variant="primary"
+          />
         </ButtonWrapper>
         <LeftWrapper>
           <Dropdown

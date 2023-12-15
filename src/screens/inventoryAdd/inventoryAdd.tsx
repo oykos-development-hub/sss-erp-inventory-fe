@@ -168,7 +168,18 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
         if (values.articles?.amount == 1) {
           setIsOrderListSelected(true);
           setMovableValues({...values});
-          if (values?.articles?.amount === 1) {
+
+          append({
+            id: Math.floor(Math.random() * 1000),
+            inventory_number: '',
+            title: values?.articles?.title,
+            serial_number: '',
+            gross_price: values.articles?.gross_value?.toString(),
+            description: '',
+            contract_article_id: values?.articles?.id,
+          });
+        } else if (values?.articles?.amount && values?.articles?.amount > 1) {
+          for (let i = 0; i < values?.articles?.amount; i++) {
             append({
               id: Math.floor(Math.random() * 1000),
               inventory_number: '',
@@ -178,18 +189,6 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
               description: '',
               contract_article_id: values?.articles?.id,
             });
-          } else if (values?.articles?.amount > 1) {
-            for (let i = 0; i < values?.articles?.amount; i++) {
-              append({
-                id: Math.floor(Math.random() * 1000),
-                inventory_number: '',
-                title: values?.articles?.title,
-                serial_number: '',
-                gross_price: values.articles?.gross_value?.toString(),
-                description: '',
-                contract_article_id: values?.articles?.id,
-              });
-            }
           }
         }
       }

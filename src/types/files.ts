@@ -2,7 +2,9 @@ import {REQUEST_STATUSES} from '../services/constants';
 
 export type InventoryDonationItem = {
   title: string;
-  net_price: number;
+  gross_price: number;
+  serial_number: string;
+  description: string;
 };
 
 export type UploadInventoryDonationResponse = {
