@@ -183,23 +183,27 @@ const InventoryDetails = ({context, type}: InventoryProps) => {
               depreciation_type_id={data?.items.depreciation_type?.id || 0}
             />
           )}
-          {movementModal && (
-            <MovementModal
-              context={context}
-              onClose={onCloseMovementModal}
-              id={id}
-              refetch={refetch}
-              sourceType={data?.items.source_type}
-              currentItem={data?.items}
-              inventoryType={type}
-              status={data?.items?.status || ''}
-              openReceiveModal={id => {
-                setCurrentId(id);
-                setReceiveModal(true);
-              }}
-              minDate={data?.items?.movements && data?.items?.movements[0] ? data?.items?.movements[0].date : undefined}
-            />
-          )}
+          {movementModal &&
+            (console.log(type, 'sda'),
+            (
+              <MovementModal
+                context={context}
+                onClose={onCloseMovementModal}
+                id={id}
+                refetch={refetch}
+                sourceType={data?.items.source_type}
+                currentItem={data?.items}
+                inventoryType={type}
+                status={data?.items?.status || ''}
+                openReceiveModal={id => {
+                  setCurrentId(id);
+                  setReceiveModal(true);
+                }}
+                minDate={
+                  data?.items?.movements && data?.items?.movements[0] ? data?.items?.movements[0].date : undefined
+                }
+              />
+            ))}
           {receiveModal && currentId && (
             <ReceiveInventoryModal
               refetch={refetch}

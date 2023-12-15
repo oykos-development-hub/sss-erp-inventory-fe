@@ -135,13 +135,17 @@ const MovementModal = ({
     };
     try {
       const successTypeString =
-        initialDispatchType === 'revers' ? 'revers' : initialDispatchType === 'allocation' ? 'kretanje' : 'povrat';
+        transactionType === 'revers'
+          ? 'kreirali revers'
+          : transactionType === 'allocation'
+          ? 'izvršili kretanje'
+          : 'izvršili povrat';
       const errorTypeString =
-        initialDispatchType === 'revers' ? 'revers' : initialDispatchType === 'allocation' ? 'kretanja' : 'povrata';
+        transactionType === 'revers' ? 'revers' : transactionType === 'allocation' ? 'kretanja' : 'povrata';
       mutate(
         data,
         id => {
-          if (initialDispatchType !== 'revers') alert.success(`Uspješno ste izvršili ${successTypeString}`);
+          if (initialDispatchType !== 'revers') alert.success(`Uspješno ste  ${successTypeString}`);
           onClose(initialDispatchType === 'revers');
           if (initialDispatchType === 'revers' && openReceiveModal) openReceiveModal(id);
           refetch();
@@ -224,6 +228,8 @@ const MovementModal = ({
       context.alert.success('Fajlovi uspješno učitani');
     }
   };
+
+  console.log(transactionType, 'transactionType');
 
   return (
     <Modal
