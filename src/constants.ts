@@ -37,4 +37,7 @@ export const titleMap: {[key in InventoryTypeEnum]: ScreenTitles} = {
 
 export const PAGE_SIZE = 10;
 
-export const estimationTypeOptions: DropdownDataString[] = [{id: 'financial', title: 'Finansijska procjena'}];
+export const estimationTypeOptions: DropdownDataString[] = [
+  {id: 'financial', title: 'Finansijska procjena'},
+  {id: 'sale', title: 'Procjena za potrebe prodaje'},
+];

@@ -36,18 +36,6 @@ export const estimationTableHeads: TableHead[] = [
     renderContents: data => <Typography content={`${data || '0'}€`} />,
   },
   {
-    title: 'Rezidualna vrijednost',
-    accessor: 'residual_price',
-    type: 'custom',
-    renderContents: data => <Typography content={`${data || '0'}€`} />,
-  },
-  {
-    title: 'Vijek trajanja',
-    accessor: 'estimated_duration',
-    type: 'custom',
-    renderContents: data => <Typography content={`${data || '0'}`} />,
-  },
-  {
     title: '',
     accessor: 'TABLE_ACTIONS',
     type: 'tableActions',

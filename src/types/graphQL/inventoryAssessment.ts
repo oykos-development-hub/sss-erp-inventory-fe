@@ -20,9 +20,7 @@ export interface InventoryAssessmentData {
   depreciation_type_id: number;
   user_profile_id: number;
   gross_price_new?: number;
-  estimated_duration?: number;
   gross_price_difference: number;
   date_of_assessment?: string;
   type?: string;
-  residual_price?: number;
 }

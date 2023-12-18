@@ -6,8 +6,6 @@ const assessmentInsert = `mutation($data: BasicInventoryAssessmentsMutation!) {
           id
           inventory_id
           active
-          estimated_duration
-          residual_price
           depreciation_type {
               id
               title

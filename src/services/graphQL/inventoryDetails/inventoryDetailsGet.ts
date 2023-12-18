@@ -93,8 +93,6 @@ const inventoryDetailsGet = `query BasicInventoryDetails($id: Int!) {
                 gross_price_new
                 gross_price_difference
                 date_of_assessment
-                estimated_duration
-                residual_price
             }
             movements{
                 id
