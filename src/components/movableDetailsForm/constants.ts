@@ -28,6 +28,7 @@ export const initialValues = {
   deactivation_description: 1,
   invoice_file_id: '',
   file_id: 0,
+  residual_price: 0,
 };
 
 export const optionsOne = [

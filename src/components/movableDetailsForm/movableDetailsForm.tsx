@@ -1,4 +1,4 @@
-import {Button, Dropdown, Input} from 'client-library';
+import {Button, Dropdown, Input, Datepicker} from 'client-library';
 import {useEffect} from 'react';
 import {Controller, useForm} from 'react-hook-form';
 import {DetailsFormProps} from '../../screens/inventoryDetails/types';
@@ -193,6 +193,23 @@ const MovableDetailsForm = ({data, context, inventoryType, refetch, inventoryId}
         />
 
         <Input {...register('description')} label="NAPOMENA:" />
+        <Input {...register('residual_price')} disabled={true} label="REZIDUALNA VRIJEDNOST:" />
+        <Controller
+          name="date_of_assessment"
+          control={control}
+          render={({field: {name, value, onChange}}) => (
+            <Datepicker
+              name={name}
+              selected={value ? new Date(value) : ''}
+              onChange={onChange}
+              placeholder=""
+              label="DATUM NABAVKE:"
+              isRequired
+              error={errors.date_of_assessment?.message}
+              disabled={true}
+            />
+          )}
+        />
       </InputWrapper>
 
       <ButtonWrapper>

@@ -77,6 +77,7 @@ const inventoryDetailsGet = `query BasicInventoryDetails($id: Int!) {
             active
             inactive
             deactivation_description
+            residual_price
             assessments {
                 id
                 type

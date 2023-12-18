@@ -35,7 +35,7 @@ export interface InventoryDetails {
   donor_title: string;
   invoice_number: string;
   price_of_assessment: number;
-  date_of_assessment: number;
+  date_of_assessment: string;
   lifetime_of_assessment_in_months: number;
   depreciation_rate?: string;
   amortization_value: number;
@@ -44,6 +44,7 @@ export interface InventoryDetails {
   source_type: SourceType | `${SourceType}`;
   status?: string;
   deactivation_description: string;
+  residual_price: number;
   assessments?: {
     id: number;
     inventory_id: number;

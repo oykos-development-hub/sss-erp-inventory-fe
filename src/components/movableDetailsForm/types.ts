@@ -35,4 +35,5 @@ export interface MovableDetailsFormProps {
   invoice_file_id: string;
   file_id?: number;
   land_serial_number: string;
+  residual_price: number;
 }
