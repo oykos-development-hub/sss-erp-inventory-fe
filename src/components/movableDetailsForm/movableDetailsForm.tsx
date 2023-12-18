@@ -17,7 +17,6 @@ const MovableDetailsForm = ({data, context, inventoryType, refetch, inventoryId}
     control,
     reset,
     formState: {errors},
-    setError,
   } = useForm<MovableDetailsFormProps>({defaultValues: initialValues});
 
   const {suppliers} = useSuppliersOverview();
@@ -98,7 +97,6 @@ const MovableDetailsForm = ({data, context, inventoryType, refetch, inventoryId}
           isRequired
           error={errors.title?.message}
           label="NAZIV:"
-          disabled
         />
         <Input
           {...register('serial_number', {required: 'Ovo polje je obavezno'})}
