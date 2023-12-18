@@ -45,6 +45,7 @@ export interface InventoryOverviewParams {
   status?: string;
   has_assessments?: boolean;
   expire?: boolean;
+  organization_unit_id?: number;
 }
 
 export interface InventoryInsertData {

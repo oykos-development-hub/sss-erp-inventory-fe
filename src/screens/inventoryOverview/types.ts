@@ -8,6 +8,7 @@ export enum InventoryFiltersEnum {
   STATUS = 'status',
   AMORTIZATION_GROUP = 'amortization_group',
   EXPIRE = 'expire',
+  ORGANIZATION_UNIT = 'organization_unit',
 }
 
 export interface InventoryFilters {
@@ -18,4 +19,5 @@ export interface InventoryFilters {
   class_type_id?: DropdownDataNumber | null;
   status?: DropdownDataString | null;
   expire?: DropdownDataBoolean | null;
+  organization_unit_id?: DropdownDataNumber | null;
 }
