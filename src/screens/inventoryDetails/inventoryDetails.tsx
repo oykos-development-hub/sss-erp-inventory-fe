@@ -122,31 +122,6 @@ const InventoryDetails = ({context, type}: InventoryProps) => {
               inventoryId={id}
             />
           )}
-          {type !== InventoryTypeEnum.SMALL && (
-            <div>
-              <TableHeader>
-                <Typography variant="caption" content="procjene" />
-                <PlusButton
-                  disabled={data?.items.source_type?.includes('2')}
-                  onClick={() => setAssessmentModal(true)}
-                />
-              </TableHeader>
-              <Table
-                tableHeads={getUpdatedTableHeads}
-                data={data?.items.assessments || []}
-                isLoading={loading}
-                tableActions={[
-                  {
-                    name: 'print',
-                    icon: <DownloadIcon stroke={Theme.palette.gray600} />,
-                    onClick: () => {
-                      console.log('printed estimation test');
-                    },
-                  },
-                ]}
-              />
-            </div>
-          )}
 
           {type !== InventoryTypeEnum.IMMOVABLE && (
             <div>
@@ -171,6 +146,31 @@ const InventoryDetails = ({context, type}: InventoryProps) => {
                     name: 'print',
                     icon: <DownloadIcon stroke={Theme.palette.gray600} />,
                     onClick: row => fetchPDFUrl(row?.id),
+                  },
+                ]}
+              />
+            </div>
+          )}
+          {type !== InventoryTypeEnum.SMALL && (
+            <div>
+              <TableHeader>
+                <Typography variant="caption" content="procjene" />
+                <PlusButton
+                  disabled={data?.items.source_type?.includes('2')}
+                  onClick={() => setAssessmentModal(true)}
+                />
+              </TableHeader>
+              <Table
+                tableHeads={getUpdatedTableHeads}
+                data={data?.items.assessments || []}
+                isLoading={loading}
+                tableActions={[
+                  {
+                    name: 'print',
+                    icon: <DownloadIcon stroke={Theme.palette.gray600} />,
+                    onClick: () => {
+                      console.log('printed estimation test');
+                    },
                   },
                 ]}
               />
