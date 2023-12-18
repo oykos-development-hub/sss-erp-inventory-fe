@@ -11,11 +11,6 @@ const InventoryOverview = ({context, type}: InventoryProps) => {
   const [debouncedSearch, setDebouncedSearch] = useState('');
   const [filterValues, setFilterValues] = useState(initialInventoryFilters[type]);
 
-  const organizationID =
-    context?.contextMain?.organization_unit?.abbreviation === 'SSSCG'
-      ? filterValues?.organization_unit_id?.id
-      : context?.contextMain?.organization_unit?.id;
-
   const {data, refetch, loading} = useInventoryOverview({
     page,
     size: PAGE_SIZE,
@@ -27,7 +22,6 @@ const InventoryOverview = ({context, type}: InventoryProps) => {
     office_id: filterValues.office_id?.id,
     depreciation_type_id: filterValues.depreciation_type_id?.id,
     expire: filterValues.expire?.id,
-    organization_unit_id: organizationID,
   });
 
   const onPageChange = (page: number) => {

@@ -9,7 +9,6 @@ import {TableHead, Typography} from 'client-library';
 export const movableFilters: `${InventoryFiltersEnum}`[] = [
   'type',
   'amortization_group',
-  'organization_unit',
   'location',
   'status',
   'search',
@@ -31,7 +30,6 @@ const initialMovableFilters = {
   status: null,
   search: '',
   expire: null,
-  organization_unit_id: null,
 };
 
 const initialImmovableFilters = {

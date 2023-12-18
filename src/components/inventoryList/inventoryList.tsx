@@ -26,7 +26,6 @@ import {FilterDropdown, FilterInput, Filters, ReversButtonContainer} from './sty
 import useAppContext from '../../context/useAppContext';
 import useInventoryDetails from '../../services/graphQL/inventoryDetails/useInventoryDetailsGet';
 import useInventoriesExpireOverview from '../../services/graphQL/inventoryOverview/useInventoriesExpireOverview';
-import useOrganizationUnits from '../../services/graphQL/organizationUnits/useOrganizationUnits';
 // import useInventoryPS1PDF from '../../services/graphQL/inventoryPS1PDF/useInventoryPS1PDF';
 
 interface InventoryListProps {
@@ -66,7 +65,6 @@ const InventoryList = ({
   const orgUnitId = context?.contextMain?.organization_unit?.id;
 
   const {options: officeOptions} = useOrgUnitOfficesGet({page: 1, size: 1000, organization_unit_id: Number(orgUnitId)});
-  const {options: organizationUnits} = useOrganizationUnits(true);
 
   const {
     reportService: {generatePdf},
@@ -128,19 +126,6 @@ const InventoryList = ({
         label="LOKACIJA:"
       />
     ),
-    organization_unit:
-      orgUnitId === 3 ? (
-        <FilterDropdown
-          name="organization_unit_id"
-          value={filterValues.organization_unit_id}
-          onChange={value => onFilter(value, 'organization_unit_id')}
-          options={[{id: 0, title: 'Sve organizacione jedinice'}, ...organizationUnits]}
-          placeholder="Odaberi organizacionu jedinicu"
-          label="ORGANIZACIONA JEDINICA:"
-        />
-      ) : (
-        <></>
-      ),
     status: (
       <FilterDropdown
         name="status"

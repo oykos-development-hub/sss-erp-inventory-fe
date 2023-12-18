@@ -79,8 +79,7 @@ const MovableDetailsForm = ({data, context, inventoryType, refetch, inventoryId}
         refetch && refetch();
         navigate(-1);
       },
-
-      () => alert.error('Greška prilikom dodavanja sredstva'),
+      erroMessage => alert.error(erroMessage),
     );
   };
 

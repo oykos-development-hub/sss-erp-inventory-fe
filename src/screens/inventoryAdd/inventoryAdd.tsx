@@ -151,7 +151,7 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
           alert.success('Uspješno dodavanje osnovnih sredstava');
           navigate(`/inventory/${type}-inventory`);
         },
-        () => alert.error('Neuspješno dodavanje osnovnih sredstava'),
+        erroMessage => alert.error(erroMessage),
       );
     }
   };

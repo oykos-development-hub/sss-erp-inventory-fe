@@ -7,14 +7,18 @@ const useInventoryInsert = () => {
   const [loading, setLoading] = useState(false);
   const {fetch} = useAppContext();
 
-  const insertInventory = async (data: InventoryInsertData[], onSuccess?: () => void, onError?: () => void) => {
+  const insertInventory = async (
+    data: InventoryInsertData[],
+    onSuccess?: () => void,
+    onError?: (response: string) => void,
+  ) => {
     setLoading(true);
     const response = await fetch(GraphQL.inventoryInsert, {data});
     if (response?.basicInventory_Insert?.status === 'success') {
       onSuccess && onSuccess();
       setLoading(false);
     } else {
-      onError && onError();
+      onError && onError(response?.basicInventory_Insert.message);
       setLoading(false);
     }
   };
