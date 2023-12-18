@@ -21,6 +21,7 @@ import FileModalView from '../../components/fileModalView/fileModalView';
 import {FileItem} from '../../types/graphQL/inventoryDetails';
 import useInventoryDispatchDetails from '../../services/graphQL/inventoryDispatchOverview/useInventoryDispatchDetails';
 import useAppContext from '../../context/useAppContext';
+import {InventoryTypeEnum} from '../../types/inventoryType';
 
 const InventoryDetails = ({context, type}: InventoryProps) => {
   const [assessmentModal, setAssessmentModal] = useState(false);
@@ -88,13 +89,13 @@ const InventoryDetails = ({context, type}: InventoryProps) => {
   return (
     <ScreenWrapper>
       <SectionBox>
-        {type !== 'immovable' && (
+        {type !== InventoryTypeEnum.IMMOVABLE && (
           <ScreenTitle content={`INV. BROJ: ${data?.items.inventory_number ?? ''} - ${data?.items.title ?? ''}`} />
         )}
         <Divider color={Theme.palette.black} style={{marginBottom: 22, marginTop: 10}} />
 
         <InventoryDetailsWrapper>
-          {type === 'movable' && (
+          {type === InventoryTypeEnum.MOVABLE && (
             <MovableDetailsForm
               context={context}
               data={data ? data.items : null}
@@ -103,7 +104,7 @@ const InventoryDetails = ({context, type}: InventoryProps) => {
               inventoryId={id}
             />
           )}
-          {type === 'immovable' && (
+          {type === InventoryTypeEnum.IMMOVABLE && (
             <ImmovableDetailsForm
               context={context}
               data={data ? data.items : null}
@@ -112,7 +113,7 @@ const InventoryDetails = ({context, type}: InventoryProps) => {
               inventoryId={id}
             />
           )}
-          {type === 'small' && (
+          {type === InventoryTypeEnum.SMALL && (
             <SmallDetailsForm
               context={context}
               data={data ? data.items : null}
@@ -120,31 +121,6 @@ const InventoryDetails = ({context, type}: InventoryProps) => {
               refetch={refetch}
               inventoryId={id}
             />
-          )}
-          {type !== 'small' && (
-            <div>
-              <TableHeader>
-                <Typography variant="caption" content="procjene" />
-                <PlusButton
-                  disabled={data?.items.source_type?.includes('2')}
-                  onClick={() => setAssessmentModal(true)}
-                />
-              </TableHeader>
-              <Table
-                tableHeads={getUpdatedTableHeads}
-                data={data?.items.assessments || []}
-                isLoading={loading}
-                tableActions={[
-                  {
-                    name: 'print',
-                    icon: <DownloadIcon stroke={Theme.palette.gray600} />,
-                    onClick: () => {
-                      console.log('printed estimation test');
-                    },
-                  },
-                ]}
-              />
-            </div>
           )}
 
           <div>
@@ -173,6 +149,31 @@ const InventoryDetails = ({context, type}: InventoryProps) => {
               ]}
             />
           </div>
+          {type !== InventoryTypeEnum.SMALL && (
+            <div>
+              <TableHeader>
+                <Typography variant="caption" content="procjene" />
+                <PlusButton
+                  disabled={data?.items.source_type?.includes('2')}
+                  onClick={() => setAssessmentModal(true)}
+                />
+              </TableHeader>
+              <Table
+                tableHeads={getUpdatedTableHeads}
+                data={data?.items.assessments || []}
+                isLoading={loading}
+                tableActions={[
+                  {
+                    name: 'print',
+                    icon: <DownloadIcon stroke={Theme.palette.gray600} />,
+                    onClick: () => {
+                      console.log('printed estimation test');
+                    },
+                  },
+                ]}
+              />
+            </div>
+          )}
           {fileToView && <FileModalView file={fileToView} onClose={() => setFileToView(undefined)} />}
           {assessmentModal && (
             <AssessmentModal
@@ -183,27 +184,23 @@ const InventoryDetails = ({context, type}: InventoryProps) => {
               depreciation_type_id={data?.items.depreciation_type?.id || 0}
             />
           )}
-          {movementModal &&
-            (console.log(type, 'sda'),
-            (
-              <MovementModal
-                context={context}
-                onClose={onCloseMovementModal}
-                id={id}
-                refetch={refetch}
-                sourceType={data?.items.source_type}
-                currentItem={data?.items}
-                inventoryType={type}
-                status={data?.items?.status || ''}
-                openReceiveModal={id => {
-                  setCurrentId(id);
-                  setReceiveModal(true);
-                }}
-                minDate={
-                  data?.items?.movements && data?.items?.movements[0] ? data?.items?.movements[0].date : undefined
-                }
-              />
-            ))}
+          {movementModal && (
+            <MovementModal
+              context={context}
+              onClose={onCloseMovementModal}
+              id={id}
+              refetch={refetch}
+              sourceType={data?.items.source_type}
+              currentItem={data?.items}
+              inventoryType={type}
+              status={data?.items?.status || ''}
+              openReceiveModal={id => {
+                setCurrentId(id);
+                setReceiveModal(true);
+              }}
+              minDate={data?.items?.movements && data?.items?.movements[0] ? data?.items?.movements[0].date : undefined}
+            />
+          )}
           {receiveModal && currentId && (
             <ReceiveInventoryModal
               refetch={refetch}
