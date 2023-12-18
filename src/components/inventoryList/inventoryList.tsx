@@ -131,7 +131,7 @@ const InventoryList = ({
         name="status"
         value={filterValues.status}
         onChange={value => onFilter(value, 'status')}
-        options={[{id: '', title: 'Svi statusi'}, ...filterStatusOptions]}
+        options={[{id: '', title: 'Sve statusi'}, ...filterStatusOptions]}
         placeholder="Odaberi status"
         label="STATUS:"
       />
@@ -339,6 +339,7 @@ const InventoryList = ({
                   disabled: (item: InventoryItem) =>
                     (item.target_organization_unit.id && orgUnitId !== item.target_organization_unit.id) ||
                     !item.active,
+                  shouldRender: (item: InventoryItem) => item.type !== InventoryTypeEnum.IMMOVABLE,
                 },
                 {
                   name: 'Dodaj procjenu',

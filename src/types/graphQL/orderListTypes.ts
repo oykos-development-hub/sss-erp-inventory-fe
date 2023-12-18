@@ -27,6 +27,7 @@ export interface OrderListArticleType {
   amount?: number;
   total_price?: number;
   gross_value?: number;
+  serial_number?: string;
   available?: number;
 }
 

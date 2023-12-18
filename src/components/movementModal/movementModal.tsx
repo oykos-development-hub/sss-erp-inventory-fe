@@ -175,7 +175,13 @@ const MovementModal = ({
         ? immovableTransactionOptions
         : smallTransactionOptions;
 
-    const optionsToRemove = [currentItem?.status === 'Nezadužen' ? 'return' : 'allocation'];
+    const optionsToRemove = [
+      currentItem?.status === 'Nezadužen' ||
+      (currentItem?.status === 'Revers' && sourceType?.includes('2')) ||
+      currentItem?.source_type.includes('2')
+        ? 'return'
+        : 'allocation',
+    ];
 
     if (
       sourceType?.includes('2') ||
@@ -228,8 +234,6 @@ const MovementModal = ({
       context.alert.success('Fajlovi uspješno učitani');
     }
   };
-
-  console.log(transactionType, 'transactionType');
 
   return (
     <Modal

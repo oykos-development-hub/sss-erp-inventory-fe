@@ -20,7 +20,7 @@ export const smallTransactionOptions: DropdownDataString[] = [
 export const filterStatusOptions: DropdownDataString[] = [
   {id: 'Nezadužen', title: 'Nezadužen'},
   {id: 'Zadužen', title: 'Zadužen'},
-  {id: 'Otpisan', title: 'Otpisan'},
+  {id: 'Deaktiviran', title: 'Deaktiviran'},
 ];
 
 export const filterExpireOptions: DropdownDataBoolean[] = [
