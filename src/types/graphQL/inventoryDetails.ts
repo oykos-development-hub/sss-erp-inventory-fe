@@ -53,6 +53,8 @@ export interface InventoryDetails {
     gross_price_new: number;
     gross_price_difference: number;
     date_of_assessment: string;
+    estimated_duration: number;
+    residual_price: number;
   }[];
   movements?: {
     id: number;
