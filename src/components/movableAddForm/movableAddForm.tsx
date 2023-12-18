@@ -229,22 +229,13 @@ const MovableAddForm = ({onFormSubmit, context, selectedArticles}: AddInventoryF
                 selected={value ? new Date(value) : ''}
                 onChange={onChange}
                 placeholder=""
-                label="DATUM ZAKLJUČENJA UGOVORA:"
+                label="DATUM ZAVRŠETKA UGOVORA:"
                 isRequired
                 error={errors.date_of_conclusion?.message}
                 disabled={!!contract?.id}
               />
             )}
           />
-          <Input
-            {...register('invoice_number', {required: 'Ovo polje je obavezno'})}
-            label="BROJ RAČUNA NABAVKE:"
-            isRequired
-            error={errors.invoice_number?.message}
-            disabled={!!contract?.id}
-          />
-        </FormRow>
-        <FormRow>
           <Controller
             name="date_of_purchase"
             control={control}
@@ -261,6 +252,8 @@ const MovableAddForm = ({onFormSubmit, context, selectedArticles}: AddInventoryF
               />
             )}
           />
+        </FormRow>
+        <FormRow>
           <Controller
             name="source"
             rules={{required: 'Ovo polje je obavezno'}}

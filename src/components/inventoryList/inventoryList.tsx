@@ -131,7 +131,7 @@ const InventoryList = ({
         name="status"
         value={filterValues.status}
         onChange={value => onFilter(value, 'status')}
-        options={[{id: '', title: 'Sve statusi'}, ...filterStatusOptions]}
+        options={[{id: '', title: 'Svi statusi'}, ...filterStatusOptions]}
         placeholder="Odaberi status"
         label="STATUS:"
       />
