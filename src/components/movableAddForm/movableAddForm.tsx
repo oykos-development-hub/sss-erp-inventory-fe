@@ -154,6 +154,7 @@ const MovableAddForm = ({onFormSubmit, context, selectedArticles}: AddInventoryF
   const openDonationUpload = () => {
     const props = {
       type: 'IMPORT_INVENTORIES',
+      content: 'Tabela',
       data: contract?.id ? articles.items : [],
       onSubmit: onSubmitUploadedTable,
       handleUpload: handleUploadTable,
@@ -294,7 +295,7 @@ const MovableAddForm = ({onFormSubmit, context, selectedArticles}: AddInventoryF
       <TooltipWrapper>
         <ButtonWrapper>
           <Button
-            content={contract?.id ? 'Generisi Exel' : 'Donacija'}
+            content={contract?.id ? 'Generiši Excel' : 'Donacija'}
             onClick={openDonationUpload}
             variant="primary"
           />
