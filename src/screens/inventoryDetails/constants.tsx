@@ -59,9 +59,10 @@ export const movementsTableHeads: TableHead[] = [
     title: 'Tip kretanja',
     accessor: '',
     type: 'custom',
-    renderContents: (_: any, item: InventoryDispatch) => (
-      <Typography variant="bodyMedium" content={DispatchTypeTitles[item.type]} />
-    ),
+    renderContents: (_: any, item: InventoryDispatch) => {
+      const value = item.date_of_deactivation ? 'Otpis' : DispatchTypeTitles[item.type];
+      return <Typography variant="bodyMedium" content={value} />;
+    },
   },
   {
     title: 'Lokacija',
@@ -84,7 +85,10 @@ export const movementsTableHeads: TableHead[] = [
     title: 'Datum',
     accessor: 'date',
     type: 'custom',
-    renderContents: date => <Typography variant="bodyMedium" content={date ? parseDate(date) : ''} />,
+    renderContents: (date: string, item: InventoryDispatch) => {
+      const value = item.date_of_deactivation ? item.date_of_deactivation : date;
+      return <Typography variant="bodyMedium" content={value ? parseDate(value) : ''} />;
+    },
   },
   {
     title: '',

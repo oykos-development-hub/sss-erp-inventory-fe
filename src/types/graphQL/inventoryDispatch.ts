@@ -2,6 +2,9 @@ import {DropdownDataNumber} from '../dropdownData';
 import {InventoryTypeEnum} from '../inventoryType';
 
 export interface InventoryDispatch {
+  date_of_deactivation: string;
+  deactivation_file: any;
+  deactivation_description: string;
   id: number;
   type: DispatchType | `${DispatchType}`;
   source_user_profile: DropdownDataNumber;
