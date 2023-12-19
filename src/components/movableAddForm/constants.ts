@@ -7,4 +7,10 @@ export const initialValues: MovableAddFormProps = {
   date_of_purchase: undefined,
   source: undefined,
   articles: undefined,
+  type: {id: 0, title: 'Ugovor'},
 };
+
+export const Type = [
+  {id: 0, title: 'Ugovor'},
+  {id: 1, title: 'Faktura'},
+];
