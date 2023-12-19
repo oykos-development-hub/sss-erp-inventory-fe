@@ -29,7 +29,10 @@ const ReceiveInventoryModal = ({
   createRevers,
 }: ReceiveInventoryModalProps) => {
   const orgUnitID = context.contextMain.organization_unit.id;
-  const {alert} = context;
+  const {
+    alert,
+    reportService: {generatePdf},
+  } = context;
 
   const {data: response, loading} = useInventoryDispatchOverview({page: 0, size: PAGE_SIZE, id: id ?? 0});
   const data = response.items[0];
@@ -39,21 +42,18 @@ const ReceiveInventoryModal = ({
   const {mutate: rejectDispatch, loading: isRejectSaving} = UseDispatchDelete();
 
   const onAccept = async () => {
-    if (targetOrgID != orgUnitID) {
-      onClose();
-    } else {
-      await acceptDispatch(
-        data.id,
-        () => {
-          alert.success(createRevers ? '' : 'Uspešno ste prihvatili revers');
-        },
-        () => {
-          alert.error('Došlo je do greške prilikom prihvatanja reversa');
-        },
-      );
-      refetch();
-      onClose();
-    }
+    await acceptDispatch(
+      data.id,
+      () => {
+        alert.success(createRevers ? '' : 'Uspješno ste prihvatili revers');
+        generatePdf('REVERS', data);
+      },
+      () => {
+        alert.error('Došlo je do greške prilikom prihvatanja reversa');
+      },
+    );
+    refetch();
+    onClose();
   };
 
   const onReject = async () => {
