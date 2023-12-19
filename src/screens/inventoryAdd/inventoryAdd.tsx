@@ -196,7 +196,6 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
           }
         }
       } else if (values && 'items' in values) {
-        console.log(values, 'values');
         setSmallInventoryValues({...values});
         append({
           id: Math.floor(Math.random() * 1000),
