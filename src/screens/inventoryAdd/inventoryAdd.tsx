@@ -16,7 +16,6 @@ import {MovableAddFormProps} from '../../components/movableAddForm/types';
 const InventoryAdd = ({context, type}: InventoryProps) => {
   const [isOrderListSelected, setIsOrderListSelected] = useState(false);
   const isImmovable = type === 'immovable';
-  const orgUnitId = context.contextMain.organization_unit.id;
 
   const {
     alert,
@@ -251,13 +250,7 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
 
           <ButtonContainer>
             <Button content="Odustani" onClick={clearButtonClick} />
-            <Button
-              content="Sačuvaj"
-              onClick={handleSubmit(onSubmit)}
-              variant="primary"
-              loader={loading}
-              disabled={orgUnitId !== 3}
-            />
+            <Button content="Sačuvaj" onClick={handleSubmit(onSubmit)} variant="primary" loader={loading} />
           </ButtonContainer>
         </>
       )}

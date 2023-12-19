@@ -403,13 +403,11 @@ const InventoryList = ({
               ]
         }
         onRowClick={(item: InventoryItem) => {
-          if (item.active) {
-            navigate(`/inventory/${type}-inventory/${item.id}`);
-            context.breadcrumbs.add({
-              name: `${item.title}`,
-              to: `/inventory/${type}-inventory/${item.id}`,
-            });
-          }
+          navigate(`/inventory/${type}-inventory/${item.id}`);
+          context.breadcrumbs.add({
+            name: `${item.title}`,
+            to: `/inventory/${type}-inventory/${item.id}`,
+          });
         }}
         disabledCheckbox={isCheckboxDisabled}
       />
@@ -418,8 +416,8 @@ const InventoryList = ({
         <DeactivateModal
           onClose={() => setDeactivateModal(false)}
           loading={loadingDeactivate}
-          onDeactivate={({inactive, description}) =>
-            deactivate(currentInventoryId[0], parseDateForBackend(inactive) || '', description, () => {
+          onDeactivate={({inactive, description, file_id}) =>
+            deactivate(currentInventoryId[0], parseDateForBackend(inactive) || '', description, file_id, () => {
               setCurrentInventoryId([]);
               setDeactivateModal(false);
               alert.success('Osnovno sredstvo je deaktivirano.');

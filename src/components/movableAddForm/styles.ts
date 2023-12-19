@@ -31,8 +31,3 @@ export const Links = styled.div`
 export const ButtonWrapper = styled.div`
   max-width: 150px;
 `;
-
-export const TypeWrapper = styled.div`
-  width: 350px;
-  margin-bottom: 15px;
-`;

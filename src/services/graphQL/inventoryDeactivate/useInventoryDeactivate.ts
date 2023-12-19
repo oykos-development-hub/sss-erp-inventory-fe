@@ -9,6 +9,7 @@ const useInventoryDeactivate = () => {
     id: number,
     inactive: string,
     deactivation_description: string,
+    file_id: number,
     onSuccess?: () => void,
     onError?: () => void,
   ) => {
@@ -17,6 +18,7 @@ const useInventoryDeactivate = () => {
       id: id,
       inactive: inactive,
       deactivation_description: deactivation_description,
+      file_id: file_id,
     });
     if (response.basicInventory_Deactivate.status === 'success') {
       onSuccess && onSuccess();
