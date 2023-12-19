@@ -35,6 +35,7 @@ const inventoryDetailsGet = `query BasicInventoryDetails($id: Int!) {
                 file_id
             }
             serial_number
+            status
             inventory_number
             title
             abbreviation
@@ -43,6 +44,16 @@ const inventoryDetailsGet = `query BasicInventoryDetails($id: Int!) {
                 id
                 title
             }
+            organization_unit {
+                id
+                title
+            }
+            target_organization_unit {
+                id
+                title
+            }
+            address
+            city
             location
             target_user_profile {
                 id
@@ -51,25 +62,27 @@ const inventoryDetailsGet = `query BasicInventoryDetails($id: Int!) {
             unit
             amount
             net_price
+            purchase_gross_price
             gross_price
             description
             date_of_purchase
             source
             donor_title
             invoice_number
-            residual_price
             price_of_assessment
             date_of_assessment
             lifetime_of_assessment_in_months
+            depreciation_rate
+            amortization_value
             active
             inactive
             deactivation_description
+            residual_price
             assessments {
                 id
                 type
                 inventory_id
                 active
-                estimated_duration
                 depreciation_type {
                      id
                     title
@@ -81,14 +94,12 @@ const inventoryDetailsGet = `query BasicInventoryDetails($id: Int!) {
                 gross_price_new
                 gross_price_difference
                 date_of_assessment
+                estimated_duration
                 residual_price
             }
             movements{
                 id
-                dispatch_id
                 type
-                deactivation_description
-                date_of_deactivation
                 source_user_profile {
                     id
                     title
@@ -105,22 +116,20 @@ const inventoryDetailsGet = `query BasicInventoryDetails($id: Int!) {
                     id
                     title
                 }
+                office {
+                    id
+                    title
+                }
+                file {
+                  id
+                  name
+                  type
+                }
                 is_accepted
                 serial_number
                 dispatch_description
-                file{
-                    id
-                    name
-                    type
-                }
-                deactivation_file_id{
-                    id
-                    name
-                    type
-                }
+                date
             }
-            address
-            city
             created_at
             updated_at
             invoice_file_id

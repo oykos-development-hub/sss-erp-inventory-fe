@@ -12,11 +12,11 @@ import {newTableItem, tableHeads} from './constants';
 import {ButtonContainer, StyledTable} from './styles';
 import {DropdownName, InputName, TableItemValues, TableValues, valuesType} from './types';
 import {MovableAddFormProps} from '../../components/movableAddForm/types';
+import {SmallInventoryAddFormProps} from '../../components/smallInventoryForm/types';
 
 const InventoryAdd = ({context, type}: InventoryProps) => {
   const [isOrderListSelected, setIsOrderListSelected] = useState(false);
   const isImmovable = type === 'immovable';
-  const orgUnitId = context.contextMain.organization_unit.id;
 
   const {
     alert,
@@ -39,6 +39,7 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
   });
   const {options: amortizationGroupOptions} = useGetSettings({entity: 'deprecation_types'});
   const [movableValues, setMovableValues] = useState<MovableAddFormProps>();
+  const [smallInventoryValues, setSmallInventoryValues] = useState<SmallInventoryAddFormProps>();
 
   const {options: classOptions} = useGetSettings({entity: 'inventory_class_type'});
   const {mutate, loading} = useInventoryInsert();
@@ -109,11 +110,13 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
       const data = values.items.map((item: any) => ({
         // form data
         id: 0,
-        date_of_purchase: parseDateForBackend(movableValues?.date_of_purchase) || '',
-        source: movableValues?.source?.id,
-        office_id: movableValues?.office?.id,
-        invoice_number: movableValues?.invoice_number,
-        supplier_id: movableValues?.supplier?.id,
+        date_of_purchase: movableValues
+          ? parseDateForBackend(movableValues?.date_of_purchase)
+          : parseDateForBackend(smallInventoryValues?.date_of_purchase),
+        source: movableValues ? movableValues?.source?.id : smallInventoryValues?.source?.id,
+        office_id: movableValues ? movableValues?.office?.id : smallInventoryValues?.office?.id,
+        invoice_number: movableValues ? movableValues?.invoice_number : smallInventoryValues?.invoice_number,
+        supplier_id: movableValues ? movableValues?.supplier?.id : smallInventoryValues?.supplier?.id,
 
         // item data
         depreciation_type_id: item?.depreciation_type?.id,
@@ -192,6 +195,17 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
             });
           }
         }
+      } else if (values && 'items' in values) {
+        console.log(values, 'values');
+        setSmallInventoryValues({...values});
+        append({
+          id: Math.floor(Math.random() * 1000),
+          inventory_number: '',
+          title: '',
+          serial_number: '',
+          gross_price: '',
+          description: '',
+        });
       }
     }
   };
@@ -251,13 +265,7 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
 
           <ButtonContainer>
             <Button content="Odustani" onClick={clearButtonClick} />
-            <Button
-              content="Sačuvaj"
-              onClick={handleSubmit(onSubmit)}
-              variant="primary"
-              loader={loading}
-              disabled={orgUnitId !== 3}
-            />
+            <Button content="Sačuvaj" onClick={handleSubmit(onSubmit)} variant="primary" loader={loading} />
           </ButtonContainer>
         </>
       )}

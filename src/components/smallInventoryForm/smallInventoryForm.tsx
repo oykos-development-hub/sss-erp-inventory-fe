@@ -100,7 +100,7 @@ const SmallInventoryForm = ({onFormSubmit, context}: AddInventoryFormProps) => {
                 value={value}
                 onChange={onChange}
                 options={locationOptions}
-                label="Lokacija:"
+                label="LOKACIJA:"
                 isRequired
                 error={errors.office?.message}
               />
