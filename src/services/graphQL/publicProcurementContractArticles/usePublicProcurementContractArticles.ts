@@ -13,13 +13,9 @@ const useProcurementContractArticles = () => {
   const [options, setOptions] = useState<DropdownDataNumber[]>([]);
   const {fetch} = useAppContext();
 
-  const fetchProcurementContractsArticles = async (
-    contract_id: number,
-    organization_unit_id: number,
-    selectedArticles?: TableItemValues[],
-  ) => {
+  const fetchProcurementContractsArticles = async (contract_id: number, selectedArticles?: TableItemValues[]) => {
     try {
-      const response = await fetch(GraphQL.getPublicProcurementContractArticles, {contract_id, organization_unit_id});
+      const response = await fetch(GraphQL.getPublicProcurementContractArticles, {contract_id});
 
       if (selectedArticles && selectedArticles?.length > 0) {
         selectedArticles.forEach((item: TableItemValues) => {

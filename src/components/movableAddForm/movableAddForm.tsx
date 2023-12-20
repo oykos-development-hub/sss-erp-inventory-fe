@@ -105,7 +105,7 @@ const MovableAddForm = ({onFormSubmit, context, selectedArticles}: AddInventoryF
   }, [locationOptions]);
 
   useEffect(() => {
-    if (contract?.id) fetchArticles(contract?.id, orgUnitId, selectedArticles);
+    if (contract?.id) fetchArticles(contract?.id, selectedArticles);
     const fullContract = contracts?.items?.find((item: PublicProcurementContracts) => item.id === contract?.id);
     if (fullContract) {
       setValue('date_of_contract_signing', new Date(fullContract.date_of_signing));
@@ -141,7 +141,7 @@ const MovableAddForm = ({onFormSubmit, context, selectedArticles}: AddInventoryF
   };
 
   const handleUploadTable = async (files: FileList) => {
-    const response = await uploadDonateInventoryXls(files[0], token);
+    const response = await uploadDonateInventoryXls(files[0], type === 1, token);
 
     if (response?.status === REQUEST_STATUSES.success) {
       if (response?.data?.length) {
@@ -153,17 +153,19 @@ const MovableAddForm = ({onFormSubmit, context, selectedArticles}: AddInventoryF
     }
   };
 
+  const type = watch('type')?.id;
+
   const openDonationUpload = () => {
     const props = {
       type: 'IMPORT_INVENTORIES',
       content: 'Tabela',
-      data: contract?.id ? articles.items : [],
+      data: {items: contract?.id ? articles.items : [], isDonating: type === 1},
       onSubmit: onSubmitUploadedTable,
       handleUpload: handleUploadTable,
     };
     openImportModal(props);
   };
-  const type = watch('type')?.id;
+
   return (
     <>
       {orgUnitId === 3 ? (

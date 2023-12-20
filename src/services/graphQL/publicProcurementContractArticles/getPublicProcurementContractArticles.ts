@@ -1,5 +1,5 @@
-const getPublicProcurementContractArticles = `query ContractArticlesOrganizationUnit($contract_id: Int, $organization_unit_id: Int) {
-    publicProcurementContractArticlesOrganizationUnit_Overview(contract_id: $contract_id, organization_unit_id: $organization_unit_id) {
+const getPublicProcurementContractArticles = `query ContractArticlesOrganizationUnit($contract_id: Int!) {
+    publicProcurementContractArticlesOrganizationUnit_Overview(contract_id: $contract_id) {
         status 
         message
         items {
