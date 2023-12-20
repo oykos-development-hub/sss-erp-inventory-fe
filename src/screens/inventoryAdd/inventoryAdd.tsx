@@ -178,9 +178,9 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
             id: Math.floor(Math.random() * 1000),
             inventory_number: '',
             title: values?.articles?.title,
-            serial_number: '',
+            serial_number: values?.articles?.serial_number,
             gross_price: values.articles?.gross_value?.toString(),
-            description: '',
+            description: values?.articles?.description,
             contract_article_id: values?.articles?.id,
           });
         } else if (values?.articles?.amount && values?.articles?.amount > 1) {
@@ -189,9 +189,9 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
               id: Math.floor(Math.random() * 1000),
               inventory_number: '',
               title: values?.articles?.title,
-              serial_number: '',
+              serial_number: values?.articles?.serial_number,
               gross_price: values.articles?.gross_value?.toString(),
-              description: '',
+              description: values?.articles?.description,
               contract_article_id: values?.articles?.id,
             });
           }
