@@ -126,6 +126,9 @@ const inventoryDetailsGet = `query BasicInventoryDetails($id: Int!) {
             updated_at
             invoice_file_id
             file_id
+            depreciation_rate
+            amortization_value
+            purchase_gross_price
         }
     }
 }`;

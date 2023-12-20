@@ -81,6 +81,7 @@ const inventoryOverview = `query BasicInventoryOverview(
             date_of_assessments
             source
             active
+            status
         }
     }
 }`;

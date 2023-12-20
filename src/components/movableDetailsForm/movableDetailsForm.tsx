@@ -18,6 +18,7 @@ const MovableDetailsForm = ({data, context, inventoryType, refetch, inventoryId}
     reset,
     formState: {errors},
     setError,
+    watch,
   } = useForm<MovableDetailsFormProps>({defaultValues: initialValues});
 
   const {suppliers} = useSuppliersOverview();
@@ -83,6 +84,7 @@ const MovableDetailsForm = ({data, context, inventoryType, refetch, inventoryId}
     );
   };
 
+  const price = watch('purchase_gross_price');
   return (
     <FormWrapper>
       <InputWrapper>
@@ -195,7 +197,7 @@ const MovableDetailsForm = ({data, context, inventoryType, refetch, inventoryId}
         <Input {...register('description')} label="NAPOMENA:" />
         <Input {...register('residual_price')} disabled={true} label="REZIDUALNA VRIJEDNOST:" />
         <Controller
-          name="date_of_assessment"
+          name="date_of_purchase"
           control={control}
           render={({field: {name, value, onChange}}) => (
             <Datepicker
