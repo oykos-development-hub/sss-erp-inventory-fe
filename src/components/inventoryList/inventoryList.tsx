@@ -464,6 +464,7 @@ const InventoryList = ({
             setCurrentId(undefined);
           }}
           createRevers={true}
+          shouldGeneratePDF={true}
         />
       )}
     </div>

@@ -18,6 +18,7 @@ interface ReceiveInventoryModalProps {
   refetch: () => void;
   targetOrgID?: number;
   createRevers?: boolean;
+  shouldGeneratePDF?: boolean;
 }
 
 const ReceiveInventoryModal = ({
@@ -27,6 +28,7 @@ const ReceiveInventoryModal = ({
   refetch,
   targetOrgID,
   createRevers,
+  shouldGeneratePDF,
 }: ReceiveInventoryModalProps) => {
   const orgUnitID = context.contextMain.organization_unit.id;
   const {
@@ -42,18 +44,24 @@ const ReceiveInventoryModal = ({
   const {mutate: rejectDispatch, loading: isRejectSaving} = UseDispatchDelete();
 
   const onAccept = async () => {
-    await acceptDispatch(
-      data.id,
-      () => {
-        alert.success(createRevers ? '' : 'Uspješno ste prihvatili revers');
+    if (targetOrgID != orgUnitID) {
+      if (createRevers && shouldGeneratePDF) {
         generatePdf('REVERS', data);
-      },
-      () => {
-        alert.error('Došlo je do greške prilikom prihvatanja reversa');
-      },
-    );
-    refetch();
-    onClose();
+      }
+      onClose();
+    } else {
+      await acceptDispatch(
+        data.id,
+        () => {
+          alert.success(createRevers ? '' : 'Uspješno ste prihvatili revers');
+        },
+        () => {
+          alert.error('Došlo je do greške prilikom prihvatanja reversa');
+        },
+      );
+      refetch();
+      onClose();
+    }
   };
 
   const onReject = async () => {

@@ -13,7 +13,6 @@ import {ButtonContainer, StyledTable} from './styles';
 import {DropdownName, InputName, TableItemValues, TableValues, valuesType} from './types';
 import {MovableAddFormProps} from '../../components/movableAddForm/types';
 import {SmallInventoryAddFormProps} from '../../components/smallInventoryForm/types';
-import {InventoryTypeEnum} from '../../types/inventoryType';
 
 const InventoryAdd = ({context, type}: InventoryProps) => {
   const [isOrderListSelected, setIsOrderListSelected] = useState(false);
@@ -154,7 +153,7 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
       await mutate(
         data,
         () => {
-          alert.success('Uspješno ste dodali sredstvo/a');
+          alert.success('Uspješno dodavanje osnovnih sredstava');
           navigate(`/inventory/${type}-inventory`);
         },
         erroMessage => alert.error(erroMessage),
@@ -271,9 +270,7 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
               onClick={handleSubmit(onSubmit)}
               variant="primary"
               loader={loading}
-              disabled={
-                orgUnitId !== 3 || (type === InventoryTypeEnum.MOVABLE && movableValues?.contract?.id === undefined)
-              }
+              disabled={orgUnitId !== 3}
             />
           </ButtonContainer>
         </>
