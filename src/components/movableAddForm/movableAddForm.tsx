@@ -139,6 +139,7 @@ const MovableAddForm = ({onFormSubmit, context, selectedArticles}: AddInventoryF
     alert.success('Artiki iz exela su dodati');
     closeImportModal();
   };
+
   const handleUploadTable = async (files: FileList) => {
     const response = await uploadDonateInventoryXls(files[0], token);
 
