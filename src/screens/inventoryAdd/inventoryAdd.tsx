@@ -154,7 +154,7 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
       await mutate(
         data,
         () => {
-          alert.success('Uspješno ste dodali pokretno sredstvo.');
+          alert.success('Uspješno ste dodali sredstvo/a');
           navigate(`/inventory/${type}-inventory`);
         },
         erroMessage => alert.error(erroMessage),
