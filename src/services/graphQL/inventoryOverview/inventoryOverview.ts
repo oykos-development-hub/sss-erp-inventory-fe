@@ -31,8 +31,10 @@ const inventoryOverview = `query BasicInventoryOverview(
         total 
         items {
             id
+            purchase_gross_price
             type
             source_type
+            location
             class_type {
                 id
                 title
@@ -75,13 +77,10 @@ const inventoryOverview = `query BasicInventoryOverview(
                 title
             }
             gross_price
-            purchase_gross_price
             date_of_purchase
             date_of_assessments
             source
-            status
             active
-            has_assessments
         }
     }
 }`;

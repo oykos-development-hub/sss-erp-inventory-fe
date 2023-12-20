@@ -23,6 +23,7 @@ export interface InventoryItem {
   organization_unit: DropdownDataNumber;
   target_organization_unit: DropdownDataNumber;
   expire: boolean;
+  location: string;
 }
 
 export enum SourceType {

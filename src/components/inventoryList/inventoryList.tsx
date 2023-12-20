@@ -235,11 +235,13 @@ const InventoryList = ({
   };
 
   const onDispatchClick = () => {
-    fetchInventoriesExpire(items => {
+    if (type === 'small') return;
+
+    fetchInventoriesExpire(type, items => {
       if (items.length > 0) {
         const props = {
           type: 'EXPIRE_INVENTORIES',
-          data: items,
+          data: {inventories: items, type},
           onSubmit: onSubmitUploadedTable,
           handleUpload: handleUploadTable,
           content: 'Tabela amortizacije',
@@ -266,9 +268,7 @@ const InventoryList = ({
         customElement:
           type === 'small' ? null : (
             <ReversButtonContainer>
-              {type === 'movable' && (
-                <Button content={'Amortizacija'} variant="primary" size="sm" onClick={onDispatchClick} />
-              )}
+              <Button content={'Amortizacija'} variant="primary" size="sm" onClick={onDispatchClick} />
 
               <Button
                 content={sourceType?.includes('2') ? 'Povrat' : 'Revers'}

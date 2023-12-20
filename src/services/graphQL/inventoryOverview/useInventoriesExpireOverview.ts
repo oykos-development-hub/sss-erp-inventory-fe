@@ -8,7 +8,7 @@ import {InventoryItem} from '../../../types/graphQL/inventoryOverview';
 const useInventoriesExpireOverview = () => {
   const [loading, setLoading] = useState(true);
   const {fetch} = useAppContext();
-  const fetchInventoryOverview = async (onSuccess: (data: InventoryItem[]) => void) => {
+  const fetchInventoryOverview = async (type: 'movable' | 'immovable', onSuccess: (data: InventoryItem[]) => void) => {
     setLoading(true);
 
     try {
@@ -16,6 +16,7 @@ const useInventoriesExpireOverview = () => {
         page: 1,
         size: 1000,
         expire: true,
+        type,
       });
       onSuccess(response?.basicInventory_Overview?.items);
       setLoading(false);
