@@ -121,6 +121,7 @@ const inventoryDetailsGet = `query BasicInventoryDetails($id: Int!) {
             }
             address
             city
+            status
             created_at
             updated_at
             invoice_file_id

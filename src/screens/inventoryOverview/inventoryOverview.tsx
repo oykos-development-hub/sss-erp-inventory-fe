@@ -5,8 +5,8 @@ import {PAGE_SIZE} from '../../constants';
 import useInventoryOverview from '../../services/graphQL/inventoryOverview/useInventoryOverview';
 import {InventoryProps} from '../../types/inventoryProps';
 import {initialInventoryFilters, inventoryFilters} from './constants';
-import {useDebounce} from "../../utils/useDebounce.ts";
-import {DropdownDataString} from "../../types/dropdownData.ts";
+import {useDebounce} from '../../utils/useDebounce.ts';
+import {DropdownDataString} from '../../types/dropdownData.ts';
 
 const InventoryOverview = ({context, type}: InventoryProps) => {
   const [page, setPage] = useState(0);
@@ -38,21 +38,17 @@ const InventoryOverview = ({context, type}: InventoryProps) => {
     organization_unit_id: organizationID,
   });
 
-
   const onPageChange = (page: number) => {
     setPage(page);
   };
 
   const onFilter = (value: DropdownDataString | ChangeEvent<HTMLInputElement>, name: string) => {
     if ('target' in value) {
-
       setFilterValues({...filterValues, [name]: value.target.value});
-
     } else {
       setFilterValues({...filterValues, [name]: value});
     }
   };
-
 
   return (
     <div>
