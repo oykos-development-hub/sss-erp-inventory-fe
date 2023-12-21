@@ -146,6 +146,7 @@ const InventoryDetails = ({context, type}: InventoryProps) => {
                     name: 'print',
                     icon: <DownloadIcon stroke={Theme.palette.gray600} />,
                     onClick: row => fetchPDFUrl(row?.id),
+                    shouldRender: (row: any) => row.type !== 'return',
                   },
                 ]}
               />

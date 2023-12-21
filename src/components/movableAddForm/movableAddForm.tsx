@@ -140,8 +140,10 @@ const MovableAddForm = ({onFormSubmit, context, selectedArticles}: AddInventoryF
     closeImportModal();
   };
 
+  const contractId = contract?.id.toString() || '';
+
   const handleUploadTable = async (files: FileList) => {
-    const response = await uploadDonateInventoryXls(files[0], type === 1, token);
+    const response = await uploadDonateInventoryXls(files[0], type === 1, token, contractId);
 
     if (response?.status === REQUEST_STATUSES.success) {
       if (response?.data?.length) {
