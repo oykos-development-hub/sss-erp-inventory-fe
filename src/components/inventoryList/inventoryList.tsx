@@ -27,6 +27,7 @@ import useAppContext from '../../context/useAppContext';
 import useInventoryDetails from '../../services/graphQL/inventoryDetails/useInventoryDetailsGet';
 import useInventoriesExpireOverview from '../../services/graphQL/inventoryOverview/useInventoriesExpireOverview';
 import useOrganizationUnits from '../../services/graphQL/organizationUnits/useOrganizationUnits';
+import {ownershipTypeOptions} from "../immovableDetailsForm/constants.ts";
 // import useInventoryPS1PDF from '../../services/graphQL/inventoryPS1PDF/useInventoryPS1PDF';
 
 interface InventoryListProps {
@@ -54,7 +55,6 @@ const InventoryList = ({
   const [movementType, setMovementType] = useState<DispatchType | `${DispatchType}`>();
   const [deactivateModal, setDeactivateModal] = useState(false);
   const [movementModal, setMovementModal] = useState(false);
-  const [inventoriesExpire, setInventoriesExpire] = useState<InventoryItem[]>([]);
   const [estimationModal, setEstimationModal] = useState(false);
   const [currentInventoryId, setCurrentInventoryId] = useState<number[]>([]);
   const [currentItem, setCurrentItem] = useState<InventoryItem>();
@@ -149,6 +149,16 @@ const InventoryList = ({
         options={[{id: '', title: 'Svi statusi'}, ...filterStatusOptions]}
         placeholder="Odaberi status"
         label="STATUS:"
+      />
+    ),
+    type_of_immovable_property: (
+      <FilterDropdown
+        name="type_of_immovable_property"
+        value={filterValues.type_of_immovable_property}
+        onChange={value => onFilter(value, 'type_of_immovable_property')}
+        options={[{id: '', title: 'Sve vrste nepokretnosti'}, ...ownershipTypeOptions]}
+        placeholder="Odaberi vrstu nepokretnosti"
+        label="VRSTA NEPOKRETNOSTI:"
       />
     ),
     search: (

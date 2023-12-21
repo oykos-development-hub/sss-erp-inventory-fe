@@ -36,6 +36,7 @@ const InventoryOverview = ({context, type}: InventoryProps) => {
     depreciation_type_id: debouncedFilterValues.depreciation_type_id?.id,
     expire: debouncedFilterValues.expire?.id,
     organization_unit_id: organizationID,
+    type_of_immovable_property: debouncedFilterValues.type_of_immovable_property?.id,
   });
 
   const onPageChange = (page: number) => {

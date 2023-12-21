@@ -1,6 +1,5 @@
 import {DropdownDataNumber} from '../dropdownData';
 import {InventoryTypeEnum} from '../inventoryType';
-import {MicroserviceProps} from '../micro-service-props';
 import {RealEstate} from './realEstateOverview';
 
 export interface InventoryItem {
@@ -47,6 +46,7 @@ export interface InventoryOverviewParams {
   has_assessments?: boolean;
   expire?: boolean;
   organization_unit_id?: number;
+  type_of_immovable_property?: string;
 }
 
 export interface InventoryInsertData {

@@ -15,7 +15,7 @@ export const movableFilters: `${InventoryFiltersEnum}`[] = [
   'search',
   'expire',
 ];
-export const immovableFilters: `${InventoryFiltersEnum}`[] = ['type', 'class', 'location', 'search'];
+export const immovableFilters: `${InventoryFiltersEnum}`[] = ['type', 'type_of_immovable_property', 'search'];
 export const smallFilters: `${InventoryFiltersEnum}`[] = ['class', 'location', 'search'];
 
 export const inventoryFilters: {[key in InventoryTypeEnum]: `${InventoryFiltersEnum}`[]} = {

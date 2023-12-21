@@ -9,6 +9,7 @@ export enum InventoryFiltersEnum {
   AMORTIZATION_GROUP = 'amortization_group',
   EXPIRE = 'expire',
   ORGANIZATION_UNIT = 'organization_unit',
+  TYPE_OF_IMMOVABLE_PROPERTY = 'type_of_immovable_property',
 }
 
 export interface InventoryFilters {
@@ -20,4 +21,5 @@ export interface InventoryFilters {
   status?: DropdownDataString | null;
   expire?: DropdownDataBoolean | null;
   organization_unit_id?: DropdownDataNumber | null;
+  type_of_immovable_property?: DropdownDataString | null;
 }
