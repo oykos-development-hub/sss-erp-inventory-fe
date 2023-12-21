@@ -2726,6 +2726,14 @@ See https://reactjs.org/docs/forms.html#controlled-components`);let r;e.initialP
                     type
                 }
             }
+            organization_unit {
+                id
+                title
+            }
+            target_organization_unit {
+                id
+                title
+            }
             address
             city
             status

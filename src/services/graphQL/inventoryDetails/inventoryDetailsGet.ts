@@ -124,6 +124,14 @@ const inventoryDetailsGet = `query BasicInventoryDetails($id: Int!) {
                     type
                 }
             }
+            organization_unit {
+                id
+                title
+            }
+            target_organization_unit {
+                id
+                title
+            }
             address
             city
             status
