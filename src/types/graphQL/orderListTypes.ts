@@ -29,6 +29,7 @@ export interface OrderListArticleType {
   gross_value?: number;
   serial_number?: string;
   available?: number;
+  article_id?: number;
 }
 
 export interface GetOrderListParams {

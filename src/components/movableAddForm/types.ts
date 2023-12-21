@@ -13,6 +13,8 @@ export interface MovableAddFormProps {
   articles?: OrderListArticleType;
   all_items?: boolean;
   type?: DropdownDataNumber;
+  contract_id?: string;
+  contract_article_id?: number;
 }
 
 export const VisibilityType = {

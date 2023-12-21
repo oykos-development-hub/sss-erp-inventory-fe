@@ -5,6 +5,7 @@ export type InventoryDonationItem = {
   gross_price: number;
   serial_number: string;
   description: string;
+  id: number;
 };
 
 export type UploadInventoryDonationResponse = {

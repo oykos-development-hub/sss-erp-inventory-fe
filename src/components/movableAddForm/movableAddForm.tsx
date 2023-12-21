@@ -33,6 +33,8 @@ const MovableAddForm = ({onFormSubmit, context, selectedArticles}: AddInventoryF
   const supplier = watch('supplier');
   const contract = watch('contract');
   const invoice_number = watch('invoice_number');
+  const date_of_purchase = watch('date_of_purchase');
+  const office = watch('office');
 
   const onSubmit = async (values: MovableAddFormProps) => {
     if (values.all_items) {
@@ -122,10 +124,13 @@ const MovableAddForm = ({onFormSubmit, context, selectedArticles}: AddInventoryF
       const values: MovableAddFormProps = {
         invoice_number: invoice_number,
         source: contract?.id ? {id: 'budzet', title: 'Budžet'} : {id: 'donacija', title: 'Donacija'},
+        supplier: {id: supplier?.id || 0, title: supplier?.title || ''} || null,
+        office: {id: office?.id || 0, title: office?.title || ''} || null,
+        date_of_purchase: date_of_purchase,
       };
 
       values.articles = {
-        id: 0,
+        id: article.id,
         title: article.title,
         gross_value: article.gross_price,
         serial_number: article.serial_number,
@@ -136,7 +141,7 @@ const MovableAddForm = ({onFormSubmit, context, selectedArticles}: AddInventoryF
       await onFormSubmit(values);
     }
 
-    alert.success('Artiki iz exela su dodati');
+    alert.success('Artikli iz excela su dodati');
     closeImportModal();
   };
 
@@ -161,7 +166,7 @@ const MovableAddForm = ({onFormSubmit, context, selectedArticles}: AddInventoryF
     const props = {
       type: 'IMPORT_INVENTORIES',
       content: 'Tabela',
-      data: {items: contract?.id ? articles.items : [], isDonating: type === 1},
+      data: {items: contract?.id ? articles.items : [], isDonating: type === 1, contractId},
       onSubmit: onSubmitUploadedTable,
       handleUpload: handleUploadTable,
     };

@@ -167,7 +167,6 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
     remove(); // clear table
     setIsOrderListSelected(false);
   };
-
   const handleFormSubmit = (values: valuesType) => {
     if (!isImmovable) {
       if (values && 'articles' in values) {
@@ -271,9 +270,7 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
               onClick={handleSubmit(onSubmit)}
               variant="primary"
               loader={loading}
-              disabled={
-                orgUnitId !== 3 || (type === InventoryTypeEnum.MOVABLE && movableValues?.contract?.id === undefined)
-              }
+              disabled={orgUnitId !== 3}
             />
           </ButtonContainer>
         </>
