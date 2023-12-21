@@ -85,6 +85,7 @@ const inventoryDetailsGet = `query BasicInventoryDetails($id: Int!) {
             }
             movements{
                 id
+                date
                 dispatch_id
                 type
                 deactivation_description
@@ -98,6 +99,10 @@ const inventoryDetailsGet = `query BasicInventoryDetails($id: Int!) {
                     title
                 }
                 source_organization_unit {
+                    id
+                    title
+                }
+                office{
                     id
                     title
                 }
