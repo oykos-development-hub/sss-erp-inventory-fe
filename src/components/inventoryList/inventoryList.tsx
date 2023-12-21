@@ -27,7 +27,7 @@ import useAppContext from '../../context/useAppContext';
 import useInventoryDetails from '../../services/graphQL/inventoryDetails/useInventoryDetailsGet';
 import useInventoriesExpireOverview from '../../services/graphQL/inventoryOverview/useInventoriesExpireOverview';
 import useOrganizationUnits from '../../services/graphQL/organizationUnits/useOrganizationUnits';
-import {ownershipTypeOptions} from "../immovableDetailsForm/constants.ts";
+import {ownershipTypeOptions} from '../immovableDetailsForm/constants.ts';
 // import useInventoryPS1PDF from '../../services/graphQL/inventoryPS1PDF/useInventoryPS1PDF';
 
 interface InventoryListProps {

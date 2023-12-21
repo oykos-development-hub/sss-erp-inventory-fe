@@ -18,7 +18,7 @@ const useInventoryOverview = ({
   depreciation_type_id,
   expire = false,
   organization_unit_id,
-  type_of_immovable_property
+  type_of_immovable_property,
 }: InventoryOverviewParams) => {
   const [data, setData] = useState<GraphQLResponse['data']['basicInventory_Overview']>(initialOverviewData);
   const [loading, setLoading] = useState(true);
@@ -40,7 +40,7 @@ const useInventoryOverview = ({
         depreciation_type_id,
         expire,
         organization_unit_id,
-        type_of_immovable_property
+        type_of_immovable_property,
       });
 
       setData(response?.basicInventory_Overview);
@@ -65,7 +65,7 @@ const useInventoryOverview = ({
     status,
     expire,
     organization_unit_id,
-    type_of_immovable_property
+    type_of_immovable_property,
   ]);
 
   return {data, loading, refetch: fetchInventoryOverview};
