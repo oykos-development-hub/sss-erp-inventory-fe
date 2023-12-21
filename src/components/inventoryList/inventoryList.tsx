@@ -302,6 +302,8 @@ const InventoryList = ({
       return true;
     }
 
+    if (row.status === 'Revers' && row?.target_organization_unit?.id !== orgUnitId) return true;
+
     if (selectedRows.length && sourceType) {
       if (row.source_type.includes('2') && sourceType?.includes('2')) {
         const currentOrgUnitId = tableData.find(item => item.id === selectedRows[0])?.organization_unit.id;

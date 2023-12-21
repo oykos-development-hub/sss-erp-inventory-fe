@@ -81,8 +81,13 @@ const InventoryDetails = ({context, type}: InventoryProps) => {
   };
 
   const checkSetMovementModal = (): boolean => {
-    if (!data?.items.target_organization_unit?.id) return false;
-    if (data?.items.target_organization_unit?.id !== orgUnitId) return true;
+    if (data?.items.target_organization_unit?.id && data?.items.target_organization_unit?.id !== orgUnitId) return true;
+    if (
+      data?.items?.movements &&
+      data?.items?.movements[0] &&
+      data?.items?.movements[0].target_organization_unit.id !== orgUnitId
+    )
+      return true;
     return false;
   };
 
