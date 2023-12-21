@@ -3,29 +3,30 @@ import useAppContext from '../../../context/useAppContext';
 import {DropdownDataNumber} from '../../../types/dropdownData';
 import {Supplier} from '../../../types/graphQL/suppliersOverviewTypes';
 
-const useSuppliersOverview = (id?: number, search?: string) => {
-  const [suppliers, setSuppliers] = useState<DropdownDataNumber[]>([]);
+const useGetDonors = (id?: number, search?: string) => {
+  const [donors, setDonors] = useState<DropdownDataNumber[]>([]);
   const [loading, setLoading] = useState(true);
   const {fetch, graphQl} = useAppContext();
 
-  const fetchSuppliers = async () => {
+  const fetchDonors = async () => {
     const response = await fetch(graphQl.getSuppliersOverview, {
       id,
       search,
+      entity: 'donation',
     });
 
-    const suppliers = response?.suppliers_Overview?.items.map((item: Supplier) => ({id: item.id, title: item.title}));
+    const donors = response?.suppliers_Overview?.items.map((item: Supplier) => ({id: item.id, title: item.title}));
 
-    if (suppliers && suppliers.length > 0) setSuppliers([...suppliers]);
+    if (donors && donors.length > 0) setDonors(donors);
 
     setLoading(false);
   };
 
   useEffect(() => {
-    fetchSuppliers();
+    fetchDonors();
   }, [id, search]);
 
-  return {suppliers: suppliers, loading, fetch: fetchSuppliers};
+  return {donors, loading, fetch: fetchDonors};
 };
 
-export default useSuppliersOverview;
+export default useGetDonors;

@@ -15,6 +15,7 @@ export interface MovableAddFormProps {
   type?: DropdownDataNumber;
   contract_id?: string;
   contract_article_id?: number;
+  donor?: DropdownDataNumber;
 }
 
 export const VisibilityType = {

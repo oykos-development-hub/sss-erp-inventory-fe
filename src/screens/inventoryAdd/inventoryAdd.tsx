@@ -119,6 +119,7 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
         office_id: movableValues ? movableValues?.office?.id : smallInventoryValues?.office?.id,
         invoice_number: movableValues ? movableValues?.invoice_number : smallInventoryValues?.invoice_number,
         supplier_id: movableValues ? movableValues?.supplier?.id : smallInventoryValues?.supplier?.id,
+        donor_id: movableValues ? movableValues?.donor?.id : 0,
 
         // item data
         depreciation_type_id: item?.depreciation_type?.id,

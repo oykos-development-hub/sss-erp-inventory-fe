@@ -13,4 +13,5 @@ export const initialValues: MovableAddFormProps = {
 export const Type = [
   {id: 0, title: 'Ugovor'},
   {id: 1, title: 'Faktura'},
+  {id: 2, title: 'Donacija'},
 ];
