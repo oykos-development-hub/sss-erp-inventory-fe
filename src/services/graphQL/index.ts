@@ -15,6 +15,7 @@ import realEstateGet from './realEstate/realEstateGet';
 import userProfileOverview from './userProfileOverview/userProfileOverview';
 import getPublicProcurementContracts from './publicProcurementContracts/publicProcurementContracts';
 import getPublicProcurementContractArticles from './publicProcurementContractArticles/getPublicProcurementContractArticles';
+import assessmentInsertArray from './assessmentInsertArray/assessmentInsertArray';
 
 export const BFF_URL = {
   local: 'http://localhost:8080',
@@ -29,6 +30,7 @@ export const GraphQL = {
   realEstateGet: realEstateGet,
   organizationUnitOfficesGet: organizationUnitOfficesGet,
   assessmentInsert: assessmentInsert,
+  assessmentInsertArray: assessmentInsertArray,
   dispatchInsert: dispatchInsert,
   inventoryDetailsGet: inventoryDetailsGet,
   inventoryDeactivate: inventoryDeactivate,

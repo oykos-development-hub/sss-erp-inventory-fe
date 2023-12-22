@@ -39,6 +39,7 @@ export interface GraphQLResponse {
     publicProcurementContracts_Overview: OverviewResponse<PublicProcurementContracts>;
     publicProcurementContractArticles_Overview: OverviewResponse<PublicProcurementContractArticles>;
     basicInventoryAssessments_Insert: InsertResponse<InventoryAssessment>;
+    basicEXCLInventoryAssessments_Insert: OverviewResponse<InventoryAssessment>;
     basicInventoryDispatch_Insert: InsertResponse<InventoryDispatch>;
     basicInventory_Details: {
       message: string;

@@ -29,6 +29,11 @@ import useInventoriesExpireOverview from '../../services/graphQL/inventoryOvervi
 import useOrganizationUnits from '../../services/graphQL/organizationUnits/useOrganizationUnits';
 import {ownershipTypeOptions} from '../immovableDetailsForm/constants.ts';
 import {StatusesForMovableInventory} from '../../constants.ts';
+import {uploadExpireInventoryXls} from '../../services/uploadExpireInventoryXls.tsx';
+import {REQUEST_STATUSES} from '../../services/constants.ts';
+import {InventoryExpireItem} from '../../types/files.ts';
+import useAssessmentArrayInsert from '../../services/graphQL/assessmentInsertArray/useAssessmentInsertAdrray.ts';
+import {InventoryAssessmentData} from '../../types/graphQL/inventoryAssessment.ts';
 // import useInventoryPS1PDF from '../../services/graphQL/inventoryPS1PDF/useInventoryPS1PDF';
 
 interface InventoryListProps {
@@ -69,9 +74,12 @@ const InventoryList = ({
   const {options: officeOptions} = useOrgUnitOfficesGet({page: 1, size: 1000, organization_unit_id: Number(orgUnitId)});
   const {options: organizationUnits} = useOrganizationUnits(true);
 
+  const {mutate: mutateAssessmentArray, loading: isSavingAssessmentArray} = useAssessmentArrayInsert();
+
   const {
     reportService: {generatePdf},
     spreadsheetService: {openImportModal},
+    contextMain: {token, id: user_profile_id},
   } = useAppContext();
   const {refetch: fetchDetails} = useInventoryDetails();
 
@@ -238,11 +246,45 @@ const InventoryList = ({
     setMovementModal(true);
   };
 
-  const onSubmitUploadedTable = () => {
-    console.log('exel');
+  const onSubmitUploadedTable = async (
+    assessments: InventoryExpireItem[],
+    options: {onSuccess: () => void; onError: () => void},
+  ) => {
+    const payload: InventoryAssessmentData[] = assessments.map(item => ({
+      inventory_id: item.inventory_id,
+      active: item.active,
+      depreciation_type_id: item.depreciation_type_id,
+      user_profile_id: user_profile_id,
+      estimated_duration: item.estimated_duration,
+      gross_price_difference: item.gross_price_difference,
+      date_of_assessment: item.date_of_assessment,
+      type: item.type,
+      residual_price: item.residual_price,
+    }));
+    await mutateAssessmentArray(
+      payload,
+      () => {
+        alert.success('Nove procjene su uspješno uvezeni');
+        refetch();
+        options.onSuccess();
+      },
+      () => {
+        alert.success('Došlo je do greške pri uvozu procjena');
+        options.onError();
+      },
+    );
   };
-  const handleUploadTable = () => {
-    console.log('exel');
+  const handleUploadTable = async (files: FileList) => {
+    const response = await uploadExpireInventoryXls(files[0], token);
+
+    if (response?.status === REQUEST_STATUSES.success) {
+      if (response?.data?.length) {
+        return response.data;
+      }
+      return null;
+    } else {
+      alert.error('Došlo je do greške prilikom učitavanja fajla!');
+    }
   };
 
   const onDispatchClick = () => {
