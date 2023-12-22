@@ -432,7 +432,7 @@ const InventoryList = ({
             deactivate(currentInventoryId[0], parseDateForBackend(inactive) || '', description, file_id, () => {
               setCurrentInventoryId([]);
               setDeactivateModal(false);
-              alert.success('Osnovno sredstvo je deaktivirano.');
+              alert.success('Osnovno sredstvo je otpisano.');
             })
           }
           id={0}

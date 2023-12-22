@@ -18,8 +18,10 @@ export const smallTransactionOptions: DropdownDataString[] = [
 ];
 
 export const filterStatusOptions: DropdownDataString[] = [
-  {id: 'Nezadužen', title: 'Nezadužen'},
-  {id: 'Zadužen', title: 'Zadužen'},
+  {id: 'Poslato', title: 'Poslato'},
+  {id: 'Prihvaćeno', title: 'Prihvaćeno'},
+  {id: 'Nezaduženo', title: 'Nezaduženo'},
+  {id: 'Zaduženo', title: 'Zaduženo'},
   {id: 'Otpisan', title: 'Otpisan'},
 ];
 

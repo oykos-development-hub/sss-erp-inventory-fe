@@ -105,9 +105,6 @@ const MovableAddFormIvoice = () => {
         </FormRow>
       </FieldsContainer>
       <TooltipWrapper>
-        <ButtonWrapper>
-          <Button content={'Donacija'} variant="primary" />
-        </ButtonWrapper>
         <LeftWrapper>
           <Dropdown
             options={[]}
