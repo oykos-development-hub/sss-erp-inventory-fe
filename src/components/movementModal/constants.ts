@@ -1,3 +1,4 @@
+import {StatusesForMovableInventory} from '../../constants';
 import {DropdownDataBoolean, DropdownDataString} from '../../types/dropdownData';
 
 export const movableTransactionOptions: DropdownDataString[] = [
@@ -18,11 +19,11 @@ export const smallTransactionOptions: DropdownDataString[] = [
 ];
 
 export const filterStatusOptions: DropdownDataString[] = [
-  {id: 'Poslato', title: 'Poslato'},
-  {id: 'Prihvaćeno', title: 'Prihvaćeno'},
-  {id: 'Nezaduženo', title: 'Nezaduženo'},
-  {id: 'Zaduženo', title: 'Zaduženo'},
-  {id: 'Otpisan', title: 'Otpisan'},
+  {id: StatusesForMovableInventory.POSLATO, title: StatusesForMovableInventory.POSLATO},
+  {id: StatusesForMovableInventory.PRIHVACENO, title: StatusesForMovableInventory.PRIHVACENO},
+  {id: StatusesForMovableInventory.NEZADUZENO, title: StatusesForMovableInventory.NEZADUZENO},
+  {id: StatusesForMovableInventory.ZADUZENO, title: StatusesForMovableInventory.ZADUZENO},
+  {id: StatusesForMovableInventory.OTPISANO, title: StatusesForMovableInventory.OTPISANO},
 ];
 
 export const filterExpireOptions: DropdownDataBoolean[] = [

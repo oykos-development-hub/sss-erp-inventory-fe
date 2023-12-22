@@ -28,6 +28,7 @@ import useInventoryDetails from '../../services/graphQL/inventoryDetails/useInve
 import useInventoriesExpireOverview from '../../services/graphQL/inventoryOverview/useInventoriesExpireOverview';
 import useOrganizationUnits from '../../services/graphQL/organizationUnits/useOrganizationUnits';
 import {ownershipTypeOptions} from '../immovableDetailsForm/constants.ts';
+import {StatusesForMovableInventory} from '../../constants.ts';
 // import useInventoryPS1PDF from '../../services/graphQL/inventoryPS1PDF/useInventoryPS1PDF';
 
 interface InventoryListProps {
@@ -281,11 +282,12 @@ const InventoryList = ({
               <Button content={'Amortizacija'} variant="primary" size="sm" onClick={onDispatchClick} />
 
               <Button
-                content={sourceType?.includes('2') ? 'Povrat' : 'Revers'}
+                content={sourceType?.includes('2') ? 'Povrat' : 'Eksterni revers'}
                 variant="primary"
                 size="sm"
                 onClick={onReversClick}
                 disabled={!selectedRows.length}
+                style={{width: '120px'}}
               />
             </ReversButtonContainer>
           ),
@@ -365,7 +367,9 @@ const InventoryList = ({
                   onClick: row => onAddMovement(row),
                   disabled: (item: InventoryItem) =>
                     (item.target_organization_unit.id && orgUnitId !== item.target_organization_unit.id) ||
-                    !item.active,
+                    !item.active ||
+                    item.status === StatusesForMovableInventory.POSLATO ||
+                    item.status === StatusesForMovableInventory.PRIHVACENO,
                   shouldRender: (item: InventoryItem) => item.type !== InventoryTypeEnum.IMMOVABLE,
                 },
                 {
@@ -384,7 +388,7 @@ const InventoryList = ({
                   },
                   disabled: (item: InventoryItem) =>
                     item.source_type?.includes('2') ||
-                    item.status !== 'Nezadužen' ||
+                    item.status !== StatusesForMovableInventory.NEZADUZENO ||
                     (item.target_organization_unit.id && orgUnitId !== item.target_organization_unit.id) ||
                     !item.active,
                 },
@@ -408,7 +412,7 @@ const InventoryList = ({
                   },
                   disabled: (item: InventoryItem) =>
                     item.source_type?.includes('2') ||
-                    item.status !== 'Nezadužen' ||
+                    item.status !== 'Nezaduženo' ||
                     orgUnitId !== item.target_organization_unit.id ||
                     !item.active,
                 },

@@ -22,6 +22,7 @@ import {FileItem} from '../../types/graphQL/inventoryDetails';
 import useInventoryDispatchDetails from '../../services/graphQL/inventoryDispatchOverview/useInventoryDispatchDetails';
 import useAppContext from '../../context/useAppContext';
 import {InventoryTypeEnum} from '../../types/inventoryType';
+import {StatusesForMovableInventory} from '../../constants';
 
 const InventoryDetails = ({context, type}: InventoryProps) => {
   const [assessmentModal, setAssessmentModal] = useState(false);
@@ -81,11 +82,9 @@ const InventoryDetails = ({context, type}: InventoryProps) => {
   };
 
   const checkSetMovementModal = (): boolean => {
-    if (data?.items.target_organization_unit?.id && data?.items.target_organization_unit?.id !== orgUnitId) return true;
     if (
-      data?.items?.movements &&
-      data?.items?.movements[0] &&
-      data?.items?.movements[0].target_organization_unit.id !== orgUnitId
+      data?.items.status === StatusesForMovableInventory.POSLATO ||
+      data?.items.status === StatusesForMovableInventory.PRIHVACENO
     )
       return true;
     return false;

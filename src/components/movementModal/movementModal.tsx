@@ -14,6 +14,7 @@ import {MicroserviceProps} from '../../types/micro-service-props';
 import {parseDate, parseDateForBackend} from '../../utils/dateUtils';
 import {immovableTransactionOptions, movableTransactionOptions, smallTransactionOptions} from './constants';
 import {FileUploadWrapper, MovementForm} from './styles';
+import {StatusesForMovableInventory} from '../../constants';
 
 interface MovementModalProps {
   context: MicroserviceProps;
@@ -175,26 +176,23 @@ const MovementModal = ({
         ? immovableTransactionOptions
         : smallTransactionOptions;
 
-    const optionsToRemove = [
-      currentItem?.status === 'Nezadužen' ||
-      (currentItem?.status === 'Revers' && sourceType?.includes('2')) ||
-      currentItem?.source_type.includes('2')
-        ? 'return'
-        : 'allocation',
-    ];
+    const optionsToRemove = [currentItem?.status === StatusesForMovableInventory.NEZADUZENO ? 'return' : 'allocation'];
 
     if (
       sourceType?.includes('2') ||
       currentItem?.source_type.includes('2') ||
       (currentItem && isReversDone(currentItem)) ||
-      currentItem?.status === 'Zadužen'
+      currentItem?.status === StatusesForMovableInventory.ZADUZENO
     ) {
       optionsToRemove.push('revers');
     }
-    if (sourceType?.includes('1') || currentItem?.status === 'Zadužen') {
+
+    if (sourceType?.includes('1') || currentItem?.status === StatusesForMovableInventory.ZADUZENO) {
       optionsToRemove.push('return-revers');
     }
-
+    if (currentItem?.source_type?.includes('1') && currentItem?.status === StatusesForMovableInventory.NEZADUZENO) {
+      optionsToRemove.push('return-revers');
+    }
     return options.filter(option => {
       return optionsToRemove.every(optionToRemove => optionToRemove !== option.id);
     });
@@ -247,7 +245,7 @@ const MovementModal = ({
       leftButtonText="Otkaži"
       content={
         <MovementForm>
-          {currentItem?.status !== 'Zadužen' && initialDispatchType !== 'revers' && (
+          {currentItem?.status !== StatusesForMovableInventory.ZADUZENO && initialDispatchType !== 'revers' && (
             <Controller
               name="transaction"
               control={control}
@@ -321,7 +319,7 @@ const MovementModal = ({
               )}
             />
           )}
-          {(transactionType || status == 'Zadužen') && (
+          {(transactionType || status === StatusesForMovableInventory.ZADUZENO) && (
             <Controller
               name="date"
               control={control}
@@ -331,7 +329,11 @@ const MovementModal = ({
                   <Datepicker
                     onChange={onChange}
                     label={`DATUM ${
-                      status == 'Zadužen' ? 'RAZDUŽENJA' : transactionType === 'revers' ? 'REVERSA' : 'ZADUŽENJA'
+                      status === StatusesForMovableInventory.ZADUZENO
+                        ? 'RAZDUŽENJA'
+                        : transactionType === 'return-revers'
+                        ? 'RAZDUŽENJA'
+                        : 'ZADUŽENJA'
                     }:`}
                     name={name}
                     minDate={minDate ? new Date(minDate) : undefined}
@@ -343,7 +345,7 @@ const MovementModal = ({
               )}
             />
           )}
-          {status === 'Zadužen' && (
+          {status === StatusesForMovableInventory.ZADUZENO && (
             <FileUploadWrapper>
               <FileUpload
                 icon={<></>}
