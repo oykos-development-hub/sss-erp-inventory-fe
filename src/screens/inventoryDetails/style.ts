@@ -16,3 +16,10 @@ export const TableHeader = styled.div`
   align-items: center;
   text-transform: uppercase;
 `;
+
+export const DescriptionWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  margin-block: 10px;
+  background-color: ${Theme.palette.gray50};
+`;

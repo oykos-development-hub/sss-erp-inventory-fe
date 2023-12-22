@@ -11,7 +11,7 @@ import ScreenWrapper from '../../shared/screenWrapper';
 import SectionBox from '../../shared/sectionBox';
 import {InventoryProps} from '../../types/inventoryProps';
 import {estimationTableHeads, movementsTableHeads} from './constants';
-import {InventoryDetailsWrapper, TableHeader} from './style';
+import {DescriptionWrapper, InventoryDetailsWrapper, TableHeader} from './style';
 import MovementModal from '../../components/movementModal/movementModal';
 import {InventoryAssessment} from '../../types/graphQL/inventoryAssessment';
 import {SettingsDropdownOverview} from '../../types/graphQL/classTypes';
@@ -134,6 +134,16 @@ const InventoryDetails = ({context, type}: InventoryProps) => {
                 <Typography variant="caption" content="kretanje sredstva" />
                 <PlusButton disabled={checkSetMovementModal()} onClick={() => setMovementModal(true)} />
               </TableHeader>
+              {data?.items.deactivation_description !== '0' && (
+                <DescriptionWrapper>
+                  <Typography variant="caption" content="Razlog otpisa:" style={{padding: '10px'}} />
+                  <Typography
+                    variant="caption"
+                    content={data?.items.deactivation_description}
+                    style={{paddingBlock: '10px'}}
+                  />
+                </DescriptionWrapper>
+              )}
               <Table
                 tableHeads={movementsTableHeads}
                 data={data?.items?.movements || []}
@@ -157,6 +167,7 @@ const InventoryDetails = ({context, type}: InventoryProps) => {
               />
             </div>
           )}
+
           {type !== InventoryTypeEnum.SMALL && (
             <div>
               <TableHeader>
