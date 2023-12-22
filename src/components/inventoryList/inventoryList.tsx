@@ -433,11 +433,17 @@ const InventoryList = ({
           onClose={() => setDeactivateModal(false)}
           loading={loadingDeactivate}
           onDeactivate={({inactive, description, file_id}) =>
-            deactivate(currentInventoryId[0], parseDateForBackend(inactive) || '', description, file_id, () => {
-              setCurrentInventoryId([]);
-              setDeactivateModal(false);
-              alert.success('Osnovno sredstvo je otpisano.');
-            })
+            deactivate(
+              currentInventoryId[0],
+              parseDateForBackend(new Date(inactive)) || '',
+              description,
+              file_id,
+              () => {
+                setCurrentInventoryId([]);
+                setDeactivateModal(false);
+                alert.success('Osnovno sredstvo je otpisano.');
+              },
+            )
           }
           id={0}
         />

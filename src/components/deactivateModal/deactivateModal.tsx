@@ -4,6 +4,7 @@ import {DeactivationForm} from './styles';
 import {parseDate} from '../../utils/dateUtils';
 import {useState} from 'react';
 import useAppContext from '../../context/useAppContext';
+import useInventoryDeactivate from '../../services/graphQL/inventoryDeactivate/useInventoryDeactivate';
 
 interface DeactivateModalProps {
   onClose: () => void;
@@ -14,13 +15,15 @@ interface DeactivateModalProps {
 
 interface DeactivationModalForm {
   //todo check if string
-  inactive: Date;
+  inactive: string;
   description: string;
   file_id: number;
+  id: number;
 }
 
 const DeactivateModal = ({onClose, onDeactivate, loading}: DeactivateModalProps) => {
   const [files, setFiles] = useState<FileList | null>(null);
+  const {mutate} = useInventoryDeactivate();
 
   const {
     fileService: {uploadFile},
@@ -52,7 +55,7 @@ const DeactivateModal = ({onClose, onDeactivate, loading}: DeactivateModalProps)
 
       return;
     }
-    console.log(errors);
+
     if (!isValid) return;
 
     const formData = new FormData();
@@ -66,6 +69,7 @@ const DeactivateModal = ({onClose, onDeactivate, loading}: DeactivateModalProps)
         setFiles(null);
         setValue('file_id', res[0]?.id);
         onDeactivate({...data, file_id: res[0]?.id});
+        mutate(data.id, data.inactive, data.description, data.file_id);
       },
       () => {
         alert.error('Greška pri čuvanju! Fajlovi nisu učitani.');

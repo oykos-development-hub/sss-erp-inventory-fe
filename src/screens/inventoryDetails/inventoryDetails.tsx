@@ -84,7 +84,8 @@ const InventoryDetails = ({context, type}: InventoryProps) => {
   const checkSetMovementModal = (): boolean => {
     if (
       data?.items.status === StatusesForMovableInventory.POSLATO ||
-      data?.items.status === StatusesForMovableInventory.PRIHVACENO
+      data?.items.status === StatusesForMovableInventory.PRIHVACENO ||
+      data?.items.status === StatusesForMovableInventory.OTPISANO
     )
       return true;
     return false;
