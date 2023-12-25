@@ -70,23 +70,6 @@ const MovableAddFormIvoice = () => {
             )}
           />
           <Controller
-            name="source"
-            rules={{required: 'Ovo polje je obavezno'}}
-            control={control}
-            render={({field: {name, value, onChange}}) => (
-              <Dropdown
-                name={name}
-                value={value}
-                onChange={onChange}
-                options={inventorySourceOptions}
-                placeholder=""
-                label="IZVOR SREDSTAVA:"
-                isRequired
-                error={errors.source?.message}
-              />
-            )}
-          />
-          <Controller
             name="office"
             rules={{required: 'Ovo polje je obavezno'}}
             control={control}

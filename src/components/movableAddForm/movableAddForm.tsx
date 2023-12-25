@@ -209,7 +209,7 @@ const MovableAddForm = ({onFormSubmit, context, selectedArticles}: AddInventoryF
                           placeholder=""
                           label="DONATOR:"
                           isRequired
-                          error={errors.supplier?.message}
+                          error={errors.donor?.message}
                         />
                       )}
                     />
@@ -245,7 +245,7 @@ const MovableAddForm = ({onFormSubmit, context, selectedArticles}: AddInventoryF
                             onChange={onChange}
                             label="UGOVORI:"
                             isRequired
-                            error={errors.supplier?.message}
+                            error={errors.contract?.message}
                           />
                         )}
                       />
