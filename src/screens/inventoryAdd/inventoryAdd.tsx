@@ -13,7 +13,7 @@ import {ButtonContainer, StyledTable} from './styles';
 import {DropdownName, InputName, TableItemValues, TableValues, valuesType} from './types';
 import {MovableAddFormProps} from '../../components/movableAddForm/types';
 import {SmallInventoryAddFormProps} from '../../components/smallInventoryForm/types';
-import {InventoryTypeEnum} from '../../types/inventoryType';
+import {InventoryInsertResponse} from '../../types/graphQL/inventoryInsert';
 
 const InventoryAdd = ({context, type}: InventoryProps) => {
   const [isOrderListSelected, setIsOrderListSelected] = useState(false);
@@ -32,6 +32,7 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
     control,
     reset,
     formState: {errors, isValid},
+    setError,
     watch,
   } = methods;
 
@@ -158,8 +159,45 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
           alert.success('Uspješno ste dodali sredstvo/a');
           navigate(`/inventory/${type}-inventory`);
         },
-        erroMessage => alert.error(erroMessage),
+        (response: InventoryInsertResponse) => {
+          if (!response.validator) {
+            alert(response.message);
+          } else {
+            setDuplicateErrors(response.validator);
+          }
+        },
       );
+    }
+  };
+
+  const setDuplicateErrors = (validator: InventoryInsertResponse['validator']) => {
+    let lowestIndex = 0;
+
+    if (validator.length) {
+      validator.forEach(item => {
+        if (item.entity === 'inventory_number') {
+          const index = fields.findIndex(field => field.inventory_number === item.value);
+          if (index < lowestIndex) lowestIndex = index;
+          if (index !== -1) {
+            setError(`items.${index}.inventory_number`, {message: 'Inventarski broj već postoji'});
+          }
+        }
+        if (item.entity === 'serial_number') {
+          const index = fields.findIndex(field => field.serial_number === item.value);
+          if (index < lowestIndex) lowestIndex = index;
+          if (index !== -1) {
+            setError(`items.${index}.serial_number`, {message: 'Serijski broj već postoji'});
+          }
+        }
+      });
+    }
+
+    // Bad approach, but it works for now
+    const allTableRows = Array.from(document.querySelectorAll('tr'));
+    const row = allTableRows[lowestIndex];
+
+    if (row) {
+      row.scrollIntoView({behavior: 'smooth', block: 'center'});
     }
   };
 
@@ -168,6 +206,7 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
     remove(); // clear table
     setIsOrderListSelected(false);
   };
+
   const handleFormSubmit = (values: valuesType) => {
     if (!isImmovable) {
       if (values && 'articles' in values) {

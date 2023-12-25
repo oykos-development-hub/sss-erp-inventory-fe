@@ -2,6 +2,7 @@ import {useState} from 'react';
 import {GraphQL} from '..';
 import {InventoryInsertData} from '../../../types/graphQL/inventoryOverview';
 import useAppContext from '../../../context/useAppContext';
+import {InventoryInsertResponse} from '../../../types/graphQL/inventoryInsert';
 
 const useInventoryInsert = () => {
   const [loading, setLoading] = useState(false);
@@ -10,7 +11,7 @@ const useInventoryInsert = () => {
   const insertInventory = async (
     data: InventoryInsertData[],
     onSuccess?: () => void,
-    onError?: (response: string) => void,
+    onError?: (response: InventoryInsertResponse) => void,
   ) => {
     setLoading(true);
     const response = await fetch(GraphQL.inventoryInsert, {data});
@@ -18,7 +19,7 @@ const useInventoryInsert = () => {
       onSuccess && onSuccess();
       setLoading(false);
     } else {
-      onError && onError(response?.basicInventory_Insert.message);
+      onError && onError(response?.basicInventory_Insert);
       setLoading(false);
     }
   };

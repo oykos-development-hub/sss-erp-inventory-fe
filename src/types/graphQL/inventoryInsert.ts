@@ -1,4 +1,5 @@
 import {InventoryTypeEnum} from '../inventoryType';
+import {Validator} from '../responseValidator';
 import {RealEstate} from './realEstateOverview';
 
 export interface InventoryInsertData {
@@ -32,4 +33,11 @@ export interface InventoryInsertData {
   deactivation_description: number;
   invoice_file_id: string | undefined;
   file_id?: number;
+}
+
+export interface InventoryInsertResponse {
+  message: string;
+  validator: Validator<'inventory_number' | 'serial_number'>[];
+  status: string;
+  data: InventoryInsertData[];
 }

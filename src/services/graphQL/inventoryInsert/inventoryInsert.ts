@@ -1,7 +1,11 @@
 const inventoryInsert = `mutation($data: [BasicInventoryInsertMutation!]) {
     basicInventory_Insert(data: $data) {
         status 
-        message 
+        message
+        validator {
+            entity
+            value
+        } 
         items {
             id
             article_id
