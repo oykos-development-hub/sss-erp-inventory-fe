@@ -111,6 +111,7 @@ const MovableAddForm = ({onFormSubmit, context, selectedArticles}: AddInventoryF
   useEffect(() => {
     if (contract?.id) fetchArticles(contract?.id, selectedArticles);
     const fullContract = contracts?.items?.find((item: PublicProcurementContracts) => item.id === contract?.id);
+    console.log(fullContract, 'fullContract');
     if (fullContract) {
       setValue('date_of_contract_signing', new Date(fullContract.date_of_signing));
       setValue('date_of_conclusion', new Date(fullContract.date_of_expiry));
@@ -253,7 +254,6 @@ const MovableAddForm = ({onFormSubmit, context, selectedArticles}: AddInventoryF
                         name="date_of_contract_signing"
                         control={control}
                         rules={{required: 'Ovo polje je obavezno'}}
-                        disabled={!!contract?.id}
                         render={({field: {name, value, onChange}}) => (
                           <Datepicker
                             name={name}
@@ -294,7 +294,15 @@ const MovableAddForm = ({onFormSubmit, context, selectedArticles}: AddInventoryF
                   <Controller
                     name="date_of_purchase"
                     control={control}
-                    rules={{required: 'Ovo polje je obavezno'}}
+                    rules={{
+                      required: 'Ovo polje je obavezno',
+                      validate: value => {
+                        const dateOfSigning = watch('date_of_contract_signing');
+                        return dateOfSigning && value && new Date(value) >= dateOfSigning
+                          ? 'Datum završetka ugovora ne može biti prije datuma zaključenja ugovora.'
+                          : true;
+                      },
+                    }}
                     render={({field: {name, value, onChange}}) => (
                       <Datepicker
                         name={name}
