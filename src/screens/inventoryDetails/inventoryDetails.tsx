@@ -85,8 +85,7 @@ const InventoryDetails = ({context, type}: InventoryProps) => {
     if (
       data?.items.status === StatusesForMovableInventory.POSLATO ||
       data?.items.status === StatusesForMovableInventory.PRIHVACENO ||
-      data?.items.status === StatusesForMovableInventory.OTPISANO ||
-      data?.items.status === StatusesForMovableInventory.ARHIVA
+      data?.items.status === StatusesForMovableInventory.OTPISANO
     )
       return true;
     return false;
@@ -135,7 +134,7 @@ const InventoryDetails = ({context, type}: InventoryProps) => {
                 <Typography variant="caption" content="kretanje sredstva" />
                 <PlusButton disabled={checkSetMovementModal()} onClick={() => setMovementModal(true)} />
               </TableHeader>
-              {data?.items.deactivation_description !== '' && (
+              {data?.items.deactivation_description !== '0' && (
                 <DescriptionWrapper>
                   <Typography variant="caption" content="Razlog otpisa:" style={{padding: '10px'}} />
                   <Typography
@@ -162,13 +161,7 @@ const InventoryDetails = ({context, type}: InventoryProps) => {
                     name: 'print',
                     icon: <DownloadIcon stroke={Theme.palette.gray600} />,
                     onClick: row => fetchPDFUrl(row?.id),
-                    shouldRender: (row: any) => {
-                      return !(
-                        data?.items.status === StatusesForMovableInventory.OTPISANO ||
-                        row.type === 'return' ||
-                        row.type === 'return-revers'
-                      );
-                    },
+                    shouldRender: (row: any) => row.type !== 'return',
                   },
                 ]}
               />
@@ -180,11 +173,7 @@ const InventoryDetails = ({context, type}: InventoryProps) => {
               <TableHeader>
                 <Typography variant="caption" content="procjene" />
                 <PlusButton
-                  disabled={
-                    data?.items.source_type?.includes('2') ||
-                    data?.items.status === StatusesForMovableInventory.OTPISANO ||
-                    data?.items.status === StatusesForMovableInventory.ARHIVA
-                  }
+                  disabled={data?.items.source_type?.includes('2')}
                   onClick={() => setAssessmentModal(true)}
                 />
               </TableHeader>

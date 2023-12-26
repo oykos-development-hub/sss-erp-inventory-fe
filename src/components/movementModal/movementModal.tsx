@@ -134,21 +134,29 @@ const MovementModal = ({
       date: parseDateForBackend(values?.date),
       file_id: file_id,
     };
+
+    if (transactionType === DispatchType.returnRevers && currentItem?.organization_unit?.id) {
+      data.target_organization_unit_id = currentItem?.organization_unit?.id;
+    }
     try {
       const successTypeString =
-        transactionType === 'revers'
+        transactionType === DispatchType.revers
           ? 'kreirali revers'
-          : transactionType === 'allocation'
+          : transactionType === DispatchType.allocation
           ? 'izvršili kretanje'
           : 'izvršili povrat';
       const errorTypeString =
-        transactionType === 'revers' ? 'revers' : transactionType === 'allocation' ? 'kretanja' : 'povrata';
+        transactionType === DispatchType.revers
+          ? DispatchType.revers
+          : transactionType === DispatchType.allocation
+          ? 'kretanja'
+          : 'povrata';
       mutate(
         data,
         id => {
-          if (initialDispatchType !== 'revers') alert.success(`Uspješno ste  ${successTypeString}`);
-          onClose(initialDispatchType === 'revers');
-          if (initialDispatchType === 'revers' && openReceiveModal) openReceiveModal(id);
+          if (initialDispatchType !== DispatchType.revers) alert.success(`Uspješno ste  ${successTypeString}`);
+          onClose(initialDispatchType === DispatchType.revers);
+          if (initialDispatchType === DispatchType.revers && openReceiveModal) openReceiveModal(id);
           refetch();
         },
         () => {

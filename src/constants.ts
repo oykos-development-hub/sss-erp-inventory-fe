@@ -45,5 +45,4 @@ export enum StatusesForMovableInventory {
   NEZADUZENO = 'Nezaduženo',
   ZADUZENO = 'Zaduženo',
   OTPISANO = 'Otpisano',
-  ARHIVA = 'Arhiva',
 }

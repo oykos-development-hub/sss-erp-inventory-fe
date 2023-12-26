@@ -177,6 +177,16 @@ const InventoryList = ({
         onChange={value => onFilter(value, 'search')}
       />
     ),
+    expire: (
+      <FilterDropdown
+        name="expire"
+        value={filterValues.expire}
+        onChange={value => onFilter(value, 'expire')}
+        options={[...filterExpireOptions]}
+        placeholder="Odaberi"
+        label="OBRAČUN AMORTIZACIJE:"
+      />
+    ),
   };
 
   const onCheck = (checked: boolean, currId: number | null) => {
@@ -401,8 +411,7 @@ const InventoryList = ({
                     (item.target_organization_unit.id && orgUnitId !== item.target_organization_unit.id) ||
                     !item.active ||
                     item.status === StatusesForMovableInventory.POSLATO ||
-                    item.status === StatusesForMovableInventory.PRIHVACENO ||
-                    item.status === StatusesForMovableInventory.ARHIVA,
+                    item.status === StatusesForMovableInventory.PRIHVACENO,
                   shouldRender: (item: InventoryItem) => item.type !== InventoryTypeEnum.IMMOVABLE,
                 },
                 {

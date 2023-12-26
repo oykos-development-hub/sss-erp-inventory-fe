@@ -24,7 +24,6 @@ export const filterStatusOptions: DropdownDataString[] = [
   {id: StatusesForMovableInventory.NEZADUZENO, title: StatusesForMovableInventory.NEZADUZENO},
   {id: StatusesForMovableInventory.ZADUZENO, title: StatusesForMovableInventory.ZADUZENO},
   {id: StatusesForMovableInventory.OTPISANO, title: StatusesForMovableInventory.OTPISANO},
-  {id: StatusesForMovableInventory.ARHIVA, title: StatusesForMovableInventory.ARHIVA},
 ];
 
 export const filterExpireOptions: DropdownDataBoolean[] = [

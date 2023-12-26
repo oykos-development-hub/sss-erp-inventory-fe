@@ -2,7 +2,7 @@ import {DropdownDataBoolean, DropdownDataString} from '../../types/dropdownData'
 
 export const receiveInventoryType: DropdownDataString[] = [
   {id: 'revers', title: 'Revers'},
-  {id: 'return', title: 'Povraćaj'},
+  {id: 'return-revers', title: 'Povraćaj'},
 ];
 
 export const receiveInventoryStatus: DropdownDataBoolean[] = [

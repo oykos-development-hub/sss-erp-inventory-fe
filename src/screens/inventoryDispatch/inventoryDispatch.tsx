@@ -20,9 +20,9 @@ const InventoryDispatch = ({context}: InventoryProps) => {
     page,
     size: PAGE_SIZE,
     ...filterValues,
+    type: typeof filterValues?.type === 'object' && filterValues?.type?.id ? filterValues.type.id : filterValues.type,
     inventory_type: type,
     id: 0,
-    type: 'revers',
   });
 
   const onPageChange = (page: number) => {

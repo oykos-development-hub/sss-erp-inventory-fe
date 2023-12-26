@@ -10,7 +10,6 @@ import {initialValues, optionsOne, optionsThree, optionsTwo} from './constants';
 import {ButtonWrapper, FormWrapper, InputWrapper, OfficeDropdown, SupplierDropdown} from './style';
 import {MovableDetailsFormProps} from './types';
 import FileList from '../fileList/fileList';
-import {StatusesForMovableInventory} from '../../constants';
 
 const MovableDetailsForm = ({data, context, inventoryType, refetch, inventoryId}: DetailsFormProps) => {
   const {
