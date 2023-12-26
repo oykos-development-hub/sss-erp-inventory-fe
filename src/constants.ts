@@ -42,6 +42,7 @@ export const estimationTypeOptions: DropdownDataString[] = [{id: 'financial', ti
 export enum StatusesForMovableInventory {
   POSLATO = 'Poslato',
   PRIHVACENO = 'Prihvaćeno',
+  POVRACAJ = 'Povraćaj',
   NEZADUZENO = 'Nezaduženo',
   ZADUZENO = 'Zaduženo',
   OTPISANO = 'Otpisano',

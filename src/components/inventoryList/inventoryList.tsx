@@ -341,7 +341,8 @@ const InventoryList = ({
     if (
       isReversDone(row) ||
       !row.active ||
-      (row?.target_organization_unit?.id && row?.target_organization_unit?.id !== orgUnitId)
+      (row?.target_organization_unit?.id && row?.target_organization_unit?.id !== orgUnitId) ||
+      row.status == StatusesForMovableInventory.POVRACAJ
     ) {
       return true;
     }
@@ -402,7 +403,8 @@ const InventoryList = ({
                     !item.active ||
                     item.status === StatusesForMovableInventory.POSLATO ||
                     item.status === StatusesForMovableInventory.PRIHVACENO ||
-                    item.status === StatusesForMovableInventory.ARHIVA,
+                    item.status === StatusesForMovableInventory.ARHIVA ||
+                    item.status === StatusesForMovableInventory.POVRACAJ,
                   shouldRender: (item: InventoryItem) => item.type !== InventoryTypeEnum.IMMOVABLE,
                 },
                 {
