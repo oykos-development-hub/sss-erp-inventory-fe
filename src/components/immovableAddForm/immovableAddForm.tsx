@@ -65,6 +65,9 @@ const ImmovableAddForm = ({context}: {context: MicroserviceProps}) => {
           },
           depreciation_type_id: values?.depreciation_type?.id || 0,
           file_id: 0,
+          donation_description: '',
+          donation_files: [],
+          is_external_donation: false,
         },
       ];
 

@@ -1,5 +1,6 @@
 import {InventoryTypeEnum} from '../inventoryType';
 import {Validator} from '../responseValidator';
+import {FileItem} from './inventoryDetails';
 import {RealEstate} from './realEstateOverview';
 
 export interface InventoryInsertData {
@@ -33,6 +34,9 @@ export interface InventoryInsertData {
   deactivation_description: number;
   invoice_file_id: string | undefined;
   file_id?: number;
+  donation_description: string;
+  is_external_donation: boolean;
+  donation_files: FileItem[];
 }
 
 export interface InventoryInsertResponse {

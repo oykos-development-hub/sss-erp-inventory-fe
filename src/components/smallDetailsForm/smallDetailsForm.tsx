@@ -79,6 +79,9 @@ const SmallDetailsForm = ({context, data, inventoryType, refetch, inventoryId}: 
         deactivation_description: 0,
         invoice_file_id: 0,
         organization_unit_id: data?.organization_unit?.id,
+        donation_description: '',
+        donation_files: [],
+        is_external_donation: false,
       },
     ];
 

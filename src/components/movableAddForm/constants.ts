@@ -1,6 +1,6 @@
 import {MovableAddFormProps} from './types';
 
-export const initialValues: MovableAddFormProps = {
+export const initialValues: Omit<MovableAddFormProps, 'is_external_donation'> & {is_external_donation: boolean} = {
   office: undefined,
   invoice_number: '',
   supplier: undefined,
@@ -8,6 +8,9 @@ export const initialValues: MovableAddFormProps = {
   source: undefined,
   articles: undefined,
   type: {id: 0, title: 'Ugovor'},
+  donation_description: '',
+  donation_files: [],
+  is_external_donation: false,
 };
 
 export const Type = [

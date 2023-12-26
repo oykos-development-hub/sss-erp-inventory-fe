@@ -24,8 +24,6 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
 
   const {
     fileService: {uploadFile},
-    alert,
-    navigation: {navigate},
   } = useAppContext();
 
   const methods = useForm<TableValues>();
@@ -124,9 +122,8 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
         await uploadFile(formData, async (res: any) => {
           setDonationFiles(null);
           const newFileIds = res.map((file: any) => file.id);
-          const updatDonationFiles = movableValues?.donation_files
-            ? [...movableValues?.donation_files, ...newFileIds]
-            : newFileIds;
+          const currentIds = movableValues && movableValues?.donation_files ? movableValues?.donation_files : [];
+          const updatDonationFiles = movableValues?.donation_files ? [...currentIds, ...newFileIds] : newFileIds;
 
           if (movableValues) {
             setMovableValues({
