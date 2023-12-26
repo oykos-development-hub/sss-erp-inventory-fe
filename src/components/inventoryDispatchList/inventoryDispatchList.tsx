@@ -46,7 +46,7 @@ const InventoryDispatchList = ({
       renderContents: type => <Typography variant="bodyMedium" content={type == 'revers' ? 'Revers' : 'Povraćaj'} />,
     },
     {
-      title: 'Datum reversa',
+      title: 'Datum',
       accessor: 'created_at',
       type: 'custom',
       renderContents: date => <Typography variant="bodyMedium" content={date ? parseDate(date) : ''} />,

@@ -54,3 +54,8 @@ export const propertyDocumentOptions = [
   {id: 'Raspolaganje', title: 'Raspolaganje'},
   {id: 'Svojina', title: 'Svojina'},
 ];
+
+export const donationOptions = [
+  {id: false, title: 'NS1'},
+  {id: true, title: 'NS2'},
+];
