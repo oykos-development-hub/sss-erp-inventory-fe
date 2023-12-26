@@ -47,6 +47,7 @@ export interface InventoryOverviewParams {
   expire?: boolean;
   organization_unit_id?: number;
   type_of_immovable_property?: string;
+  is_external_donation: boolean;
 }
 
 export interface InventoryInsertData {
@@ -85,4 +86,6 @@ export interface InventoryInsertData {
   organization_unit_id?: number;
   contract_id?: number;
   contract_article_id?: number;
+  donation_description: string;
+  donation_files: number[];
 }

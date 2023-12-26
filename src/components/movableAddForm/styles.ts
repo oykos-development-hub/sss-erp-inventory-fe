@@ -34,6 +34,11 @@ export const ButtonWrapper = styled.div`
 `;
 
 export const TypeWrapper = styled.div`
-  width: 350px;
+  display: flex;
+  gap: 10px;
   margin-bottom: 15px;
+
+  & > div {
+    width: 350px;
+  }
 `;

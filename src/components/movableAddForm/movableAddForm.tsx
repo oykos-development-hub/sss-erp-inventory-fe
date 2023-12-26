@@ -1,10 +1,11 @@
-import {Button, Datepicker, Dropdown, Input, Tooltip} from 'client-library';
+import {Button, Datepicker, Dropdown, FileUpload, Input, Tooltip, Typography} from 'client-library';
 import {useEffect, useState} from 'react';
-import {Controller, useForm, useFormContext} from 'react-hook-form';
+import {Controller, useFormContext} from 'react-hook-form';
 import useAppContext from '../../context/useAppContext';
 import {inventorySourceOptions} from '../../screens/inventoryAdd/constants';
 import {AddInventoryFormProps} from '../../screens/inventoryAdd/types';
 import {REQUEST_STATUSES} from '../../services/constants';
+import useGetDonors from '../../services/graphQL/getSuppliers/useGetDonors';
 import useSuppliersOverview from '../../services/graphQL/getSuppliers/useGetSuppliers';
 import useOrgUnitOfficesGet from '../../services/graphQL/organizationUnitOffices/useOrganizationUnitOfficesGet';
 import useProcurementContractArticles from '../../services/graphQL/publicProcurementContractArticles/usePublicProcurementContractArticles';
@@ -16,26 +17,41 @@ import {DropdownDataNumber} from '../../types/dropdownData';
 import {InventoryDonationItem} from '../../types/files';
 import {PublicProcurementContracts} from '../../types/graphQL/publicProcurmentContract';
 import {PublicProcurementContractArticles} from '../../types/graphQL/publicProcurmentContractArticles';
+import {Type} from './constants';
+import MovableAddFormIvoice from './movableAddFormInvoice';
 import {ButtonWrapper, LeftWrapper, Links, TooltipWrapper, TypeWrapper} from './styles';
 import {MovableAddFormProps} from './types';
-import MovableAddFormIvoice from './movableAddFormInvoice';
-import {Type} from './constants';
-import useGetDonors from '../../services/graphQL/getSuppliers/useGetDonors';
 
-const MovableAddForm = ({onFormSubmit, context, selectedArticles}: AddInventoryFormProps) => {
+const MovableAddForm = ({
+  onFormSubmit,
+  context,
+  selectedArticles,
+  donationFiles,
+  handleUpload,
+}: AddInventoryFormProps & {
+  donationFiles: FileList | null;
+  handleUpload: (files: FileList) => void;
+}) => {
   const {
     handleSubmit,
     control,
     watch,
     setValue,
     formState: {errors},
+    register,
   } = useFormContext<MovableAddFormProps>();
   const [article, setArticle] = useState<DropdownDataNumber>({id: 0, title: ''});
-  const supplier = watch('supplier');
-  const contract = watch('contract');
-  const invoice_number = watch('invoice_number');
-  const date_of_purchase = watch('date_of_purchase');
-  const office = watch('office');
+
+  const {
+    invoice_number,
+    date_of_purchase,
+    office,
+    supplier,
+    contract,
+    donation_description,
+    donation_files,
+    is_external_donation,
+  } = watch();
 
   const onSubmit = async (values: MovableAddFormProps) => {
     if (values.all_items) {
@@ -124,12 +140,16 @@ const MovableAddForm = ({onFormSubmit, context, selectedArticles}: AddInventoryF
 
   const onSubmitUploadedTable = async (articlesArr: InventoryDonationItem[]) => {
     for (const article of articlesArr) {
-      const values: MovableAddFormProps = {
+      // removed MovableAddFormProps type, because the form values type and payload type should be separated
+      const values: any = {
         invoice_number: invoice_number,
         source: contract?.id ? {id: 'budzet', title: 'Budžet'} : {id: 'donacija', title: 'Donacija'},
         supplier: {id: supplier?.id || 0, title: supplier?.title || ''} || null,
         office: {id: office?.id || 0, title: office?.title || ''} || null,
         date_of_purchase: date_of_purchase,
+        donation_description: donation_description,
+        donation_files: donation_files,
+        is_external_donation: is_external_donation?.id === 'PS2' ? true : false,
       };
 
       values.articles = {
@@ -165,7 +185,7 @@ const MovableAddForm = ({onFormSubmit, context, selectedArticles}: AddInventoryF
 
   const type = watch('type')?.id;
 
-  const openDonationUpload = () => {
+  const openDonationTableUpload = () => {
     const props = {
       type: 'IMPORT_INVENTORIES',
       content: 'Tabela',
@@ -191,6 +211,26 @@ const MovableAddForm = ({onFormSubmit, context, selectedArticles}: AddInventoryF
                 <Dropdown name={name} value={value} options={Type} onChange={onChange} label="TIP:" />
               )}
             />
+            {isDonation && (
+              <Controller
+                name="is_external_donation"
+                rules={{required: 'Ovo polje je obavezno'}}
+                control={control}
+                render={({field: {name, value, onChange}}) => (
+                  <Dropdown
+                    name={name}
+                    value={value}
+                    options={[
+                      {id: 'PS1', title: 'PS1'},
+                      {id: 'PS2', title: 'PS2'},
+                    ]}
+                    onChange={onChange}
+                    error={errors.is_external_donation?.message}
+                    label="TIP SREDSTVA:"
+                  />
+                )}
+              />
+            )}
           </TypeWrapper>
           {type === undefined || type !== 1 ? (
             <>
@@ -309,7 +349,7 @@ const MovableAddForm = ({onFormSubmit, context, selectedArticles}: AddInventoryF
                         selected={value ? new Date(value) : ''}
                         onChange={onChange}
                         placeholder=""
-                        label="DATUM NABAVKE"
+                        label={isDonation ? 'DATUM DONACIJE:' : 'DATUM NABAVKE:'}
                         isRequired
                         error={errors.date_of_purchase?.message}
                       />
@@ -352,12 +392,25 @@ const MovableAddForm = ({onFormSubmit, context, selectedArticles}: AddInventoryF
                     )}
                   />
                 </FormRow>
+                {isDonation && (
+                  <div>
+                    <Input textarea {...register('donation_description')} label="NAPOMENA:" />
+                    <FileUpload
+                      variant="secondary"
+                      onUpload={handleUpload}
+                      note={<Typography variant="bodySmall" content="Fajlovi:" />}
+                      buttonText="Dodaj fajl"
+                      files={donationFiles}
+                      style={{marginBlock: 15}}
+                    />
+                  </div>
+                )}
               </FieldsContainer>
               <TooltipWrapper>
                 <ButtonWrapper>
                   <Button
                     content={isDonation ? 'Donacija' : 'Generiši Excel'}
-                    onClick={openDonationUpload}
+                    onClick={openDonationTableUpload}
                     variant="primary"
                   />
                 </ButtonWrapper>

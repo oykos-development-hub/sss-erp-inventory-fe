@@ -10,6 +10,16 @@ const inventoryInsert = `mutation($data: [BasicInventoryInsertMutation!]) {
             id
             article_id
             type
+            donation_description
+            donation_files {
+              id
+              name
+              type
+            }
+            invoice {
+                id
+                title
+            }
             class_type {
                 id 
                 title

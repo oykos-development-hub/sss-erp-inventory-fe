@@ -9,6 +9,7 @@ import {parseDateForBackend} from '../../utils/dateUtils';
 import {initialValues, optionsOne, optionsThree, optionsTwo} from './constants';
 import {ButtonWrapper, FormWrapper, InputWrapper, OfficeDropdown, SupplierDropdown} from './style';
 import {MovableDetailsFormProps} from './types';
+import FileList from '../fileList/fileList';
 
 const MovableDetailsForm = ({data, context, inventoryType, refetch, inventoryId}: DetailsFormProps) => {
   const {
@@ -17,7 +18,6 @@ const MovableDetailsForm = ({data, context, inventoryType, refetch, inventoryId}
     control,
     reset,
     formState: {errors},
-    setError,
     watch,
   } = useForm<MovableDetailsFormProps>({defaultValues: initialValues});
 
@@ -70,6 +70,8 @@ const MovableDetailsForm = ({data, context, inventoryType, refetch, inventoryId}
         deactivation_description: 0,
         invoice_file_id: 0,
         file_id: 0,
+        donation_description: values?.donation_description || '',
+        donation_files: values?.donation_files.map(file => file.id) || [],
       },
     ];
 
@@ -213,6 +215,17 @@ const MovableDetailsForm = ({data, context, inventoryType, refetch, inventoryId}
           )}
         />
       </InputWrapper>
+      {data?.source === 'donacija' && (
+        <div>
+          <Input
+            textarea
+            {...register('donation_description')}
+            label="NAPOMENA ZA DONACIJU:"
+            style={{marginBlock: 15}}
+          />
+          <FileList files={data?.donation_files || []} />
+        </div>
+      )}
 
       <ButtonWrapper>
         <Button content="Nazad" onClick={() => navigate(-1)} />

@@ -12,6 +12,7 @@ const inventoryOverview = `query BasicInventoryOverview(
     $depreciation_type_id: Int,
     $expire: Boolean,
     $type_of_immovable_property: String
+    $is_external_donation: Boolean
     ) {
     basicInventory_Overview(
         page: $page, 
@@ -26,7 +27,8 @@ const inventoryOverview = `query BasicInventoryOverview(
         source_type: $source_type,
         depreciation_type_id: $depreciation_type_id,
         expire: $expire,
-        type_of_immovable_property: $type_of_immovable_property
+        type_of_immovable_property: $type_of_immovable_property,
+        is_external_donation: $is_external_donation
         ) {
         status 
         message
@@ -37,6 +39,10 @@ const inventoryOverview = `query BasicInventoryOverview(
             type
             source_type
             location
+            invoice {
+                id
+                title
+            }
             class_type {
                 id
                 title
@@ -84,6 +90,7 @@ const inventoryOverview = `query BasicInventoryOverview(
             source
             active
             status
+            is_external_donation
         }
     }
 }`;

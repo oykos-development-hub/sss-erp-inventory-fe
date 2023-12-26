@@ -1,4 +1,5 @@
 import {DropdownDataNumber} from '../../types/dropdownData';
+import {FileItem} from '../../types/graphQL/inventoryDetails';
 
 export interface MovableDetailsFormProps {
   inventoryId: number;
@@ -36,4 +37,6 @@ export interface MovableDetailsFormProps {
   file_id?: number;
   land_serial_number: string;
   residual_price: number;
+  donation_description: string;
+  donation_files: FileItem[];
 }

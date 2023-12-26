@@ -3,27 +3,30 @@ import {useEffect, useState} from 'react';
 import {Controller, FormProvider, useFieldArray, useForm} from 'react-hook-form';
 import ImmovableAddForm from '../../components/immovableAddForm/immovableAddForm';
 import MovableAddForm from '../../components/movableAddForm/movableAddForm';
+import {MovableAddFormProps} from '../../components/movableAddForm/types';
 import SmallInventoryForm from '../../components/smallInventoryForm/smallInventoryForm';
+import {SmallInventoryAddFormProps} from '../../components/smallInventoryForm/types';
+import useAppContext from '../../context/useAppContext';
 import useGetSettings from '../../services/graphQL/getSettings/useGetSettings';
 import useInventoryInsert from '../../services/graphQL/inventoryInsert/useInventoryInsert';
+import {InventoryInsertResponse} from '../../types/graphQL/inventoryInsert';
 import {InventoryProps} from '../../types/inventoryProps';
 import {parseDateForBackend} from '../../utils/dateUtils';
-import {newTableItem, tableHeads} from './constants';
+import {tableHeads} from './constants';
 import {ButtonContainer, StyledTable} from './styles';
 import {DropdownName, InputName, TableItemValues, TableValues, valuesType} from './types';
-import {MovableAddFormProps} from '../../components/movableAddForm/types';
-import {SmallInventoryAddFormProps} from '../../components/smallInventoryForm/types';
-import {InventoryInsertResponse} from '../../types/graphQL/inventoryInsert';
 
 const InventoryAdd = ({context, type}: InventoryProps) => {
   const [isOrderListSelected, setIsOrderListSelected] = useState(false);
+  const [donationFiles, setDonationFiles] = useState<FileList | null>(null);
   const isImmovable = type === 'immovable';
   const orgUnitId = context.contextMain.organization_unit.id;
 
   const {
+    fileService: {uploadFile},
     alert,
     navigation: {navigate},
-  } = context;
+  } = useAppContext();
 
   const methods = useForm<TableValues>();
   const {
@@ -110,63 +113,75 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
 
   const onSubmit = async (values: any) => {
     if (isValid) {
-      const data = values.items.map((item: any) => ({
-        // form data
-        id: 0,
-        date_of_purchase: movableValues
-          ? parseDateForBackend(movableValues?.date_of_purchase)
-          : parseDateForBackend(smallInventoryValues?.date_of_purchase),
-        source: movableValues ? movableValues?.source?.id : smallInventoryValues?.source?.id,
-        office_id: movableValues ? movableValues?.office?.id : smallInventoryValues?.office?.id,
-        invoice_number: movableValues ? movableValues?.invoice_number : smallInventoryValues?.invoice_number,
-        supplier_id: movableValues ? movableValues?.supplier?.id : smallInventoryValues?.supplier?.id,
-        donor_id: movableValues ? movableValues?.donor?.id : 0,
+      if (donationFiles) {
+        const formData = new FormData();
+        const fileArray = Array.from(donationFiles);
 
-        // item data
-        depreciation_type_id: item?.depreciation_type?.id,
-        class_type_id: item.class_type.id,
-        inventory_number: item.inventory_number,
-        title: item.title,
-        description: item.description,
-        gross_price: Number(item.gross_price),
-        serial_number: item.serial_number,
+        fileArray.forEach((file: any) => {
+          formData.append('file', file);
+        });
 
-        // other
-        type: type,
-        real_estate: null,
-        abbreviation: '',
-        internal_ownership: true,
-        location: '', //?
-        target_user_profile_id: 1,
-        unit: '',
-        amount: 1, // default 1
-        net_price: 1,
-        donor_title: '',
-        price_of_assessment: 0,
-        date_of_assessment: null,
-        lifetime_of_assessment_in_months: 0,
-        active: false,
-        deactivation_description: '',
-        invoice_file_id: 0,
-        file_id: 0,
-        contract_id: movableValues?.contract?.id,
-        contract_article_id: item?.contract_article_id,
-      }));
+        await uploadFile(formData, async (res: any) => {
+          setDonationFiles(null);
+          const newFileIds = res.map((file: any) => file.id);
+          const updatDonationFiles = movableValues?.donation_files
+            ? [...movableValues?.donation_files, ...newFileIds]
+            : newFileIds;
 
-      await mutate(
-        data,
-        () => {
-          alert.success('Uspješno ste dodali sredstvo/a');
-          navigate(`/inventory/${type}-inventory`);
-        },
-        (response: InventoryInsertResponse) => {
-          if (!response.validator) {
-            alert(response.message);
-          } else {
-            setDuplicateErrors(response.validator);
+          if (movableValues) {
+            setMovableValues({
+              ...movableValues,
+              donation_files: updatDonationFiles,
+            });
           }
-        },
-      );
+
+          const data = values.items.map((item: any) => ({
+            // form data
+            id: 0,
+            date_of_purchase: movableValues
+              ? parseDateForBackend(movableValues?.date_of_purchase)
+              : parseDateForBackend(smallInventoryValues?.date_of_purchase),
+            source: movableValues ? movableValues?.source?.id : smallInventoryValues?.source?.id,
+            office_id: movableValues ? movableValues?.office?.id : smallInventoryValues?.office?.id,
+            invoice_number: movableValues ? movableValues?.invoice_number : smallInventoryValues?.invoice_number,
+            supplier_id: movableValues ? movableValues?.supplier?.id : smallInventoryValues?.supplier?.id,
+            donor_id: movableValues ? movableValues?.donor?.id : 0,
+            donation_description: movableValues?.donation_description,
+            donation_files: updatDonationFiles,
+            is_external_donation: movableValues?.is_external_donation.id === 'PS2' ? true : false,
+
+            // item data
+            depreciation_type_id: item?.depreciation_type?.id,
+            class_type_id: item.class_type.id,
+            inventory_number: item.inventory_number,
+            title: item.title,
+            description: item.description,
+            gross_price: Number(item.gross_price),
+            serial_number: item.serial_number,
+
+            // other
+            type: type,
+            real_estate: null,
+            abbreviation: '',
+            internal_ownership: true,
+            location: '', //?
+            target_user_profile_id: 1,
+            unit: '',
+            amount: 1, // default 1
+            net_price: 1,
+            donor_title: '',
+            price_of_assessment: 0,
+            date_of_assessment: null,
+            lifetime_of_assessment_in_months: 0,
+            active: false,
+            deactivation_description: '',
+            invoice_file_id: 0,
+            file_id: 0,
+            contract_id: movableValues?.contract?.id,
+            contract_article_id: item?.contract_article_id,
+          }));
+        });
+      }
     }
   };
 
@@ -262,8 +277,26 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
     return sum;
   };
 
+  const handleDonationFilesUpload = (files: FileList) => {
+    setDonationFiles(files);
+    context.alert.success('Fajlovi uspješno učitani');
+  };
+
+  const onDeleteDonationFile = (id: number) => {
+    //TODO: delete file from server
+    console.log('onDeleteDonationFile', id);
+  };
+
   const renderFormByType = {
-    movable: <MovableAddForm context={context} onFormSubmit={handleFormSubmit} selectedArticles={fields} />,
+    movable: (
+      <MovableAddForm
+        context={context}
+        onFormSubmit={handleFormSubmit}
+        selectedArticles={fields}
+        donationFiles={donationFiles}
+        handleUpload={handleDonationFilesUpload}
+      />
+    ),
     immovable: <ImmovableAddForm context={context} />,
     small: <SmallInventoryForm context={context} onFormSubmit={handleFormSubmit} />,
   };

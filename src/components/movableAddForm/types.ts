@@ -16,6 +16,13 @@ export interface MovableAddFormProps {
   contract_id?: string;
   contract_article_id?: number;
   donor?: DropdownDataNumber;
+  donation_description: string;
+  donation_files: {
+    name: string;
+    type: string;
+    id: number;
+  }[];
+  is_external_donation: DropdownDataString;
 }
 
 export const VisibilityType = {

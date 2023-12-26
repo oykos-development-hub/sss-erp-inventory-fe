@@ -4,7 +4,7 @@ import InventoryList from '../../components/inventoryList/inventoryList';
 import {PAGE_SIZE} from '../../constants';
 import useInventoryOverview from '../../services/graphQL/inventoryOverview/useInventoryOverview';
 import {InventoryProps} from '../../types/inventoryProps';
-import {initialInventoryFilters, inventoryFilters} from './constants';
+import {initialInventoryFilters, inventoryFilters, movableTypeOptions} from './constants';
 import {useDebounce} from '../../utils/useDebounce.ts';
 import {DropdownDataString} from '../../types/dropdownData.ts';
 
@@ -37,6 +37,7 @@ const InventoryOverview = ({context, type}: InventoryProps) => {
     expire: debouncedFilterValues.expire?.id,
     organization_unit_id: organizationID,
     type_of_immovable_property: debouncedFilterValues.type_of_immovable_property?.id,
+    is_external_donation: debouncedFilterValues.source_type?.title === movableTypeOptions[2].title ? true : false,
   });
 
   const onPageChange = (page: number) => {

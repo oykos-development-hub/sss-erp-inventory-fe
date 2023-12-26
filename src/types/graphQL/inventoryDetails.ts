@@ -73,4 +73,7 @@ export interface InventoryDetails {
   updated_at: string;
   invoice_file_id: string;
   file_id: string;
+  donation_description: string;
+  donation_files: FileItem[];
+  is_external_donation: string;
 }

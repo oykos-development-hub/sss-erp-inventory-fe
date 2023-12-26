@@ -7,6 +7,16 @@ const inventoryDetailsGet = `query BasicInventoryDetails($id: Int!) {
             article_id
             type
             source_type
+            donation_description
+            donation_files {
+              id
+              name
+              type
+            }
+            invoice {
+                id
+                title
+            }
             donor {
               id
               title

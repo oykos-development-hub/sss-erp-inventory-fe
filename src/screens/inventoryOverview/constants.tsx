@@ -57,6 +57,7 @@ export const movableTypeOptions: DropdownDataString[] = [
   {id: '', title: 'Svi tipovi'},
   {id: 'PS1', title: 'PS1'},
   {id: 'PS2', title: 'PS2'},
+  {id: 'PS2', title: 'PS2 - Donacije'},
 ];
 
 export const immovableTypeOptions: DropdownDataString[] = [
