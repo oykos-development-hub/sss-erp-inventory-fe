@@ -50,7 +50,7 @@ const InventoryTabs = ({context, type}: InventoryTabsProps) => {
         <ScreenTitle content={title} />
 
         <Tabs
-          tabs={type === 'small' ? inventoryTabs.slice(0, 2) : inventoryTabs}
+          tabs={type === 'small' || type === 'immovable' ? inventoryTabs.slice(0, 2) : inventoryTabs}
           activeTab={activeTab}
           onChange={onTabChange}
         />

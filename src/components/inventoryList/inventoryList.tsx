@@ -323,14 +323,16 @@ const InventoryList = ({
             <ReversButtonContainer>
               <Button content={'Amortizacija'} variant="primary" size="sm" onClick={onDispatchClick} />
 
-              <Button
-                content={sourceType?.includes('2') ? 'Povrat' : 'Eksterni revers'}
-                variant="primary"
-                size="sm"
-                onClick={onReversClick}
-                disabled={!selectedRows.length}
-                style={{width: '120px'}}
-              />
+              {type !== InventoryTypeEnum.IMMOVABLE && (
+                <Button
+                  content={sourceType?.includes('2') ? 'Povrat' : 'Eksterni revers'}
+                  variant="primary"
+                  size="sm"
+                  onClick={onReversClick}
+                  disabled={!selectedRows.length}
+                  style={{width: '120px'}}
+                />
+              )}
             </ReversButtonContainer>
           ),
         accessor: 'TABLE_ACTIONS',
@@ -429,6 +431,7 @@ const InventoryList = ({
                     setDeactivateModal(true);
                   },
                   disabled: (item: InventoryItem) =>
+                    type === InventoryTypeEnum.IMMOVABLE ||
                     item.source_type?.includes('2') ||
                     item.status !== StatusesForMovableInventory.NEZADUZENO ||
                     (item.target_organization_unit.id && orgUnitId !== item.target_organization_unit.id) ||
