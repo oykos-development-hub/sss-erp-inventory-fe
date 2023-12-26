@@ -1,11 +1,11 @@
 import {Button, Dropdown, Input} from 'client-library';
 import {useEffect} from 'react';
 import {Controller, useForm} from 'react-hook-form';
-import {donationOptions, restrictionOptions} from '../../screens/inventoryAdd/constants';
+import {restrictionOptions, rightPropertyOptions} from '../../screens/inventoryAdd/constants';
 import {DetailsFormProps} from '../../screens/inventoryDetails/types';
 import useInventoryInsert from '../../services/graphQL/inventoryInsert/useInventoryInsert';
 import {InventoryTypeEnum} from '../../types/inventoryType';
-import {parseDateForBackend} from '../../utils/dateUtils';
+import {parseDate, parseDateForBackend} from '../../utils/dateUtils';
 import {ButtonWrapper} from '../movableDetailsForm/style';
 import {depreciationTypeOptions, initialValues, ownershipTypeOptions} from './constants';
 import {ImmovableDetailsFormWrapper, ImmovableDetailsInputWrapper} from './style';
@@ -29,7 +29,7 @@ const ImmovableDetailsForm = ({context, data, refetch, inventoryId}: DetailsForm
   const {mutate, loading} = useInventoryInsert();
 
   const {data: depreciationTypes} = useGetSettings({entity: 'deprecation_types'});
-  const {limitation, is_external_donation} = watch();
+  const {limitation} = watch();
 
   useEffect(() => {
     if (data) {
@@ -47,8 +47,6 @@ const ImmovableDetailsForm = ({context, data, refetch, inventoryId}: DetailsForm
         limitations_description: data?.real_estate?.limitations_description,
         square_area: data.real_estate?.square_area,
         depreciation_rate: depreciationType && depreciationType.value ? 100 / Number(depreciationType.value) : 0,
-        is_external_donation: donationOptions.find(option => option.id === data?.is_external_donation),
-        owner: data?.owner,
       };
 
       reset(currentValues as any);
@@ -89,10 +87,7 @@ const ImmovableDetailsForm = ({context, data, refetch, inventoryId}: DetailsForm
         file_id: 0,
         donation_description: '',
         donation_files: [],
-        is_external_donation: values?.is_external_donation?.id,
-        owner: values?.owner || '',
-        serial_number: '',
-        inventory_number: '',
+        is_external_donation: false,
       },
     ];
 
@@ -222,32 +217,6 @@ const ImmovableDetailsForm = ({context, data, refetch, inventoryId}: DetailsForm
           label="AMORTIZACIONA STOPA:"
           disabled={true}
           rightContent={<div>%</div>}
-        />
-      </ImmovableDetailsInputWrapper>
-      <ImmovableDetailsInputWrapper>
-        <Controller
-          name="is_external_donation"
-          rules={{required: 'Ovo polje je obavezno'}}
-          control={control}
-          render={({field: {name, value, onChange}}) => (
-            <Dropdown
-              name={name}
-              value={value}
-              onChange={onChange}
-              options={donationOptions}
-              label="TIP SREDSTVA:"
-              isDisabled
-              isRequired
-              error={errors.is_external_donation?.message}
-            />
-          )}
-        />
-        <Input
-          {...register('owner')}
-          label="VLASNIK:"
-          disabled={is_external_donation ? true : false}
-          isRequired
-          error={errors.owner?.message}
         />
       </ImmovableDetailsInputWrapper>
 

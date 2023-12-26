@@ -1,11 +1,6 @@
 import {Button, Dropdown, Input} from 'client-library';
 import {Controller, useForm} from 'react-hook-form';
-import {
-  donationOptions,
-  propertyDocumentOptions,
-  realEstateTypeOptions,
-  restrictionOptions,
-} from '../../screens/inventoryAdd/constants';
+import {propertyDocumentOptions, realEstateTypeOptions, restrictionOptions} from '../../screens/inventoryAdd/constants';
 import {ButtonContainer} from '../../screens/inventoryAdd/styles';
 import useInventoryInsert from '../../services/graphQL/inventoryInsert/useInventoryInsert';
 import {FieldsContainer, Form, FormRow} from '../../shared/formStyles';
@@ -36,7 +31,7 @@ const ImmovableAddForm = ({context}: {context: MicroserviceProps}) => {
 
   const propertyDocument = watch('property_document');
 
-  const {limitation, is_external_donation} = watch();
+  const {limitation} = watch();
   //handlers
 
   const addButtonClick = async (values: ImmovableAddFormProps) => {
@@ -70,12 +65,9 @@ const ImmovableAddForm = ({context}: {context: MicroserviceProps}) => {
           },
           depreciation_type_id: values?.depreciation_type?.id || 0,
           file_id: 0,
-          is_external_donation: values?.is_external_donation?.id,
-          owner: values?.owner || '',
           donation_description: '',
           donation_files: [],
-          serial_number: '',
-          inventory_number: '',
+          is_external_donation: false,
         },
       ];
 
@@ -213,31 +205,6 @@ const ImmovableAddForm = ({context}: {context: MicroserviceProps}) => {
                 error={errors.depreciation_type?.message}
               />
             )}
-          />
-        </FormRow>
-        <FormRow>
-          <Controller
-            name="is_external_donation"
-            rules={{required: 'Ovo polje je obavezno'}}
-            control={control}
-            render={({field: {name, value, onChange}}) => (
-              <Dropdown
-                name={name}
-                value={value}
-                onChange={onChange}
-                options={donationOptions}
-                label="TIP SREDSTVA:"
-                isRequired
-                error={errors.is_external_donation?.message}
-              />
-            )}
-          />
-          <Input
-            {...register('owner')}
-            label="VLASNIK:"
-            disabled={!is_external_donation?.id}
-            isRequired
-            error={errors.owner?.message}
           />
         </FormRow>
       </FieldsContainer>

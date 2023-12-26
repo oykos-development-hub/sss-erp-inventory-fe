@@ -14,6 +14,4 @@ export interface ImmovableAddFormProps {
   limitation: DropdownDataBoolean | null;
   limitation_id: boolean;
   document: string;
-  is_external_donation: DropdownDataBoolean | null;
-  owner: string;
 }

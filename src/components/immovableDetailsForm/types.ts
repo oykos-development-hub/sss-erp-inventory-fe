@@ -45,6 +45,4 @@ export interface ImmovableDetailsFormProps {
   limitation_id: boolean;
   document: string;
   depreciation_rate: number;
-  is_external_donation: DropdownDataBoolean | null;
-  owner: string;
 }

@@ -127,6 +127,7 @@ const MovableAddForm = ({
   useEffect(() => {
     if (contract?.id) fetchArticles(contract?.id, selectedArticles);
     const fullContract = contracts?.items?.find((item: PublicProcurementContracts) => item.id === contract?.id);
+    console.log(fullContract, 'fullContract');
     if (fullContract) {
       setValue('date_of_contract_signing', new Date(fullContract.date_of_signing));
       setValue('date_of_conclusion', new Date(fullContract.date_of_expiry));

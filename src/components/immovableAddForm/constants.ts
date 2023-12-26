@@ -14,6 +14,4 @@ export const initialValues: ImmovableAddFormProps = {
   limitation: null,
   document: '',
   limitation_id: false,
-  is_external_donation: null,
-  owner: '',
 };

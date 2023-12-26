@@ -20,6 +20,7 @@ const MovableDetailsForm = ({data, context, inventoryType, refetch, inventoryId}
     reset,
     formState: {errors},
     watch,
+    setValue,
   } = useForm<MovableDetailsFormProps>({defaultValues: initialValues});
 
   const {suppliers} = useSuppliersOverview();
@@ -92,7 +93,13 @@ const MovableDetailsForm = ({data, context, inventoryType, refetch, inventoryId}
     <FormWrapper>
       <InputWrapper>
         <Input
-          {...register('inventory_number', {required: 'Ovo polje je obavezno'})}
+          {...register('inventory_number', {
+            required: 'Ovo polje je obavezno',
+            pattern: {
+              value: /^[0-9]+$/,
+              message: 'Dozvoljen je samo unos brojeva.',
+            },
+          })}
           isRequired
           error={errors.inventory_number?.message}
           label="INV. BROJ:"
