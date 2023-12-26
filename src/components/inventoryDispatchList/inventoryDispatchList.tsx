@@ -78,7 +78,7 @@ const InventoryDispatchList = ({
   };
 
   const onRowClick = (item: InventoryDispatch) => {
-    if ((item.type === 'revers' || item.type === 'return-revers') && !item.is_accepted) {
+    if (item.type === 'revers' || item.type === 'return-revers') {
       setCurrentId(item.id);
       setTargetOrgID(item?.target_organization_unit?.id);
       setReceiveModal(true);

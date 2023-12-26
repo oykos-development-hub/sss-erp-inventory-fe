@@ -113,7 +113,9 @@ const ReceiveInventoryModal = ({
         </>
       }
       customButtonsControls={
-        data?.type === 'return-revers' || (targetOrgID != orgUnitID && !createRevers) ? <></> : undefined
+        data?.type === 'return-revers' || (targetOrgID != orgUnitID && !createRevers) || data?.is_accepted ? (
+          <></>
+        ) : undefined
       }
     />
   );
