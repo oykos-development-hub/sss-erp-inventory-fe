@@ -44,6 +44,8 @@ export const initialValues: ImmovableDetailsFormProps = {
   property_document: '',
   limitation: null,
   depreciation_rate: 0,
+  is_external_donation: null,
+  owner: '',
 };
 
 export const ownershipTypeOptions = [
