@@ -156,6 +156,8 @@ const inventoryDetailsGet = `query BasicInventoryDetails($id: Int!) {
             depreciation_rate
             amortization_value
             purchase_gross_price
+            owner
+            is_external_donation
         }
     }
 }`;

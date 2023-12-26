@@ -76,6 +76,8 @@ const inventoryInsert = `mutation($data: [BasicInventoryInsertMutation!]) {
             updated_at
             invoice_file_id
             file_id
+            is_external_donation
+            owner
         }
     }
 }`;

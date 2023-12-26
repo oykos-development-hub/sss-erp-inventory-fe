@@ -86,6 +86,8 @@ export interface InventoryInsertData {
   organization_unit_id?: number;
   contract_id?: number;
   contract_article_id?: number;
+  is_external_donation?: boolean;
+  owner?: string;
   donation_description: string;
   donation_files: number[];
 }

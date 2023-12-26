@@ -75,5 +75,6 @@ export interface InventoryDetails {
   file_id: string;
   donation_description: string;
   donation_files: FileItem[];
-  is_external_donation: string;
+  is_external_donation: boolean;
+  owner: string;
 }
