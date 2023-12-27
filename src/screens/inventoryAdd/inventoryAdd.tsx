@@ -120,6 +120,53 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
 
   const onSubmit = async (values: any) => {
     if (isValid) {
+      const data = values.items.map((item: any) => ({
+        // form data
+        id: 0,
+        date_of_purchase: movableValues
+          ? parseDateForBackend(movableValues?.date_of_purchase)
+          : parseDateForBackend(smallInventoryValues?.date_of_purchase),
+        source: movableValues ? movableValues?.source?.id : smallInventoryValues?.source?.id,
+        office_id: movableValues ? movableValues?.office?.id : smallInventoryValues?.office?.id,
+        invoice_number: movableValues ? movableValues?.invoice_number : smallInventoryValues?.invoice_number,
+        supplier_id: movableValues ? movableValues?.supplier?.id : smallInventoryValues?.supplier?.id,
+        donor_id: movableValues ? movableValues?.donor?.id : 0,
+        donation_description: movableValues?.donation_description,
+        donation_files: movableValues?.donation_files,
+        is_external_donation: movableValues?.is_external_donation?.id === 'PS2' ? true : false,
+
+        // item data
+        depreciation_type_id: item?.depreciation_type?.id,
+        class_type_id: item.class_type.id,
+        inventory_number: item.inventory_number,
+        title: item.title,
+        description: item.description,
+        gross_price: Number(item.gross_price),
+        serial_number: item.serial_number,
+
+        // other
+        type: type,
+        real_estate: null,
+        abbreviation: '',
+        internal_ownership: true,
+        location: '', //?
+        target_user_profile_id: 1,
+        unit: '',
+        amount: 1, // default 1
+        net_price: 1,
+        donor_title: '',
+        price_of_assessment: 0,
+        date_of_assessment: null,
+        lifetime_of_assessment_in_months: 0,
+        active: false,
+        deactivation_description: '',
+        invoice_file_id: 0,
+        file_id: 0,
+        contract_id: movableValues?.contract?.id,
+        contract_article_id: item?.contract_article_id,
+      }));
+
+      // In the case of donations we can have files which need to be uploaded first to get the ids
       if (donationFiles) {
         const formData = new FormData();
         const fileArray = Array.from(donationFiles);
@@ -132,78 +179,36 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
           setDonationFiles(null);
           const newFileIds = res.map((file: any) => file.id);
           const currentIds = movableValues && movableValues?.donation_files ? movableValues?.donation_files : [];
-          const updatDonationFiles = movableValues?.donation_files ? [...currentIds, ...newFileIds] : newFileIds;
+          const updatedDonationFiles = movableValues?.donation_files ? [...currentIds, ...newFileIds] : newFileIds;
 
-          if (movableValues) {
-            setMovableValues({
-              ...movableValues,
-              donation_files: updatDonationFiles,
-            });
-          }
-
-          const data = values.items.map((item: any) => ({
-            // form data
-            id: 0,
-            date_of_purchase: movableValues
-              ? parseDateForBackend(movableValues?.date_of_purchase)
-              : parseDateForBackend(smallInventoryValues?.date_of_purchase),
-            source: movableValues ? movableValues?.source?.id : smallInventoryValues?.source?.id,
-            office_id: movableValues ? movableValues?.office?.id : smallInventoryValues?.office?.id,
-            invoice_number: movableValues ? movableValues?.invoice_number : smallInventoryValues?.invoice_number,
-            supplier_id: movableValues ? movableValues?.supplier?.id : smallInventoryValues?.supplier?.id,
-            donor_id: movableValues ? movableValues?.donor?.id : 0,
-            donation_description: movableValues?.donation_description,
-            donation_files: updatDonationFiles,
-            is_external_donation: movableValues?.is_external_donation.id === 'PS2' ? true : false,
-
-            // item data
-            depreciation_type_id: item?.depreciation_type?.id,
-            class_type_id: item.class_type.id,
-            inventory_number: item.inventory_number,
-            title: item.title,
-            description: item.description,
-            gross_price: Number(item.gross_price),
-            serial_number: item.serial_number,
-
-            // other
-            type: type,
-            real_estate: null,
-            abbreviation: '',
-            internal_ownership: true,
-            location: '', //?
-            target_user_profile_id: 1,
-            unit: '',
-            amount: 1, // default 1
-            net_price: 1,
-            donor_title: '',
-            price_of_assessment: 0,
-            date_of_assessment: null,
-            lifetime_of_assessment_in_months: 0,
-            active: false,
-            deactivation_description: '',
-            invoice_file_id: 0,
-            file_id: 0,
-            contract_id: movableValues?.contract?.id,
-            contract_article_id: item?.contract_article_id,
+          const updatedData = data.map((item: any) => ({
+            ...item,
+            donation_files: updatedDonationFiles,
           }));
 
-          await mutate(
-            data,
-            () => {
-              alert.success('Uspješno dodavanje osnovnih sredstava');
-              navigate(`/inventory/${type}-inventory`);
-            },
-            (response: InventoryInsertResponse) => {
-              if (response.validator.length) {
-                setDuplicateErrors(response.validator);
-                return;
-              }
-              alert.error('Neuspješno dodavanje osnovnih sredstava');
-            },
-          );
+          mutateInventoryItems(updatedData);
         });
+      } else {
+        mutateInventoryItems(data);
       }
     }
+  };
+
+  const mutateInventoryItems = async (data: any) => {
+    await mutate(
+      data,
+      () => {
+        alert.success('Uspješno dodavanje osnovnih sredstava');
+        navigate(`/inventory/${type}-inventory`);
+      },
+      (response: InventoryInsertResponse) => {
+        if (response.validator.length) {
+          setDuplicateErrors(response.validator);
+          return;
+        }
+        alert.error('Neuspješno dodavanje osnovnih sredstava');
+      },
+    );
   };
 
   const setDuplicateErrors = (validator: InventoryInsertResponse['validator']) => {
