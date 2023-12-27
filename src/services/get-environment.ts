@@ -1,6 +1,6 @@
 import {EnvironmentTypes} from '../types/environment';
 
-const Environment = 'local';
+const Environment = 'development';
 
 export const getEnvironment = (): EnvironmentTypes => {
   return Environment as EnvironmentTypes;
