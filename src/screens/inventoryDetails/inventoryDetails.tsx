@@ -45,21 +45,8 @@ const InventoryDetails = ({context, type}: InventoryProps) => {
   const {data: depreciationTypes} = useGetSettings({entity: 'deprecation_types'});
 
   const id = context.navigation.location.pathname.split('/').pop();
-  const orgUnitId = context?.contextMain?.organization_unit?.id;
 
   const {data, refetch, loading} = useInventoryDetails(id);
-
-  // const getDepreciationRate = (item: InventoryAssessment) => {
-  //   const depreciationType = depreciationTypes?.items?.find(
-  //     (type: SettingsDropdownOverview) => item.depreciation_type?.id === type.id,
-  //   );
-
-  //   if (depreciationType) {
-  //     return 100 / Number(depreciationType.value) + '%';
-  //   } else {
-  //     return 0 + '%';
-  //   }
-  // };
 
   const getUpdatedTableHeads: TableHead[] = useMemo(
     () => [
