@@ -100,9 +100,7 @@ const ReceiveInventoryModal = ({
                 content={
                   createRevers
                     ? 'Da li želite kreirati revers? Sredstvo će biti poslato odabranoj organizacionoj jedinici.'
-                    : `Organizaciona jedinica ${data?.source_organization_unit?.title} je kreirala revers. ${
-                        data?.is_accepted && 'Da li želite prihvatiti sredstvo?'
-                      }`
+                    : ''
                 }
               />
             </>
