@@ -46,7 +46,7 @@ const ImmovableDetailsForm = ({context, data, refetch, inventoryId}: DetailsForm
         limitation: restrictionOptions.find(option => option.id === data?.real_estate?.limitation_id),
         limitations_description: data?.real_estate?.limitations_description,
         square_area: data.real_estate?.square_area,
-        depreciation_rate: depreciationType && depreciationType.value ? 100 / Number(depreciationType.value) : 0,
+        depreciation_rate: data.depreciation_rate,
         is_external_donation: donationOptions.find(option => option.id === data?.is_external_donation),
         owner: data?.owner,
       };

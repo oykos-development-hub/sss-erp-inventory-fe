@@ -134,7 +134,6 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
         donation_description: movableValues?.donation_description,
         donation_files: movableValues?.donation_files,
         is_external_donation: movableValues?.is_external_donation,
-        invoice_id: movableValues?.invoice_id ? movableValues?.invoice_id : 0,
 
         // item data
         depreciation_type_id: item?.depreciation_type?.id,
@@ -360,13 +359,7 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
 
           <ButtonContainer>
             <Button content="Odustani" onClick={clearButtonClick} />
-            <Button
-              content="Sačuvaj"
-              onClick={handleSubmit(onSubmit)}
-              variant="primary"
-              loader={loading}
-              disabled={orgUnitId !== 3}
-            />
+            <Button content="Sačuvaj" onClick={handleSubmit(onSubmit)} variant="primary" loader={loading} />
           </ButtonContainer>
         </>
       )}

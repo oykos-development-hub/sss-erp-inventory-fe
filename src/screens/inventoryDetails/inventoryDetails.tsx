@@ -49,32 +49,29 @@ const InventoryDetails = ({context, type}: InventoryProps) => {
 
   const {data, refetch, loading} = useInventoryDetails(id);
 
-  const getDepreciationRate = (item: InventoryAssessment) => {
-    const depreciationType = depreciationTypes?.items?.find(
-      (type: SettingsDropdownOverview) => item.depreciation_type?.id === type.id,
-    );
+  // const getDepreciationRate = (item: InventoryAssessment) => {
+  //   const depreciationType = depreciationTypes?.items?.find(
+  //     (type: SettingsDropdownOverview) => item.depreciation_type?.id === type.id,
+  //   );
 
-    if (depreciationType) {
-      return 100 / Number(depreciationType.value) + '%';
-    } else {
-      return 0 + '%';
-    }
-  };
+  //   if (depreciationType) {
+  //     return 100 / Number(depreciationType.value) + '%';
+  //   } else {
+  //     return 0 + '%';
+  //   }
+  // };
 
   const getUpdatedTableHeads: TableHead[] = useMemo(
     () => [
       ...estimationTableHeads.slice(0, 3),
       {
         title: 'Amortizaciona stopa',
-        accessor: '',
-        type: 'custom',
-        renderContents: (_: any, row: InventoryAssessment) => (
-          <Typography variant="bodyMedium" content={getDepreciationRate(row)} />
-        ),
+        accessor: 'depreciation_rate',
+        type: 'text',
       },
       ...estimationTableHeads.slice(3),
     ],
-    [data, depreciationTypes, getDepreciationRate],
+    [data, depreciationTypes],
   );
 
   const onCloseMovementModal = () => {

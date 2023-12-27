@@ -84,6 +84,7 @@ const inventoryDetailsGet = `query BasicInventoryDetails($id: Int!) {
                 inventory_id
                 active
                 estimated_duration
+                depreciation_rate
                 depreciation_type {
                      id
                     title

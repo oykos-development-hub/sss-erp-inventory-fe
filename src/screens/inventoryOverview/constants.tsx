@@ -109,7 +109,7 @@ export const movableInventoryTableHeads: TableHead[] = [
   },
   {
     title: 'Obračun amortizacije',
-    accessor: 'date_of_purchase',
+    accessor: 'date_of_end_of_assessment',
     type: 'custom',
     renderContents: date => <Typography content={parseDate(date)} />,
   },

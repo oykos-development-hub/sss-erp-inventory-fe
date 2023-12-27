@@ -42,7 +42,6 @@ const MovableAddForm = ({
   const [article, setArticle] = useState<DropdownDataNumber>({id: 0, title: ''});
 
   const {
-    invoice_number,
     date_of_purchase,
     office,
     supplier,
@@ -50,7 +49,7 @@ const MovableAddForm = ({
     donation_description,
     donation_files,
     is_external_donation,
-    invoice_id,
+    invoice_number,
   } = watch();
 
   const onSubmit = async (values: MovableAddFormProps) => {
@@ -149,7 +148,6 @@ const MovableAddForm = ({
         donation_description: donation_description,
         donation_files: donation_files,
         is_external_donation: is_external_donation?.id === 'PS2' ? true : false,
-        invoice_id: invoice_id,
       };
 
       values.articles = {
@@ -199,6 +197,7 @@ const MovableAddForm = ({
   const isDonation = type === 2;
   const isInvoice = type === 1 || (orgUnitId !== 3 && type === undefined);
   const isContract = type === 0 || (orgUnitId === 3 && type === undefined);
+
   return (
     <>
       <Form>
@@ -209,14 +208,14 @@ const MovableAddForm = ({
             control={control}
             render={({field: {name, value, onChange}}) => {
               const optionsWithoutFirst = orgUnitId !== 3 ? Type.slice(1) : Type;
-              const defaultValue = optionsWithoutFirst[0];
               return (
                 <Dropdown
                   name={name}
-                  value={value || defaultValue}
+                  value={value}
                   options={optionsWithoutFirst}
                   onChange={onChange}
                   label="TIP:"
+                  isRequired
                 />
               );
             }}
@@ -279,7 +278,7 @@ const MovableAddForm = ({
                   />
                 )}
               />
-              {!isContract && <Input {...register('invoice_id')} label="FAKTURA:" />}
+              {!isContract && <Input {...register('invoice_number')} label="FAKTURA:" />}
               {isContract && (
                 <>
                   <Controller
@@ -436,11 +435,13 @@ const MovableAddForm = ({
           </FieldsContainer>
           <TooltipWrapper>
             <ButtonWrapper>
-              <Button
-                content={isDonation ? 'Donacija' : 'Generiši Excel'}
-                onClick={openDonationTableUpload}
-                variant="primary"
-              />
+              {!isInvoice && (
+                <Button
+                  content={isDonation ? 'Donacija' : 'Generiši Excel'}
+                  onClick={openDonationTableUpload}
+                  variant="primary"
+                />
+              )}
             </ButtonWrapper>
             {!isDonation && (
               <LeftWrapper>
