@@ -144,12 +144,16 @@ const MovementModal = ({
           ? 'kreirali revers'
           : transactionType === DispatchType.allocation
           ? 'izvršili kretanje'
+          : transactionType === DispatchType.convert
+          ? 'konvertovanje PS2 sredstva u PS1'
           : 'izvršili povrat';
       const errorTypeString =
         transactionType === DispatchType.revers
           ? DispatchType.revers
           : transactionType === DispatchType.allocation
           ? 'kretanja'
+          : transactionType === DispatchType.convert
+          ? 'konvertovanje'
           : 'povrata';
       mutate(
         data,
@@ -184,23 +188,37 @@ const MovementModal = ({
         ? immovableTransactionOptions
         : smallTransactionOptions;
 
-    const optionsToRemove = [currentItem?.status === StatusesForMovableInventory.NEZADUZENO ? 'return' : 'allocation'];
+    const optionsToRemove = [
+      currentItem?.status === StatusesForMovableInventory.NEZADUZENO ? DispatchType.return : DispatchType.allocation,
+    ];
+
+    if (!currentItem?.is_external_donation && initialDispatchType !== DispatchType.convert)
+      optionsToRemove.push(DispatchType.convert);
 
     if (
       sourceType?.includes('2') ||
       currentItem?.source_type.includes('2') ||
       (currentItem && isReversDone(currentItem)) ||
-      currentItem?.status === StatusesForMovableInventory.ZADUZENO
+      currentItem?.status === StatusesForMovableInventory.ZADUZENO ||
+      currentItem?.is_external_donation ||
+      initialDispatchType === DispatchType.convert
     ) {
-      optionsToRemove.push('revers');
+      optionsToRemove.push(DispatchType.return);
     }
 
-    if (sourceType?.includes('1') || currentItem?.status === StatusesForMovableInventory.ZADUZENO) {
-      optionsToRemove.push('return-revers');
+    if (
+      sourceType?.includes('1') ||
+      currentItem?.status === StatusesForMovableInventory.ZADUZENO ||
+      currentItem?.is_external_donation ||
+      initialDispatchType === DispatchType.convert
+    ) {
+      optionsToRemove.push(DispatchType.returnRevers);
     }
+
     if (currentItem?.source_type?.includes('1') && currentItem?.status === StatusesForMovableInventory.NEZADUZENO) {
-      optionsToRemove.push('return-revers');
+      optionsToRemove.push(DispatchType.returnRevers);
     }
+
     return options.filter(option => {
       return optionsToRemove.every(optionToRemove => optionToRemove !== option.id);
     });
@@ -224,7 +242,12 @@ const MovementModal = ({
   }, [minDate]);
 
   useEffect(() => {
-    if (locationOptions.length && initialDispatchType && returnOrgUnitId && initialDispatchType === 'return-revers') {
+    if (
+      locationOptions.length &&
+      initialDispatchType &&
+      returnOrgUnitId &&
+      initialDispatchType === DispatchType.returnRevers
+    ) {
       setValue('target_organization_unit_id', locationOptions.find(option => option.id === returnOrgUnitId)!);
     }
   }, [returnOrgUnitId, initialDispatchType, locationOptions]);
@@ -253,7 +276,7 @@ const MovementModal = ({
       leftButtonText="Otkaži"
       content={
         <MovementForm>
-          {currentItem?.status !== StatusesForMovableInventory.ZADUZENO && initialDispatchType !== 'revers' && (
+          {currentItem?.status !== StatusesForMovableInventory.ZADUZENO && !initialDispatchType && (
             <Controller
               name="transaction"
               control={control}
@@ -272,7 +295,7 @@ const MovementModal = ({
             />
           )}
 
-          {transactionType === 'revers' && (
+          {transactionType === DispatchType.revers && (
             <Controller
               name="target_organization_unit_id"
               control={control}
@@ -353,18 +376,19 @@ const MovementModal = ({
               )}
             />
           )}
-          {status === StatusesForMovableInventory.ZADUZENO && (
-            <FileUploadWrapper>
-              <FileUpload
-                icon={<></>}
-                variant="secondary"
-                onUpload={handleUpload}
-                note={<Typography variant="bodySmall" content="Fajlovi:" />}
-                buttonText="Dodaj fajl"
-                files={files}
-              />
-            </FileUploadWrapper>
-          )}
+          {status === StatusesForMovableInventory.ZADUZENO ||
+            (transactionType === DispatchType.convert && (
+              <FileUploadWrapper>
+                <FileUpload
+                  icon={<></>}
+                  variant="secondary"
+                  onUpload={handleUpload}
+                  note={<Typography variant="bodySmall" content="Fajlovi:" />}
+                  buttonText="Dodaj fajl"
+                  files={files}
+                />
+              </FileUploadWrapper>
+            ))}
         </MovementForm>
       }
     />

@@ -18,7 +18,8 @@ export interface InventoryItem {
   source: string;
   status: string;
   active: boolean;
-  source_type: SourceType | `${SourceType}`;
+  source_type: SourceType;
+  is_external_donation: boolean;
   organization_unit: DropdownDataNumber;
   target_organization_unit: DropdownDataNumber;
   expire: boolean;

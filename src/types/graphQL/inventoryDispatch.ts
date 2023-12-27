@@ -53,6 +53,7 @@ export enum DispatchType {
   return = 'return',
   revers = 'revers',
   returnRevers = 'return-revers',
+  convert = 'convert',
 }
 
 export const DispatchTypeTitles = {
@@ -60,6 +61,7 @@ export const DispatchTypeTitles = {
   [DispatchType.returnRevers]: 'Povrat sredstva',
   [DispatchType.allocation]: 'Interni revers',
   [DispatchType.return]: 'Razduženje ',
+  [DispatchType.convert]: 'Konvertovanje PS2 sredstva u PS1 ',
 };
 
 export interface InventoryDispatchOverviewParams {

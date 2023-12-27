@@ -41,7 +41,7 @@ export interface InventoryDetails {
   amortization_value: number;
   active: boolean;
   inactive?: string;
-  source_type: SourceType | `${SourceType}`;
+  source_type: SourceType;
   status?: string;
   deactivation_description: string;
   residual_price: number;

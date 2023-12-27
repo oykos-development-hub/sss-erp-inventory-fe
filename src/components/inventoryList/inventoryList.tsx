@@ -56,13 +56,13 @@ const InventoryList = ({
   refetch,
 }: InventoryListProps) => {
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
-  const [movementType, setMovementType] = useState<DispatchType | `${DispatchType}`>();
+  const [movementType, setMovementType] = useState<DispatchType>();
   const [deactivateModal, setDeactivateModal] = useState(false);
   const [movementModal, setMovementModal] = useState(false);
   const [estimationModal, setEstimationModal] = useState(false);
   const [currentInventoryId, setCurrentInventoryId] = useState<number[]>([]);
   const [currentItem, setCurrentItem] = useState<InventoryItem>();
-  const [sourceType, setSourceType] = useState<SourceType | `${SourceType}`>();
+  const [sourceType, setSourceType] = useState<SourceType>();
   const [returnOrgUnitId, setReturnOrgUnitId] = useState<number>();
   const [receiveModal, setReceiveModal] = useState(false);
   const [currentId, setCurrentId] = useState<number>();
@@ -217,7 +217,13 @@ const InventoryList = ({
   };
 
   const onReversClick = () => {
-    setMovementType(sourceType?.includes('1') ? 'revers' : 'return-revers');
+    setMovementType(
+      filterValues.source_type?.title.includes('Donacije')
+        ? DispatchType.convert
+        : sourceType?.includes('1')
+        ? DispatchType.revers
+        : DispatchType.returnRevers,
+    );
 
     setCurrentInventoryId(selectedRows);
     setMovementModal(true);
@@ -225,7 +231,11 @@ const InventoryList = ({
 
   const onAddMovement = (item: InventoryItem) => {
     const movementType =
-      item.source_type === 'NS1' ? 'revers' : item.source_type === 'NS2' ? 'return-revers' : 'allocation';
+      item.source_type === 'NS1'
+        ? DispatchType.revers
+        : item.source_type === 'NS2'
+        ? DispatchType.returnRevers
+        : DispatchType.allocation;
 
     setSourceType(sourceType);
     setMovementType(movementType);
@@ -313,7 +323,13 @@ const InventoryList = ({
 
               {type !== InventoryTypeEnum.IMMOVABLE && (
                 <Button
-                  content={sourceType?.includes('2') ? 'Povrat' : 'Eksterni revers'}
+                  content={
+                    filterValues.source_type?.title.includes('Donacije')
+                      ? 'Konvertovanje PS2 sredstva u PS1'
+                      : sourceType?.includes('2')
+                      ? 'Povrat'
+                      : 'Eksterni revers'
+                  }
                   variant="primary"
                   size="sm"
                   onClick={onReversClick}

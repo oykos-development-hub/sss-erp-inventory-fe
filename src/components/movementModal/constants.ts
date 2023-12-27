@@ -1,11 +1,13 @@
 import {StatusesForMovableInventory} from '../../constants';
 import {DropdownDataBoolean, DropdownDataString} from '../../types/dropdownData';
+import {DispatchType} from '../../types/graphQL/inventoryDispatch';
 
 export const movableTransactionOptions: DropdownDataString[] = [
-  {id: 'revers', title: 'Eksterni revers'},
-  {id: 'allocation', title: 'Interni revers'},
-  {id: 'return', title: 'Razduženje'},
-  {id: 'return-revers', title: 'Povrat sredstva'},
+  {id: DispatchType.revers, title: 'Eksterni revers'},
+  {id: DispatchType.allocation, title: 'Interni revers'},
+  {id: DispatchType.return, title: 'Razduženje'},
+  {id: DispatchType.returnRevers, title: 'Povrat sredstva'},
+  {id: DispatchType.convert, title: 'Konvertovanje PS2 sredstva u PS1'},
 ];
 
 export const immovableTransactionOptions: DropdownDataString[] = [
