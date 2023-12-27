@@ -18,7 +18,6 @@ import {InventoryDonationItem} from '../../types/files';
 import {PublicProcurementContracts} from '../../types/graphQL/publicProcurmentContract';
 import {PublicProcurementContractArticles} from '../../types/graphQL/publicProcurmentContractArticles';
 import {Type} from './constants';
-import MovableAddFormIvoice from './movableAddFormInvoice';
 import {ButtonWrapper, LeftWrapper, Links, TooltipWrapper, TypeWrapper} from './styles';
 import {MovableAddFormProps} from './types';
 
@@ -197,276 +196,299 @@ const MovableAddForm = ({
     openImportModal(props);
   };
 
-  const isDonation = !!type && type === 2;
-
+  const isDonation = type === 2;
+  const isInvoice = type === 1 || (orgUnitId !== 3 && type === undefined);
+  const isContract = type === 0 || (orgUnitId === 3 && type === undefined);
   return (
     <>
-      {orgUnitId === 3 ? (
-        <Form>
-          <TypeWrapper>
+      <Form>
+        <TypeWrapper>
+          <Controller
+            name="type"
+            rules={{required: 'Ovo polje je obavezno'}}
+            control={control}
+            render={({field: {name, value, onChange}}) => {
+              const optionsWithoutFirst = orgUnitId !== 3 ? Type.slice(1) : Type;
+              const defaultValue = optionsWithoutFirst[0];
+              return (
+                <Dropdown
+                  name={name}
+                  value={value || defaultValue}
+                  options={optionsWithoutFirst}
+                  onChange={onChange}
+                  label="TIP:"
+                />
+              );
+            }}
+          />
+          {isDonation && (
             <Controller
-              name="type"
+              name="is_external_donation"
               rules={{required: 'Ovo polje je obavezno'}}
               control={control}
               render={({field: {name, value, onChange}}) => (
-                <Dropdown name={name} value={value} options={Type} onChange={onChange} label="TIP:" />
+                <Dropdown
+                  name={name}
+                  value={value}
+                  options={[
+                    {id: 'PS1', title: 'PS1'},
+                    {id: 'PS2', title: 'PS2'},
+                  ]}
+                  onChange={onChange}
+                  error={errors.is_external_donation?.message}
+                  label="TIP SREDSTVA:"
+                />
               )}
             />
-            {isDonation && (
+          )}
+        </TypeWrapper>
+        <>
+          <FieldsContainer>
+            <FormRow>
+              {isDonation && (
+                <Controller
+                  name="donor"
+                  rules={{required: 'Ovo polje je obavezno'}}
+                  control={control}
+                  render={({field: {name, value, onChange}}) => (
+                    <Dropdown
+                      name={name}
+                      value={value}
+                      onChange={onChange}
+                      options={donors}
+                      placeholder=""
+                      label="DONATOR:"
+                      isRequired
+                      error={errors.donor?.message}
+                    />
+                  )}
+                />
+              )}
               <Controller
-                name="is_external_donation"
-                rules={{required: 'Ovo polje je obavezno'}}
+                name="supplier"
                 control={control}
                 render={({field: {name, value, onChange}}) => (
                   <Dropdown
                     name={name}
                     value={value}
-                    options={[
-                      {id: 'PS1', title: 'PS1'},
-                      {id: 'PS2', title: 'PS2'},
-                    ]}
                     onChange={onChange}
-                    error={errors.is_external_donation?.message}
-                    label="TIP SREDSTVA:"
+                    options={suppliers}
+                    placeholder=""
+                    label="DOBAVLJAČ:"
+                    error={errors.supplier?.message}
                   />
                 )}
               />
-            )}
-          </TypeWrapper>
-          {type === undefined || type !== 1 ? (
-            <>
-              <FieldsContainer>
-                <FormRow>
-                  {isDonation && (
-                    <Controller
-                      name="donor"
-                      rules={{required: 'Ovo polje je obavezno'}}
-                      control={control}
-                      render={({field: {name, value, onChange}}) => (
-                        <Dropdown
-                          name={name}
-                          value={value}
-                          onChange={onChange}
-                          options={donors}
-                          placeholder=""
-                          label="DONATOR:"
-                          isRequired
-                          error={errors.donor?.message}
-                        />
-                      )}
-                    />
-                  )}
+              {!isContract && <Input {...register('invoice_id')} label="FAKTURA:" />}
+              {isContract && (
+                <>
                   <Controller
-                    name="supplier"
-                    control={control}
-                    render={({field: {name, value, onChange}}) => (
-                      <Dropdown
-                        name={name}
-                        value={value}
-                        onChange={onChange}
-                        options={suppliers}
-                        placeholder=""
-                        label="DOBAVLJAČ:"
-                        error={errors.supplier?.message}
-                      />
-                    )}
-                  />
-                  {isDonation && <Input {...register('invoice_id')} label="FAKTURA:" />}
-                  {!isDonation && (
-                    <>
-                      <Controller
-                        name="contract"
-                        rules={{required: 'Ovo polje je obavezno'}}
-                        control={control}
-                        render={({field: {name, value, onChange}}) => (
-                          <Dropdown
-                            name={name}
-                            value={value}
-                            options={contractOptions as any}
-                            onChange={onChange}
-                            label="UGOVORI:"
-                            isRequired
-                            error={errors.contract?.message}
-                          />
-                        )}
-                      />
-                      <Controller
-                        name="date_of_contract_signing"
-                        control={control}
-                        rules={{required: 'Ovo polje je obavezno'}}
-                        render={({field: {name, value, onChange}}) => (
-                          <Datepicker
-                            name={name}
-                            selected={value ? new Date(value) : ''}
-                            onChange={onChange}
-                            placeholder=""
-                            label="DATUM POTPISIVANJA UGOVORA:"
-                            isRequired
-                            error={errors.date_of_contract_signing?.message}
-                            disabled={!!contract?.id}
-                          />
-                        )}
-                      />
-                    </>
-                  )}
-                </FormRow>
-                <FormRow>
-                  {!isDonation && (
-                    <Controller
-                      name="date_of_conclusion"
-                      control={control}
-                      rules={{required: 'Ovo polje je obavezno'}}
-                      disabled={!!contract?.id}
-                      render={({field: {name, value, onChange}}) => (
-                        <Datepicker
-                          name={name}
-                          selected={value ? new Date(value) : ''}
-                          onChange={onChange}
-                          placeholder=""
-                          label="DATUM ZAVRŠETKA UGOVORA:"
-                          isRequired
-                          error={errors.date_of_conclusion?.message}
-                          disabled={!!contract?.id}
-                        />
-                      )}
-                    />
-                  )}
-                  <Controller
-                    name="date_of_purchase"
-                    control={control}
-                    rules={{
-                      required: 'Ovo polje je obavezno',
-                      validate: value => {
-                        const dateOfSigning = watch('date_of_contract_signing');
-                        return dateOfSigning && value && new Date(value) < dateOfSigning
-                          ? 'Datum završetka ugovora ne može biti prije datuma zaključenja ugovora.'
-                          : true;
-                      },
-                    }}
-                    render={({field: {name, value, onChange}}) => (
-                      <Datepicker
-                        name={name}
-                        selected={value ? new Date(value) : ''}
-                        onChange={onChange}
-                        placeholder=""
-                        label={isDonation ? 'DATUM DONACIJE:' : 'DATUM NABAVKE:'}
-                        isRequired
-                        error={errors.date_of_purchase?.message}
-                      />
-                    )}
-                  />
-                  {!isDonation && (
-                    <Controller
-                      name="source"
-                      rules={{required: 'Ovo polje je obavezno'}}
-                      control={control}
-                      render={({field: {name, value, onChange}}) => (
-                        <Dropdown
-                          name={name}
-                          value={value}
-                          onChange={onChange}
-                          options={inventorySourceOptions}
-                          placeholder=""
-                          label="IZVOR SREDSTAVA:"
-                          isRequired
-                          error={errors.source?.message}
-                          isDisabled={!!contract?.id}
-                        />
-                      )}
-                    />
-                  )}
-                  <Controller
-                    name="office"
+                    name="contract"
                     rules={{required: 'Ovo polje je obavezno'}}
                     control={control}
                     render={({field: {name, value, onChange}}) => (
                       <Dropdown
                         name={name}
                         value={value}
+                        options={contractOptions as any}
                         onChange={onChange}
-                        options={locationOptions}
-                        label="LOKACIJA:"
+                        label="UGOVORI:"
                         isRequired
-                        error={errors.office?.message}
+                        error={errors.contract?.message}
                       />
                     )}
                   />
-                </FormRow>
-                {isDonation && (
-                  <div>
-                    <Input textarea {...register('donation_description')} label="NAPOMENA:" />
-                    <FileUpload
-                      variant="secondary"
-                      onUpload={handleUpload}
-                      note={<Typography variant="bodySmall" content="Fajlovi:" />}
-                      buttonText="Dodaj fajl"
-                      files={donationFiles}
-                      style={{marginBlock: 15}}
-                    />
-                  </div>
-                )}
-              </FieldsContainer>
-              <TooltipWrapper>
-                <ButtonWrapper>
-                  <Button
-                    content={isDonation ? 'Donacija' : 'Generiši Excel'}
-                    onClick={openDonationTableUpload}
-                    variant="primary"
-                  />
-                </ButtonWrapper>
-                {!isDonation && (
-                  <LeftWrapper>
-                    <Dropdown
-                      onChange={item => {
-                        setArticle({id: Number(item.id), title: item.title?.toString() || ''});
-                      }}
-                      options={articlesOptions || []}
-                      placeholder="Izaberi artikal"
-                      label="Artikli"
-                      value={article}
-                      error={errors.source?.message}
-                      isDisabled={!articlesOptions || articlesOptions.length == 0}
-                      className="width200"
-                    />
-                    {contract && contract.id !== 0 ? (
-                      <PlusButton disabled={!article.id} onClick={handleSubmit(onSubmit)} />
-                    ) : (
-                      <Tooltip
-                        style={{width: '200px'}}
-                        variant="filled"
-                        position="topLeft"
-                        content={'Funkcionalnost je onemogućena zbog odabira ugovora.'}>
-                        <PlusButton
-                          onClick={handleSubmit(values => {
-                            values.all_items = false;
-                            onSubmit(values);
-                          })}
-                          disabled={!!contract && contract?.id !== 0}
-                        />
-                      </Tooltip>
+                  <Controller
+                    name="date_of_contract_signing"
+                    control={control}
+                    rules={{required: 'Ovo polje je obavezno'}}
+                    render={({field: {name, value, onChange}}) => (
+                      <Datepicker
+                        name={name}
+                        selected={value ? new Date(value) : ''}
+                        onChange={onChange}
+                        placeholder=""
+                        label="DATUM POTPISIVANJA UGOVORA:"
+                        isRequired
+                        error={errors.date_of_contract_signing?.message}
+                        disabled={!!contract?.id}
+                      />
                     )}
-                  </LeftWrapper>
-                )}
-              </TooltipWrapper>
-              {!isDonation && (
-                <LeftWrapper>
-                  <Links
-                    onClick={handleSubmit(values => {
-                      values.all_items = true;
-                      onSubmit(values);
-                    })}>
-                    Učitaj sve
-                  </Links>
-                </LeftWrapper>
+                  />
+                </>
               )}
-            </>
-          ) : (
-            <MovableAddFormIvoice />
+            </FormRow>
+            <FormRow>
+              {isContract && (
+                <Controller
+                  name="date_of_conclusion"
+                  control={control}
+                  rules={{required: 'Ovo polje je obavezno'}}
+                  disabled={!!contract?.id}
+                  render={({field: {name, value, onChange}}) => (
+                    <Datepicker
+                      name={name}
+                      selected={value ? new Date(value) : ''}
+                      onChange={onChange}
+                      placeholder=""
+                      label="DATUM ZAVRŠETKA UGOVORA:"
+                      isRequired
+                      error={errors.date_of_conclusion?.message}
+                      disabled={!!contract?.id}
+                    />
+                  )}
+                />
+              )}
+              {!isInvoice && (
+                <Controller
+                  name="date_of_purchase"
+                  control={control}
+                  rules={{
+                    required: 'Ovo polje je obavezno',
+                    validate: value => {
+                      const dateOfSigning = watch('date_of_contract_signing');
+                      return dateOfSigning && value && new Date(value) < dateOfSigning
+                        ? 'Datum završetka ugovora ne može biti prije datuma zaključenja ugovora.'
+                        : true;
+                    },
+                  }}
+                  render={({field: {name, value, onChange}}) => (
+                    <Datepicker
+                      name={name}
+                      selected={value ? new Date(value) : ''}
+                      onChange={onChange}
+                      placeholder=""
+                      label={isDonation ? 'DATUM DONACIJE:' : 'DATUM NABAVKE:'}
+                      isRequired
+                      error={errors.date_of_purchase?.message}
+                    />
+                  )}
+                />
+              )}
+              {isInvoice && (
+                <Controller
+                  name="date_of_contract_signing"
+                  control={control}
+                  rules={{required: 'Ovo polje je obavezno'}}
+                  render={({field: {name, value, onChange}}) => (
+                    <Datepicker
+                      name={name}
+                      selected={value ? new Date(value) : ''}
+                      onChange={onChange}
+                      placeholder=""
+                      label="DATUM FAKTURE:"
+                      isRequired
+                      error={errors.date_of_contract_signing?.message}
+                    />
+                  )}
+                />
+              )}
+              {isContract && (
+                <Controller
+                  name="source"
+                  rules={{required: 'Ovo polje je obavezno'}}
+                  control={control}
+                  render={({field: {name, value, onChange}}) => (
+                    <Dropdown
+                      name={name}
+                      value={value}
+                      onChange={onChange}
+                      options={inventorySourceOptions}
+                      placeholder=""
+                      label="IZVOR SREDSTAVA:"
+                      isRequired
+                      error={errors.source?.message}
+                      isDisabled={!!contract?.id}
+                    />
+                  )}
+                />
+              )}
+              <Controller
+                name="office"
+                rules={{required: 'Ovo polje je obavezno'}}
+                control={control}
+                render={({field: {name, value, onChange}}) => (
+                  <Dropdown
+                    name={name}
+                    value={value}
+                    onChange={onChange}
+                    options={locationOptions}
+                    label="LOKACIJA:"
+                    isRequired
+                    error={errors.office?.message}
+                  />
+                )}
+              />
+            </FormRow>
+            {isDonation && (
+              <div>
+                <Input textarea {...register('donation_description')} label="NAPOMENA:" />
+                <FileUpload
+                  variant="secondary"
+                  onUpload={handleUpload}
+                  note={<Typography variant="bodySmall" content="Fajlovi:" />}
+                  buttonText="Dodaj fajl"
+                  files={donationFiles}
+                  style={{marginBlock: 15}}
+                />
+              </div>
+            )}
+          </FieldsContainer>
+          <TooltipWrapper>
+            <ButtonWrapper>
+              <Button
+                content={isDonation ? 'Donacija' : 'Generiši Excel'}
+                onClick={openDonationTableUpload}
+                variant="primary"
+              />
+            </ButtonWrapper>
+            {!isDonation && (
+              <LeftWrapper>
+                <Dropdown
+                  onChange={item => {
+                    setArticle({id: Number(item.id), title: item.title?.toString() || ''});
+                  }}
+                  options={articlesOptions || []}
+                  placeholder="Izaberi artikal"
+                  label="Artikli"
+                  value={article}
+                  error={errors.source?.message}
+                  isDisabled={!articlesOptions || articlesOptions.length == 0}
+                  className="width200"
+                />
+                {contract && contract.id !== 0 ? (
+                  <PlusButton disabled={!article.id} onClick={handleSubmit(onSubmit)} />
+                ) : (
+                  <Tooltip
+                    style={{width: '200px'}}
+                    variant="filled"
+                    position="topLeft"
+                    content={'Funkcionalnost je onemogućena zbog odabira ugovora.'}>
+                    <PlusButton
+                      onClick={handleSubmit(values => {
+                        values.all_items = false;
+                        onSubmit(values);
+                      })}
+                      disabled={!!contract && contract?.id !== 0}
+                    />
+                  </Tooltip>
+                )}
+              </LeftWrapper>
+            )}
+          </TooltipWrapper>
+          {!isDonation && (
+            <LeftWrapper>
+              <Links
+                onClick={handleSubmit(values => {
+                  values.all_items = true;
+                  onSubmit(values);
+                })}>
+                Učitaj sve
+              </Links>
+            </LeftWrapper>
           )}
-        </Form>
-      ) : (
-        <MovableAddFormIvoice />
-      )}
+        </>
+      </Form>
     </>
   );
 };
