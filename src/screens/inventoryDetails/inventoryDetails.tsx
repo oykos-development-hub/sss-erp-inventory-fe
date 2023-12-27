@@ -92,6 +92,8 @@ const InventoryDetails = ({context, type}: InventoryProps) => {
     return false;
   };
 
+  console.log('data', data?.items.assessments);
+
   return (
     <ScreenWrapper>
       <SectionBox>
@@ -188,20 +190,7 @@ const InventoryDetails = ({context, type}: InventoryProps) => {
                   onClick={() => setAssessmentModal(true)}
                 />
               </TableHeader>
-              <Table
-                tableHeads={getUpdatedTableHeads}
-                data={data?.items.assessments || []}
-                isLoading={loading}
-                tableActions={[
-                  {
-                    name: 'print',
-                    icon: <DownloadIcon stroke={Theme.palette.gray600} />,
-                    onClick: () => {
-                      console.log('printed estimation test');
-                    },
-                  },
-                ]}
-              />
+              <Table tableHeads={getUpdatedTableHeads} data={data?.items.assessments || []} isLoading={loading} />
             </div>
           )}
           {fileToView && <FileModalView file={fileToView} onClose={() => setFileToView(undefined)} />}
