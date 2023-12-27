@@ -23,6 +23,7 @@ export interface MovableAddFormProps {
     id: number;
   }[];
   is_external_donation: DropdownDataString;
+  invoice_id: number;
 }
 
 export const VisibilityType = {

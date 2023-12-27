@@ -51,6 +51,7 @@ const MovableAddForm = ({
     donation_description,
     donation_files,
     is_external_donation,
+    invoice_id,
   } = watch();
 
   const onSubmit = async (values: MovableAddFormProps) => {
@@ -149,6 +150,7 @@ const MovableAddForm = ({
         donation_description: donation_description,
         donation_files: donation_files,
         is_external_donation: is_external_donation?.id === 'PS2' ? true : false,
+        invoice_id: invoice_id,
       };
 
       values.articles = {
@@ -271,6 +273,7 @@ const MovableAddForm = ({
                       />
                     )}
                   />
+                  {isDonation && <Input {...register('invoice_id')} label="FAKTURA:" />}
                   {!isDonation && (
                     <>
                       <Controller

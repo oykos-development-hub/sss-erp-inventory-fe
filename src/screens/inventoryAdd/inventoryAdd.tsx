@@ -134,6 +134,7 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
         donation_description: movableValues?.donation_description,
         donation_files: movableValues?.donation_files,
         is_external_donation: movableValues?.is_external_donation?.id === 'PS2' ? true : false,
+        invoice_id: movableValues?.invoice_id,
 
         // item data
         depreciation_type_id: item?.depreciation_type?.id,
