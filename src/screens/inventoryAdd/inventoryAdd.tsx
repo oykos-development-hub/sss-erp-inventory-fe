@@ -133,8 +133,8 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
         donor_id: movableValues ? movableValues?.donor?.id : 0,
         donation_description: movableValues?.donation_description,
         donation_files: movableValues?.donation_files,
-        is_external_donation: movableValues?.is_external_donation?.id === 'PS2' ? true : false,
-        invoice_id: movableValues?.invoice_id,
+        is_external_donation: movableValues?.is_external_donation,
+        invoice_id: movableValues?.invoice_id ? movableValues?.invoice_id : 0,
 
         // item data
         depreciation_type_id: item?.depreciation_type?.id,
@@ -203,7 +203,7 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
         navigate(`/inventory/${type}-inventory`);
       },
       (response: InventoryInsertResponse) => {
-        if (response.validator.length) {
+        if (response?.validator?.length) {
           setDuplicateErrors(response.validator);
           return;
         }
@@ -307,11 +307,6 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
   const handleDonationFilesUpload = (files: FileList) => {
     setDonationFiles(files);
     context.alert.success('Fajlovi uspješno učitani');
-  };
-
-  const onDeleteDonationFile = (id: number) => {
-    //TODO: delete file from server
-    console.log('onDeleteDonationFile', id);
   };
 
   const renderFormByType = {

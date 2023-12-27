@@ -258,7 +258,6 @@ const MovableAddForm = ({
                   )}
                   <Controller
                     name="supplier"
-                    rules={{required: 'Ovo polje je obavezno'}}
                     control={control}
                     render={({field: {name, value, onChange}}) => (
                       <Dropdown
@@ -268,7 +267,6 @@ const MovableAddForm = ({
                         options={suppliers}
                         placeholder=""
                         label="DOBAVLJAČ:"
-                        isRequired
                         error={errors.supplier?.message}
                       />
                     )}
@@ -340,7 +338,7 @@ const MovableAddForm = ({
                       required: 'Ovo polje je obavezno',
                       validate: value => {
                         const dateOfSigning = watch('date_of_contract_signing');
-                        return dateOfSigning && value && new Date(value) >= dateOfSigning
+                        return dateOfSigning && value && new Date(value) < dateOfSigning
                           ? 'Datum završetka ugovora ne može biti prije datuma zaključenja ugovora.'
                           : true;
                       },

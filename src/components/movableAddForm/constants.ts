@@ -11,6 +11,7 @@ export const initialValues: Omit<MovableAddFormProps, 'is_external_donation'> & 
   donation_description: '',
   donation_files: [],
   is_external_donation: false,
+  invoice_id: 0,
 };
 
 export const Type = [
