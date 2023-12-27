@@ -24,6 +24,8 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
 
   const {
     fileService: {uploadFile},
+    alert,
+    navigation: {navigate},
   } = useAppContext();
 
   const methods = useForm<TableValues>();
@@ -184,6 +186,21 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
             contract_id: movableValues?.contract?.id,
             contract_article_id: item?.contract_article_id,
           }));
+
+          await mutate(
+            data,
+            () => {
+              alert.success('Uspješno dodavanje osnovnih sredstava');
+              navigate(`/inventory/${type}-inventory`);
+            },
+            (response: InventoryInsertResponse) => {
+              if (response.validator.length) {
+                setDuplicateErrors(response.validator);
+                return;
+              }
+              alert.error('Neuspješno dodavanje osnovnih sredstava');
+            },
+          );
         });
       }
     }
