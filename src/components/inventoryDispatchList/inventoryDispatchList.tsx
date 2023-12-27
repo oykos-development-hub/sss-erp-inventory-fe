@@ -34,7 +34,10 @@ const InventoryDispatchList = ({
   const {options: locationOptions} = useOrganizationUnits();
   const {
     reportService: {generatePdf},
+    contextMain: {organization_unit},
   } = useAppContext();
+
+  const isManager = organization_unit?.id === 3;
 
   const {fetchDispatch} = useInventoryDispatchDetails();
 
@@ -106,14 +109,16 @@ const InventoryDispatchList = ({
           placeholder="Odaberi status"
         />
 
-        <FilterDropdown
-          label="ORGANIZACIONA JEDINICA:"
-          options={locationOptions}
-          onChange={value => onFilter(value, 'source_organization_unit')}
-          value={filterValues.source_organization_unit}
-          name="source_organization_unit"
-          placeholder="Odaberi organizacionu jedinicu"
-        />
+        {isManager && (
+          <FilterDropdown
+            label="ORGANIZACIONA JEDINICA:"
+            options={locationOptions}
+            onChange={value => onFilter(value, 'source_organization_unit')}
+            value={filterValues.source_organization_unit}
+            name="source_organization_unit"
+            placeholder="Odaberi organizacionu jedinicu"
+          />
+        )}
       </Filters>
       <Table
         isLoading={loading}

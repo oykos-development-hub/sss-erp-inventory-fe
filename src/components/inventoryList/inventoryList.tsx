@@ -383,7 +383,7 @@ const InventoryList = ({
         isLoading={loading}
         data={tableData}
         checkedRows={selectedRows}
-        checkboxes={type !== 'small' && type !== 'immovable'}
+        checkboxes={type === InventoryTypeEnum.MOVABLE}
         onCheck={onCheck}
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
