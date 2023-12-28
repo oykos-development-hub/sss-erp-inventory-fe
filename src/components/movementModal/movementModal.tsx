@@ -203,7 +203,7 @@ const MovementModal = ({
       currentItem?.is_external_donation ||
       initialDispatchType === DispatchType.convert
     ) {
-      optionsToRemove.push(DispatchType.return);
+      optionsToRemove.push(DispatchType.revers);
     }
 
     if (

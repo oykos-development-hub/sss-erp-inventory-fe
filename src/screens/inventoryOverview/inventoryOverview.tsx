@@ -56,7 +56,7 @@ const InventoryOverview = ({context, type}: InventoryProps) => {
       <InventoryList
         context={context}
         filters={inventoryFilters[type]}
-        tableData={data.items || []}
+        tableData={data?.items || []}
         loading={loading}
         filterValues={filterValues}
         onFilter={onFilter}
@@ -64,7 +64,7 @@ const InventoryOverview = ({context, type}: InventoryProps) => {
         refetch={refetch}
       />
       <Pagination
-        pageCount={data.total ? data.total / PAGE_SIZE : 0}
+        pageCount={data?.total ? data?.total / PAGE_SIZE : 0}
         onChange={onPageChange}
         variant="filled"
         itemsPerPage={PAGE_SIZE}
