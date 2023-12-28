@@ -9,8 +9,9 @@ import useGetReportInventoryListBasic from '../../services/graphQL/reportInvento
 import useGetReportInventoryListByClass from '../../services/graphQL/reportInventoryList/useGetReportInventoryListByClass';
 import ScreenWrapper from '../../shared/screenWrapper';
 import {InventoryReportType, extendedTypeOptions, inventoryReportOptions, typeOptions} from './constants';
-import {CustomDivider, FormContainer, MainTitle, Options, OptionsRow} from './styles';
 import {parseDateForBackend} from '../../utils/dateUtils';
+import {CustomDivider, MainTitle, Options, OptionsRow, FormContainer} from './styles';
+import useInventoriesExpireOverview from '../../services/graphQL/inventoryOverview/useInventoriesExpireOverview';
 
 export const InventoryReports = () => {
   const {
@@ -28,9 +29,10 @@ export const InventoryReports = () => {
 
   const orgUnitId = contextMain?.organization_unit?.id;
 
-  const {data: organizationUnits} = useOrganizationUnits();
+  const {options: organizationUnits} = useOrganizationUnits();
   const {options: officeOptions} = useOrgUnitOfficesGet({organization_unit_id: orgUnitId});
   const {data} = useGetSettings({entity: 'inventory_class_type'});
+  const {fetch: fetchInventoriesExpire} = useInventoriesExpireOverview();
 
   // for getting the data (number are types for which the query is used to get the data for the report)
   const {fetchReportInventory} = useGetReportInventoryList();
@@ -41,21 +43,49 @@ export const InventoryReports = () => {
   // 1, 5
 
   const reportType = watch('report_type')?.id;
+  const inventoryType = watch('inventory_type')?.id;
+  const organizationUnit = watch('organization_unit');
 
   const getReportData = (data: any) => {
-    if (reportType === InventoryReportType.Office) {
-      const date = parseDateForBackend(data.date) || '';
-      fetchReportInventory(data.organization_unit.id, date).then(reportInventory => {
-        const reportData = {
-          report: data.report_type,
-          date: data.date,
-          organization_unit: data.organization_unit,
-          office: data.office,
-          reportItems: reportInventory,
-        };
-        generatePdf('INVENTORY_BY_OFFICE', reportData);
-      });
+    switch (reportType) {
+      case InventoryReportType.ZeroValue:
+        generateReportZeroValue();
+        break;
+      case InventoryReportType.Office:
+        generateOffice(data);
+        break;
     }
+  };
+
+  const generateOffice = (data: any) => {
+    const date = parseDateForBackend(data?.date) || '';
+    fetchReportInventory(data.organization_unit.id, date).then(reportInventory => {
+      const reportData = {
+        report: data.report_type,
+        date: data.date,
+        organization_unit: data.organization_unit,
+        office: data.office,
+        reportItems: reportInventory,
+      };
+      generatePdf('INVENTORY_BY_OFFICE', reportData);
+    });
+  };
+  const generateReportZeroValue = () => {
+    fetchInventoriesExpire(
+      inventoryType === 'PS' ? 'movable' : 'immovable',
+      data => {
+        if (data.length > 0) {
+          generatePdf('INVENTORY_ZERO_VALUE', {
+            table_data: data,
+            type: inventoryType,
+            organization_unit: organizationUnit,
+          });
+        } else {
+          alert.info('Ne postoje sredstva čija je vrijednost 0.');
+        }
+      },
+      organizationUnit.id,
+    );
   };
 
   return (
@@ -90,7 +120,7 @@ export const InventoryReports = () => {
                   label="ORGANIZACIONA JEDINICA:"
                   value={value}
                   onChange={onChange}
-                  options={organizationUnits?.items ?? []}
+                  options={organizationUnits ?? []}
                 />
               )}
             />

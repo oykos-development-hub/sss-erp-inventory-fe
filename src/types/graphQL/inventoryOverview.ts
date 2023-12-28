@@ -13,6 +13,7 @@ export interface InventoryItem {
   office: DropdownDataNumber;
   target_user_profile: DropdownDataNumber;
   gross_price: number;
+  purchase_gross_price: number;
   date_of_purchase: string;
   date_of_assessments: string;
   source: string;
