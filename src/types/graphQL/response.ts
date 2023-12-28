@@ -52,5 +52,6 @@ export interface GraphQLResponse {
     basicInventoryDispatch_Delete: SimpleResponse;
     basicInventoryDispatch_Accept: SimpleResponse;
     userProfiles_Overview: OverviewResponse<UserProfile>;
+    reportInventoryList_PDF: OverviewResponse<InventoryItem>;
   };
 }

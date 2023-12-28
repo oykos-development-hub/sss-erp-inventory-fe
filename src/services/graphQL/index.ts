@@ -16,6 +16,8 @@ import userProfileOverview from './userProfileOverview/userProfileOverview';
 import getPublicProcurementContracts from './publicProcurementContracts/publicProcurementContracts';
 import getPublicProcurementContractArticles from './publicProcurementContractArticles/getPublicProcurementContractArticles';
 import assessmentInsertArray from './assessmentInsertArray/assessmentInsertArray';
+import getReportInventoryList from './reportInventoryList/getReportInventoryList';
+import getReportInventoryListByClass from './reportInventoryList/getReportInventoryListByClass';
 
 export const BFF_URL = {
   local: 'http://localhost:8080',
@@ -42,4 +44,6 @@ export const GraphQL = {
   basicInventoryPS1PDF: basicInventoryPS1PDF,
   getPublicProcurementContracts: getPublicProcurementContracts,
   getPublicProcurementContractArticles: getPublicProcurementContractArticles,
+  getReportInventoryList: getReportInventoryList,
+  getReportInventoryListByClass: getReportInventoryListByClass,
 };

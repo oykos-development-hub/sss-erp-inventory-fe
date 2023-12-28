@@ -47,6 +47,8 @@ const useInventoryOverview = ({
 
       setData(response?.basicInventory_Overview);
       setLoading(false);
+      // returning items for the reports
+      return response?.basicInventory_Overview.items;
     } catch (err) {
       console.log(err);
     }

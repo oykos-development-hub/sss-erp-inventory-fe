@@ -12,8 +12,8 @@ export interface Office {
 }
 
 export interface OfficeParams {
-  page: number;
-  size: number;
+  page?: number;
+  size?: number;
   id?: number;
   organization_unit_id?: number;
 }
