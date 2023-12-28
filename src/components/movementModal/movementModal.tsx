@@ -145,7 +145,7 @@ const MovementModal = ({
           : transactionType === DispatchType.allocation
           ? 'izvršili kretanje'
           : transactionType === DispatchType.convert
-          ? 'konvertovanje PS2 sredstva u PS1'
+          ? 'izvršili konvertovanje PS2 sredstva u PS1'
           : 'izvršili povrat';
       const errorTypeString =
         transactionType === DispatchType.revers

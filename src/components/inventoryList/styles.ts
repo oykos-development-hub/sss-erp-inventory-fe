@@ -20,5 +20,5 @@ export const FilterInput = styled(Input)`
 export const ReversButtonContainer = styled.div`
   width: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
 `;

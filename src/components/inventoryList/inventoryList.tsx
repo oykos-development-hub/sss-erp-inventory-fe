@@ -316,29 +316,6 @@ const InventoryList = ({
       ...heads,
       {
         title: '',
-        customElement:
-          type === 'small' ? null : (
-            <ReversButtonContainer>
-              <Button content={'Amortizacija'} variant="primary" size="sm" onClick={onDispatchClick} />
-
-              {type !== InventoryTypeEnum.IMMOVABLE && (
-                <Button
-                  content={
-                    filterValues.source_type?.title.includes('Donacije')
-                      ? 'Konvertovanje PS2 sredstva u PS1'
-                      : sourceType?.includes('2')
-                      ? 'Povrat'
-                      : 'Eksterni revers'
-                  }
-                  variant="primary"
-                  size="sm"
-                  onClick={onReversClick}
-                  disabled={!selectedRows.length}
-                  style={{width: '120px'}}
-                />
-              )}
-            </ReversButtonContainer>
-          ),
         accessor: 'TABLE_ACTIONS',
         type: 'tableActions',
       },
@@ -394,6 +371,26 @@ const InventoryList = ({
   return (
     <div>
       <Filters>{filters.map(filter => React.cloneElement(renderFilters[filter], {key: filter}))}</Filters>
+      <ReversButtonContainer>
+        <Button content={'Amortizacija'} variant="primary" size="sm" onClick={onDispatchClick} />
+
+        {type !== InventoryTypeEnum.IMMOVABLE && (
+          <Button
+            content={
+              filterValues.source_type?.title.includes('Donacije')
+                ? 'Konvertovanje PS2 sredstva u PS1'
+                : sourceType?.includes('2')
+                ? 'Povrat'
+                : 'Eksterni revers'
+            }
+            variant="primary"
+            size="sm"
+            onClick={onReversClick}
+            disabled={!selectedRows.length}
+            style={{marginLeft: '10px'}}
+          />
+        )}
+      </ReversButtonContainer>
       <Table
         tableHeads={getTableHeads}
         isLoading={loading}
