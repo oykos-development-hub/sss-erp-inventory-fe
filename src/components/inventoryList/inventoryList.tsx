@@ -335,7 +335,8 @@ const InventoryList = ({
       isReversDone(row) ||
       !row.active ||
       (row?.target_organization_unit?.id && row?.target_organization_unit?.id !== orgUnitId) ||
-      row.status == StatusesForMovableInventory.POVRACAJ
+      row.status == StatusesForMovableInventory.POVRACAJ ||
+      row.status == StatusesForMovableInventory.ZADUZENO
     ) {
       return true;
     }
