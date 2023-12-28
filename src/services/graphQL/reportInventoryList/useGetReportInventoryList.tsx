@@ -7,8 +7,7 @@ const useGetReportInventoryList = () => {
   const fetchReportInventory = async (organization_unit_id: number, date: string) => {
     try {
       const response = await fetch(GraphQL.getReportInventoryList, {organization_unit_id, date});
-
-      return response.data.reportInventoryList_PDF.items;
+      return response.reportInventoryList_PDF.item;
     } catch (e) {
       console.log(e);
     }

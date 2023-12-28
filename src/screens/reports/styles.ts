@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import {Theme, Typography, Divider} from 'client-library';
 
-export const Container = styled.div`
+export const FormContainer = styled.form`
   display: flex;
   flex-direction: column;
   margin-top: 20px;

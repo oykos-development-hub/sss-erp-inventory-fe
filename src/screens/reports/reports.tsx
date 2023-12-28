@@ -1,5 +1,5 @@
 import {Button, Datepicker, Dropdown} from 'client-library';
-import {Controller, useForm} from 'react-hook-form';
+import {Controller, Form, useForm} from 'react-hook-form';
 import useAppContext from '../../context/useAppContext';
 import useGetSettings from '../../services/graphQL/getSettings/useGetSettings';
 import useOrgUnitOfficesGet from '../../services/graphQL/organizationUnitOffices/useOrganizationUnitOfficesGet';
@@ -9,13 +9,15 @@ import useGetReportInventoryListBasic from '../../services/graphQL/reportInvento
 import useGetReportInventoryListByClass from '../../services/graphQL/reportInventoryList/useGetReportInventoryListByClass';
 import ScreenWrapper from '../../shared/screenWrapper';
 import {InventoryReportType, extendedTypeOptions, inventoryReportOptions, typeOptions} from './constants';
-import {Container, CustomDivider, MainTitle, Options, OptionsRow} from './styles';
+import {CustomDivider, FormContainer, MainTitle, Options, OptionsRow} from './styles';
+import {parseDateForBackend} from '../../utils/dateUtils';
 
 export const InventoryReports = () => {
   const {
     control,
     watch,
     formState: {errors},
+    handleSubmit,
   } = useForm();
 
   const {
@@ -40,13 +42,25 @@ export const InventoryReports = () => {
 
   const reportType = watch('report_type')?.id;
 
-  const getReportData = () => {
-    console.log('data');
+  const getReportData = (data: any) => {
+    if (reportType === InventoryReportType.Office) {
+      const date = parseDateForBackend(data.date) || '';
+      fetchReportInventory(data.organization_unit.id, date).then(reportInventory => {
+        const reportData = {
+          report: data.report_type,
+          date: data.date,
+          organization_unit: data.organization_unit,
+          office: data.office,
+          reportItems: reportInventory,
+        };
+        generatePdf('INVENTORY_BY_OFFICE', reportData);
+      });
+    }
   };
 
   return (
     <ScreenWrapper>
-      <Container>
+      <FormContainer onSubmit={handleSubmit(getReportData)}>
         <MainTitle content="IZVJEŠTAJI" variant="bodyMedium" />
         <CustomDivider />
 
@@ -136,9 +150,8 @@ export const InventoryReports = () => {
             )}
           </OptionsRow>
         </Options>
-
-        <Button content="Generiši izvještaj" style={{width: 'fit-content'}} />
-      </Container>
+        <Button content="Generiši izvještaj" style={{width: 'fit-content'}} type="submit" />
+      </FormContainer>
     </ScreenWrapper>
   );
 };
