@@ -11,7 +11,7 @@ import {DispatchType} from '../../types/graphQL/inventoryDispatch';
 import {InventoryItem, SourceType} from '../../types/graphQL/inventoryOverview';
 import {InventoryTypeEnum} from '../../types/inventoryType';
 import {MicroserviceProps} from '../../types/micro-service-props';
-import {parseDate, parseDateForBackend} from '../../utils/dateUtils';
+import {parseDateForBackend} from '../../utils/dateUtils';
 import {immovableTransactionOptions, movableTransactionOptions, smallTransactionOptions} from './constants';
 import {FileUploadWrapper, MovementForm} from './styles';
 import {StatusesForMovableInventory} from '../../constants';
@@ -79,7 +79,7 @@ const MovementModal = ({
 
   const {
     alert,
-    fileService: {uploadFile, batchDeleteFiles},
+    fileService: {uploadFile},
   } = context;
   const orgUnitId = context.contextMain.organization_unit.id;
   const type = context.navigation.location.pathname.split('/')[2] === 'movable-inventory' ? 'movable' : 'immovable';
@@ -364,7 +364,7 @@ const MovementModal = ({
                         ? 'RAZDUŽENJA'
                         : transactionType === 'return-revers'
                         ? 'RAZDUŽENJA'
-                        : 'ZADUŽENJA'
+                        : 'KONVERTOVANJA'
                     }:`}
                     name={name}
                     minDate={minDate ? new Date(minDate) : undefined}
