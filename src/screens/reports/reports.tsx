@@ -12,6 +12,7 @@ import {InventoryReportType, extendedTypeOptions, inventoryReportOptions, typeOp
 import {parseDateForBackend} from '../../utils/dateUtils';
 import {CustomDivider, MainTitle, Options, OptionsRow, FormContainer} from './styles';
 import useInventoriesExpireOverview from '../../services/graphQL/inventoryOverview/useInventoriesExpireOverview';
+import {ReportInventoryClassResponse} from '../../types/graphQL/reportInventory';
 
 export const InventoryReports = () => {
   const {
@@ -54,6 +55,9 @@ export const InventoryReports = () => {
       case InventoryReportType.Office:
         generateOffice(data);
         break;
+      case InventoryReportType.Cumulative:
+        generateCumulative();
+        break;
     }
   };
 
@@ -70,6 +74,7 @@ export const InventoryReports = () => {
       generatePdf('INVENTORY_BY_OFFICE', reportData);
     });
   };
+
   const generateReportZeroValue = () => {
     fetchInventoriesExpire(
       inventoryType === 'PS' ? 'movable' : 'immovable',
@@ -86,6 +91,21 @@ export const InventoryReports = () => {
       },
       organizationUnit.id,
     );
+  };
+
+  const generateCumulative = async () => {
+    const reportInventory: ReportInventoryClassResponse = await fetchReportInventoryByClass(organizationUnit?.id);
+
+    const data = reportInventory.item.values.map((item: any) => {
+      return {
+        class: item.title,
+        purchase_gross_price: item.purchase_gross_price,
+        lost_value: item.lost_value,
+        price: item.price,
+      };
+    });
+
+    generatePdf('INVENTORY_CUMULATIVE', {data, organization_unit: organizationUnit});
   };
 
   return (

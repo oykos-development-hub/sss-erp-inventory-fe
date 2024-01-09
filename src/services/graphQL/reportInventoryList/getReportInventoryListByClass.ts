@@ -8,12 +8,12 @@ const getReportInventoryListByClass = `query ReportValueClassInventoryPDF($organ
                 title
                 class
                 purchase_gross_price
-                gross_price
-                price_of_assessment
+                lost_value
+                price
             }
             purchase_gross_price
-            gross_price
-            price_of_assessment
+            lost_value
+            price
         }
     }
 }`;

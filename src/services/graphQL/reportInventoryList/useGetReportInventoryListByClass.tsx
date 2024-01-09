@@ -8,7 +8,7 @@ const useGetReportInventoryListByClass = () => {
     try {
       const response = await fetch(GraphQL.getReportInventoryListByClass, {class_type_id});
 
-      return response.data.reportInventoryList_PDF.items;
+      return response.ReportValueClassInventory_PDF;
     } catch (e) {
       console.log(e);
     }
