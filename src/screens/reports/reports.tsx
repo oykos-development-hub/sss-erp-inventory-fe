@@ -29,7 +29,7 @@ export const InventoryReports = () => {
 
   const orgUnitId = contextMain?.organization_unit?.id;
 
-  const {options: organizationUnits} = useOrganizationUnits();
+  const {options: organizationUnits} = useOrganizationUnits(true);
   const {options: officeOptions} = useOrgUnitOfficesGet({organization_unit_id: orgUnitId});
   const {data} = useGetSettings({entity: 'inventory_class_type'});
   const {fetch: fetchInventoriesExpire} = useInventoriesExpireOverview();
