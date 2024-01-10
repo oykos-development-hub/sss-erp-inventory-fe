@@ -35,14 +35,9 @@ const inventoryOverview = `query BasicInventoryOverview(
         total 
         items {
             id
-            purchase_gross_price
             type
             source_type
             location
-            invoice {
-                id
-                title
-            }
             class_type {
                 id
                 title
@@ -79,12 +74,21 @@ const inventoryOverview = `query BasicInventoryOverview(
             organization_unit{
                 id
                 title
+                address
+                city
+            }
+            invoice{
+                id
+                title
             }
             target_organization_unit{
                 id
                 title
+                address
+                city
             }
             gross_price
+            purchase_gross_price
             date_of_purchase
             date_of_assessments
             date_of_end_of_assessment 
@@ -92,6 +96,11 @@ const inventoryOverview = `query BasicInventoryOverview(
             active
             status
             is_external_donation
+            lifetime_of_assessment_in_months
+            city
+            address
+            amortization_value
+            inactive
         }
     }
 }`;

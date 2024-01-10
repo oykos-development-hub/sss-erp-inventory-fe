@@ -1,5 +1,5 @@
 import {Button, Datepicker, Dropdown} from 'client-library';
-import {Controller, Form, useForm} from 'react-hook-form';
+import {Controller, useForm} from 'react-hook-form';
 import useAppContext from '../../context/useAppContext';
 import useGetSettings from '../../services/graphQL/getSettings/useGetSettings';
 import useOrgUnitOfficesGet from '../../services/graphQL/organizationUnitOffices/useOrganizationUnitOfficesGet';
@@ -41,7 +41,7 @@ export const InventoryReports = () => {
   // 0, 3
   const {fetchReportInventoryByClass} = useGetReportInventoryListByClass();
   // 2, 4
-  const {fetchInventoryOverview, loading} = useGetReportInventoryListBasic();
+  const {fetchInventoryOverview} = useGetReportInventoryListBasic();
   // 1, 5
   const {fetchClassInventoriesValue, loading: loadingClass} = useClassInventoriesValue();
 
@@ -64,6 +64,9 @@ export const InventoryReports = () => {
         break;
       case InventoryReportType.CumulativeClass:
         generateClassValues(data);
+        break;
+      case InventoryReportType.ByType:
+        generateByType();
         break;
     }
   };
@@ -125,6 +128,14 @@ export const InventoryReports = () => {
     generatePdf('INVENTORY_CUMULATIVE', {data, organization_unit: organizationUnit});
   };
 
+  const generateByType = async () => {
+    const inventoryByType = await fetchInventoryOverview({
+      source_type: inventoryType,
+      organization_unit_id: organizationUnit.id,
+    });
+    generatePdf('INVENTORY_BY_TYPE', inventoryByType);
+  };
+
   return (
     <ScreenWrapper>
       <FormContainer onSubmit={handleSubmit(getReportData)}>
@@ -152,12 +163,15 @@ export const InventoryReports = () => {
             <Controller
               control={control}
               name="organization_unit"
+              rules={reportType === InventoryReportType.ByType ? {required: 'Ovo polje je obavezno!'} : undefined}
               render={({field: {onChange, value}}) => (
                 <Dropdown
                   label="ORGANIZACIONA JEDINICA:"
                   value={value}
                   onChange={onChange}
                   options={organizationUnits ?? []}
+                  isRequired={reportType === InventoryReportType.ByType}
+                  error={errors.organization_unit?.message as string}
                 />
               )}
             />
@@ -166,12 +180,15 @@ export const InventoryReports = () => {
               <Controller
                 control={control}
                 name="inventory_type"
+                rules={reportType === InventoryReportType.ByType ? {required: 'Ovo polje je obavezno!'} : undefined}
                 render={({field: {onChange, value}}) => (
                   <Dropdown
                     label="TIP SREDSTVA:"
                     value={value}
                     onChange={onChange}
                     options={reportType === InventoryReportType.ZeroValue ? typeOptions : extendedTypeOptions}
+                    isRequired={reportType === InventoryReportType.ByType}
+                    error={errors.inventory_type?.message as string}
                   />
                 )}
               />

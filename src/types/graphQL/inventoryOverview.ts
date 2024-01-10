@@ -49,7 +49,7 @@ export interface InventoryOverviewParams {
   expire?: boolean;
   organization_unit_id?: number;
   type_of_immovable_property?: string;
-  is_external_donation: boolean;
+  is_external_donation?: boolean;
 }
 
 export interface InventoryInsertData {
