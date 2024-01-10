@@ -1,3 +1,4 @@
+import {ClassInventoriesValueResponse} from './classInventoriesValue';
 import {ClassType, SettingsDropdownOverview} from './classTypes';
 import {InventoryAssessment} from './inventoryAssessment';
 import {InventoryDetails} from './inventoryDetails';
@@ -53,5 +54,10 @@ export interface GraphQLResponse {
     basicInventoryDispatch_Accept: SimpleResponse;
     userProfiles_Overview: OverviewResponse<UserProfile>;
     reportInventoryList_PDF: OverviewResponse<InventoryItem>;
+    ReportValueClassInventory_PDF: {
+      message: string;
+      status: string;
+      item: ClassInventoriesValueResponse;
+    };
   };
 }

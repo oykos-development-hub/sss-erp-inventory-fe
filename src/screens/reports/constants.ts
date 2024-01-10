@@ -32,3 +32,9 @@ export enum InventoryReportType {
   CumulativeClass = 4,
   ByType = 5,
 }
+
+export enum ReportType {
+  INVENTORY_ZERO_VALUE = 'INVENTORY_ZERO_VALUE',
+  INVENTORY_BY_OFFICE = 'INVENTORY_BY_OFFICE',
+  CLASS_INVENTORIES_VALUES = 'CLASS_INVENTORIES_VALUES',
+}

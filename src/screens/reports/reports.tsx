@@ -8,11 +8,12 @@ import useGetReportInventoryList from '../../services/graphQL/reportInventoryLis
 import useGetReportInventoryListBasic from '../../services/graphQL/reportInventoryList/useGetReportInventoryListBasic';
 import useGetReportInventoryListByClass from '../../services/graphQL/reportInventoryList/useGetReportInventoryListByClass';
 import ScreenWrapper from '../../shared/screenWrapper';
-import {InventoryReportType, extendedTypeOptions, inventoryReportOptions, typeOptions} from './constants';
+import {InventoryReportType, ReportType, extendedTypeOptions, inventoryReportOptions, typeOptions} from './constants';
 import {parseDateForBackend} from '../../utils/dateUtils';
 import {CustomDivider, MainTitle, Options, OptionsRow, FormContainer} from './styles';
 import useInventoriesExpireOverview from '../../services/graphQL/inventoryOverview/useInventoriesExpireOverview';
 import {ReportInventoryClassResponse} from '../../types/graphQL/reportInventory';
+import useClassInventoriesValue from '../../services/graphQL/classInventoriesValue/useClassInventoriesValue';
 
 export const InventoryReports = () => {
   const {
@@ -42,10 +43,12 @@ export const InventoryReports = () => {
   // 2, 4
   const {fetchInventoryOverview, loading} = useGetReportInventoryListBasic();
   // 1, 5
+  const {fetchClassInventoriesValue, loading: loadingClass} = useClassInventoriesValue();
 
   const reportType = watch('report_type')?.id;
   const inventoryType = watch('inventory_type')?.id;
   const organizationUnit = watch('organization_unit');
+  const classID = watch('class')?.id;
 
   const getReportData = (data: any) => {
     switch (reportType) {
@@ -57,6 +60,9 @@ export const InventoryReports = () => {
         break;
       case InventoryReportType.Cumulative:
         generateCumulative();
+        break;
+      case InventoryReportType.CumulativeClass:
+        generateClassValues(data);
         break;
     }
   };
@@ -71,7 +77,14 @@ export const InventoryReports = () => {
         office: data.office,
         reportItems: reportInventory,
       };
-      generatePdf('INVENTORY_BY_OFFICE', reportData);
+      generatePdf(ReportType.INVENTORY_BY_OFFICE, reportData);
+    });
+  };
+
+  const generateClassValues = (data: any) => {
+    const date = parseDateForBackend(data?.date) || '';
+    fetchClassInventoriesValue({organization_unit_id: organizationUnit?.id, class_type_id: classID}, classValues => {
+      generatePdf(ReportType.CLASS_INVENTORIES_VALUES, classValues);
     });
   };
 
@@ -80,7 +93,7 @@ export const InventoryReports = () => {
       inventoryType === 'PS' ? 'movable' : 'immovable',
       data => {
         if (data.length > 0) {
-          generatePdf('INVENTORY_ZERO_VALUE', {
+          generatePdf(ReportType.INVENTORY_ZERO_VALUE, {
             table_data: data,
             type: inventoryType,
             organization_unit: organizationUnit,

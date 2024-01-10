@@ -1,7 +1,5 @@
 import {useState} from 'react';
 import {GraphQL} from '..';
-import {initialOverviewData} from '../../constants';
-import {GraphQLResponse} from '../../../types/graphQL/response';
 import useAppContext from '../../../context/useAppContext';
 import {InventoryItem} from '../../../types/graphQL/inventoryOverview';
 
