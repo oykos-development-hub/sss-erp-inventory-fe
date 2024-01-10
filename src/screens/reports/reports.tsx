@@ -49,6 +49,7 @@ export const InventoryReports = () => {
   const inventoryType = watch('inventory_type')?.id;
   const organizationUnit = watch('organization_unit');
   const classID = watch('class')?.id;
+  const officeID = watch('office')?.id;
 
   const getReportData = (data: any) => {
     switch (reportType) {
@@ -69,16 +70,19 @@ export const InventoryReports = () => {
 
   const generateOffice = (data: any) => {
     const date = parseDateForBackend(data?.date) || '';
-    fetchReportInventory(data.organization_unit.id, date).then(reportInventory => {
-      const reportData = {
-        report: data.report_type,
-        date: data.date,
-        organization_unit: data.organization_unit,
-        office: data.office,
-        reportItems: reportInventory,
-      };
-      generatePdf(ReportType.INVENTORY_BY_OFFICE, reportData);
-    });
+    fetchReportInventory(
+      {organization_unit_id: data.organization_unit.id, office_id: officeID, date: date},
+      reportInventory => {
+        const reportData = {
+          report: data.report_type,
+          date: data.date,
+          organization_unit: data.organization_unit,
+          office: data.office,
+          reportItems: reportInventory,
+        };
+        generatePdf(ReportType.INVENTORY_BY_OFFICE, reportData);
+      },
+    );
   };
 
   const generateClassValues = (data: any) => {

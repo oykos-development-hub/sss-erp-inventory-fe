@@ -5,7 +5,9 @@ export type ReportInventoryItem = {
   office: string;
   procurement_price: string;
   lost_value: number;
+  date_of_purchase: string;
   price: string;
+  type: string;
 };
 
 export type ReportInventoryClass = {

@@ -5,8 +5,10 @@ const getReportInventoryList = `query ReportInventoryList($date: String!, $organ
         item {
             id
             title
+            type
             inventory_number
             office
+            date_of_purchase
             procurement_price
             lost_value
             price
