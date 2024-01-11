@@ -5,8 +5,8 @@ import {parseDate} from '../../../utils/dateUtils';
 
 interface paramsReportInventoryList {
   organization_unit_id: number;
-  office_id: number;
   date: string;
+  office_id?: number;
 }
 const useGetReportInventoryList = () => {
   const {fetch} = useAppContext();

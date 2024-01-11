@@ -50,6 +50,7 @@ export const InventoryReports = () => {
   const organizationUnit = watch('organization_unit');
   const classID = watch('class')?.id;
   const officeID = watch('office')?.id;
+  const date = watch('date');
 
   const getReportData = (data: any) => {
     switch (reportType) {
@@ -67,6 +68,9 @@ export const InventoryReports = () => {
         break;
       case InventoryReportType.ByType:
         generateByType();
+        break;
+      case InventoryReportType.AllInventory:
+        generateAllInventory();
         break;
     }
   };
@@ -136,6 +140,23 @@ export const InventoryReports = () => {
     generatePdf('INVENTORY_BY_TYPE', inventoryByType);
   };
 
+  const isFieldRequiredBasedOnReportType = (reportTypes: InventoryReportType[]) => {
+    return reportTypes.includes(reportType);
+  };
+
+  const generateAllInventory = async () => {
+    const parsedDate = parseDateForBackend(date) || '';
+    fetchReportInventory({organization_unit_id: organizationUnit.id, date: parsedDate}, reportInventory => {
+      const reportData = {
+        report: reportType,
+        date: parsedDate,
+        organization_unit: organizationUnit,
+        reportItems: reportInventory,
+      };
+      generatePdf(ReportType.ALL_INVENTORY, reportData);
+    });
+  };
+
   return (
     <ScreenWrapper>
       <FormContainer onSubmit={handleSubmit(getReportData)}>
@@ -155,6 +176,7 @@ export const InventoryReports = () => {
                   onChange={onChange}
                   options={inventoryReportOptions}
                   isRequired
+                  error={errors.report_type?.message as string}
                 />
               )}
             />
@@ -163,14 +185,21 @@ export const InventoryReports = () => {
             <Controller
               control={control}
               name="organization_unit"
-              rules={reportType === InventoryReportType.ByType ? {required: 'Ovo polje je obavezno!'} : undefined}
+              rules={
+                isFieldRequiredBasedOnReportType([InventoryReportType.ByType, InventoryReportType.AllInventory])
+                  ? {required: 'Ovo polje je obavezno!'}
+                  : undefined
+              }
               render={({field: {onChange, value}}) => (
                 <Dropdown
                   label="ORGANIZACIONA JEDINICA:"
                   value={value}
                   onChange={onChange}
                   options={organizationUnits ?? []}
-                  isRequired={reportType === InventoryReportType.ByType}
+                  isRequired={isFieldRequiredBasedOnReportType([
+                    InventoryReportType.ByType,
+                    InventoryReportType.AllInventory,
+                  ])}
                   error={errors.organization_unit?.message as string}
                 />
               )}
@@ -180,14 +209,18 @@ export const InventoryReports = () => {
               <Controller
                 control={control}
                 name="inventory_type"
-                rules={reportType === InventoryReportType.ByType ? {required: 'Ovo polje je obavezno!'} : undefined}
+                rules={
+                  isFieldRequiredBasedOnReportType([InventoryReportType.ByType])
+                    ? {required: 'Ovo polje je obavezno!'}
+                    : undefined
+                }
                 render={({field: {onChange, value}}) => (
                   <Dropdown
                     label="TIP SREDSTVA:"
                     value={value}
                     onChange={onChange}
                     options={reportType === InventoryReportType.ZeroValue ? typeOptions : extendedTypeOptions}
-                    isRequired={reportType === InventoryReportType.ByType}
+                    isRequired={isFieldRequiredBasedOnReportType([InventoryReportType.ByType])}
                     error={errors.inventory_type?.message as string}
                   />
                 )}
@@ -216,7 +249,7 @@ export const InventoryReports = () => {
                 name="date"
                 rules={{
                   required: {
-                    value: reportType === InventoryReportType.AllInventory,
+                    value: isFieldRequiredBasedOnReportType([InventoryReportType.AllInventory]),
                     message: 'Ovo polje je obavezno!',
                   },
                 }}
@@ -228,6 +261,7 @@ export const InventoryReports = () => {
                     name={name}
                     selected={value ? new Date(value) : ''}
                     error={errors.date?.message}
+                    isRequired={isFieldRequiredBasedOnReportType([InventoryReportType.AllInventory])}
                   />
                 )}
               />
