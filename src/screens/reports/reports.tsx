@@ -118,7 +118,9 @@ export const InventoryReports = () => {
   };
 
   const generateCumulative = async () => {
-    const reportInventory: ReportInventoryClassResponse = await fetchReportInventoryByClass(organizationUnit?.id);
+    const reportInventory: ReportInventoryClassResponse = await fetchReportInventoryByClass({
+      organization_unit_id: organizationUnit?.id,
+    });
 
     const data = reportInventory.item.values.map((item: any) => {
       return {

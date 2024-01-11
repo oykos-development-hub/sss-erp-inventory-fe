@@ -4,9 +4,15 @@ import useAppContext from '../../../context/useAppContext';
 const useGetReportInventoryListByClass = () => {
   const {fetch} = useAppContext();
 
-  const fetchReportInventoryByClass = async (class_type_id: number) => {
+  const fetchReportInventoryByClass = async ({
+    organization_unit_id,
+    class_type_id,
+  }: {
+    organization_unit_id: number;
+    class_type_id?: number;
+  }) => {
     try {
-      const response = await fetch(GraphQL.getReportInventoryListByClass, {class_type_id});
+      const response = await fetch(GraphQL.getReportInventoryListByClass, {class_type_id, organization_unit_id});
 
       return response.ReportValueClassInventory_PDF;
     } catch (e) {
