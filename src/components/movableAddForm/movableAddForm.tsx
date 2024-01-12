@@ -464,7 +464,7 @@ const MovableAddForm = ({
                     style={{width: '200px'}}
                     variant="filled"
                     position="topLeft"
-                    content={'Funkcionalnost je onemogućena zbog odabira ugovora.'}>
+                    content={'Funkcionalnost će biti omogućena nakon odabira ugovora.'}>
                     <PlusButton
                       onClick={handleSubmit(values => {
                         values.all_items = false;

@@ -364,7 +364,11 @@ const MovementModal = ({
                         ? 'RAZDUŽENJA'
                         : transactionType === 'return-revers'
                         ? 'RAZDUŽENJA'
-                        : 'KONVERTOVANJA'
+                        : transactionType === DispatchType.convert
+                        ? 'KONVERTOVANJA'
+                        : transactionType === DispatchType.revers
+                        ? 'SLANJA'
+                        : 'ZADUŽENJA'
                     }:`}
                     name={name}
                     minDate={minDate ? new Date(minDate) : undefined}
