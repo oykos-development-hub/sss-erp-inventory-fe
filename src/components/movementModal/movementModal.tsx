@@ -380,19 +380,18 @@ const MovementModal = ({
               )}
             />
           )}
-          {status === StatusesForMovableInventory.ZADUZENO ||
-            (transactionType === DispatchType.convert && (
-              <FileUploadWrapper>
-                <FileUpload
-                  icon={<></>}
-                  variant="secondary"
-                  onUpload={handleUpload}
-                  note={<Typography variant="bodySmall" content="Fajlovi:" />}
-                  buttonText="Dodaj fajl"
-                  files={files}
-                />
-              </FileUploadWrapper>
-            ))}
+          {(status === StatusesForMovableInventory.ZADUZENO || transactionType === DispatchType.convert) && (
+            <FileUploadWrapper>
+              <FileUpload
+                icon={<></>}
+                variant="secondary"
+                onUpload={handleUpload}
+                note={<Typography variant="bodySmall" content="Fajlovi:" />}
+                buttonText="Dodaj fajl"
+                files={files}
+              />
+            </FileUploadWrapper>
+          )}
         </MovementForm>
       }
     />
