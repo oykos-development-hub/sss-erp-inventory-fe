@@ -248,7 +248,7 @@ const InventoryList = ({
     assessments: InventoryExpireItem[],
     options: {onSuccess: () => void; onError: () => void},
   ) => {
-    const payload: InventoryAssessmentData[] = assessments.map(item => ({
+    const payload: InventoryAssessmentData[] = assessments?.map(item => ({
       inventory_id: item.inventory_id,
       active: item.active,
       depreciation_type_id: item.depreciation_type_id,
@@ -262,16 +262,17 @@ const InventoryList = ({
     await mutateAssessmentArray(
       payload,
       () => {
-        alert.success('Nove procjene su uspješno uvezeni');
+        alert.success('Podaci za artikle kojima ističe amortizacija su uspješno ažurirani.');
         refetch();
         options.onSuccess();
       },
       () => {
-        alert.success('Došlo je do greške pri uvozu procjena');
+        alert.error('Podaci za artikle kojima ističe amortizacija nisu uspješno ažurirani.');
         options.onError();
       },
     );
   };
+
   const handleUploadTable = async (files: FileList) => {
     const response = await uploadExpireInventoryXls(files[0], token);
 
@@ -373,9 +374,11 @@ const InventoryList = ({
     <div>
       <Filters>{filters.map(filter => React.cloneElement(renderFilters[filter], {key: filter}))}</Filters>
       <ReversButtonContainer>
-        <Button content={'Amortizacija'} variant="primary" size="sm" onClick={onDispatchClick} />
+        {type !== InventoryTypeEnum.SMALL && (
+          <Button content={'Amortizacija'} variant="primary" size="sm" onClick={onDispatchClick} />
+        )}
 
-        {type !== InventoryTypeEnum.IMMOVABLE && (
+        {type === InventoryTypeEnum.MOVABLE && (
           <Button
             content={
               filterValues.source_type?.title.includes('Donacije')
