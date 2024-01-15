@@ -217,12 +217,7 @@ const ImmovableDetailsForm = ({context, data, refetch, inventoryId}: DetailsForm
           )}
         />
         <Input {...register('lifetime_of_assessment_in_months')} label="VIJEK TRAJANJA:" disabled={true} />
-        <Input
-          {...register('depreciation_rate')}
-          label="AMORTIZACIONA STOPA:"
-          disabled={true}
-          rightContent={<div>%</div>}
-        />
+        <Input {...register('depreciation_rate')} label="AMORTIZACIONA STOPA:" disabled={true} />
       </ImmovableDetailsInputWrapper>
       <ImmovableDetailsInputWrapper>
         <Controller

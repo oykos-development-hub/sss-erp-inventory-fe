@@ -363,7 +363,7 @@ const MovementModal = ({
                       status === StatusesForMovableInventory.ZADUZENO
                         ? 'RAZDUŽENJA'
                         : transactionType === 'return-revers'
-                        ? 'RAZDUŽENJA'
+                        ? 'POVRATA'
                         : transactionType === DispatchType.convert
                         ? 'KONVERTOVANJA'
                         : transactionType === DispatchType.revers

@@ -152,6 +152,7 @@ const ImmovableAddForm = ({context}: {context: MicroserviceProps}) => {
 
         <FormRow>
           <Input
+            {...register('ownership_scope')}
             label="OBIM PRAVA:"
             error={errors.ownership_scope?.message}
             isRequired
