@@ -52,7 +52,8 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
 
   const updatedTableHeads = tableHeads
     .filter(item => {
-      if (type === 'small' && item.accessor === 'depreciation_type') return false;
+      if (type === 'small' && (item.accessor === 'depreciation_type' || item.accessor === 'inventory_number'))
+        return false;
       return true;
     })
     .map((head: TableHead) => {
