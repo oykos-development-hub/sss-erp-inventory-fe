@@ -103,7 +103,7 @@ const MovementModal = ({
           (res: any) => {
             setFiles(null);
             setValue('file_id', res[0]?.id);
-            handleDispatchInsert(values);
+            handleDispatchInsert({...values, file_id: res[0]?.id});
           },
           () => {
             context?.alert.error('Greška pri čuvanju! Fajlovi nisu učitani.');
