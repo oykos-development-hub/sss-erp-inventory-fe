@@ -5,7 +5,7 @@ import {InventoryOverviewParams} from '../../../types/graphQL/inventoryOverview'
 
 // This one is used only for the reports since the original one is a mess
 const useGetReportInventoryListBasic = () => {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [total, setTotal] = useState(0);
   const {fetch} = useAppContext();
   const fetchInventoryOverview = async ({

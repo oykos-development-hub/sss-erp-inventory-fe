@@ -25,7 +25,7 @@ export const InventoryReports = () => {
   } = useForm();
 
   const {
-    reportService: {generatePdf},
+    reportService: {generatePdf, loading: loadingPDF},
     contextMain,
     alert,
   } = useAppContext();
@@ -42,7 +42,7 @@ export const InventoryReports = () => {
   // 0, 3
   const {fetchReportInventoryByClass} = useGetReportInventoryListByClass();
   // 2, 4
-  const {fetchInventoryOverview, total: totalReports} = useGetReportInventoryListBasic();
+  const {fetchInventoryOverview, total: totalReports, loading: loadingInventory} = useGetReportInventoryListBasic();
   // 1, 5
   const {fetchClassInventoriesValue, loading: loadingClass} = useClassInventoriesValue();
 
@@ -177,6 +177,11 @@ export const InventoryReports = () => {
     });
   };
 
+  const isButtonDisabled = () => {
+    if (reportType !== InventoryReportType.ByType) return false;
+    if (loadingInventory || loadingPDF) return true;
+  };
+
   return (
     <ScreenWrapper>
       <FormContainer onSubmit={handleSubmit(getReportData)}>
@@ -262,8 +267,8 @@ export const InventoryReports = () => {
                     onChange={onChange}
                     options={generateReportRange(totalReports)}
                     isRequired={isFieldRequiredBasedOnReportType([InventoryReportType.ByType])}
-                    error={errors.inventory_type?.message as string}
-                    isDisabled={!inventoryType || !organizationUnit}
+                    error={errors.range?.message as string}
+                    isDisabled={!inventoryType || !organizationUnit || loadingInventory}
                   />
                 )}
               />
@@ -310,7 +315,13 @@ export const InventoryReports = () => {
             )}
           </OptionsRow>
         </Options>
-        <Button content="Generiši izvještaj" style={{width: 'fit-content'}} type="submit" />
+        <Button
+          content="Generiši izvještaj"
+          style={{width: 'fit-content'}}
+          type="submit"
+          isLoading={isButtonDisabled()}
+          disabled={isButtonDisabled()}
+        />
       </FormContainer>
     </ScreenWrapper>
   );
