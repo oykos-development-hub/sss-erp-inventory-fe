@@ -14,6 +14,7 @@ import {CustomDivider, MainTitle, Options, OptionsRow, FormContainer} from './st
 import useInventoriesExpireOverview from '../../services/graphQL/inventoryOverview/useInventoriesExpireOverview';
 import {ReportInventoryClassResponse} from '../../types/graphQL/reportInventory';
 import useClassInventoriesValue from '../../services/graphQL/classInventoriesValue/useClassInventoriesValue';
+import {useEffect} from 'react';
 
 export const InventoryReports = () => {
   const {
@@ -41,7 +42,7 @@ export const InventoryReports = () => {
   // 0, 3
   const {fetchReportInventoryByClass} = useGetReportInventoryListByClass();
   // 2, 4
-  const {fetchInventoryOverview} = useGetReportInventoryListBasic();
+  const {fetchInventoryOverview, total: totalReports} = useGetReportInventoryListBasic();
   // 1, 5
   const {fetchClassInventoriesValue, loading: loadingClass} = useClassInventoriesValue();
 
@@ -51,6 +52,21 @@ export const InventoryReports = () => {
   const classID = watch('class')?.id;
   const officeID = watch('office')?.id;
   const date = watch('date');
+  const range = watch('range')?.id;
+
+  useEffect(() => {
+    if (!inventoryType || !organizationUnit) return;
+    fetchInventoryOverview({organization_unit_id: organizationUnit.id, source_type: inventoryType, page: 1, size: 1});
+  }, [inventoryType, organizationUnit]);
+
+  const reportsPageSize = 200;
+  const generateReportRange = (total: number) => {
+    const range = [];
+    for (let i = 0; i < total; i = i + reportsPageSize) {
+      range.push({id: Math.ceil((i + 1) / reportsPageSize), title: `${i + 1} - ${i + reportsPageSize}`});
+    }
+    return range;
+  };
 
   const getReportData = (data: any) => {
     switch (reportType) {
@@ -138,6 +154,8 @@ export const InventoryReports = () => {
     const inventoryByType = await fetchInventoryOverview({
       source_type: inventoryType,
       organization_unit_id: organizationUnit.id,
+      page: range,
+      size: reportsPageSize,
     });
     generatePdf('INVENTORY_BY_TYPE', inventoryByType);
   };
@@ -224,6 +242,28 @@ export const InventoryReports = () => {
                     options={reportType === InventoryReportType.ZeroValue ? typeOptions : extendedTypeOptions}
                     isRequired={isFieldRequiredBasedOnReportType([InventoryReportType.ByType])}
                     error={errors.inventory_type?.message as string}
+                  />
+                )}
+              />
+            )}
+            {reportType === InventoryReportType.ByType && (
+              <Controller
+                control={control}
+                name="range"
+                rules={
+                  isFieldRequiredBasedOnReportType([InventoryReportType.ByType])
+                    ? {required: 'Ovo polje je obavezno!'}
+                    : undefined
+                }
+                render={({field: {onChange, value}}) => (
+                  <Dropdown
+                    label="RASPON:"
+                    value={value}
+                    onChange={onChange}
+                    options={generateReportRange(totalReports)}
+                    isRequired={isFieldRequiredBasedOnReportType([InventoryReportType.ByType])}
+                    error={errors.inventory_type?.message as string}
+                    isDisabled={!inventoryType || !organizationUnit}
                   />
                 )}
               />
