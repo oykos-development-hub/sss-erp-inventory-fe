@@ -38,11 +38,15 @@ export const InventoryReports = () => {
   const {fetch: fetchInventoriesExpire} = useInventoriesExpireOverview();
 
   // for getting the data (number are types for which the query is used to get the data for the report)
-  const {fetchReportInventory} = useGetReportInventoryList();
+  const {fetchReportInventory, loading: loadingInventory} = useGetReportInventoryList();
   // 0, 3
   const {fetchReportInventoryByClass} = useGetReportInventoryListByClass();
   // 2, 4
-  const {fetchInventoryOverview, total: totalReports, loading: loadingInventory} = useGetReportInventoryListBasic();
+  const {
+    fetchInventoryOverview,
+    total: totalReports,
+    loading: loadingInventoryOverview,
+  } = useGetReportInventoryListBasic();
   // 1, 5
   const {fetchClassInventoriesValue, loading: loadingClass} = useClassInventoriesValue();
 
@@ -178,8 +182,9 @@ export const InventoryReports = () => {
   };
 
   const isButtonDisabled = () => {
-    if (reportType !== InventoryReportType.ByType) return false;
-    if (loadingInventory || loadingPDF) return true;
+    if (loadingPDF) return true;
+    if (reportType === InventoryReportType.ByType && loadingInventoryOverview) return true;
+    if (reportType === InventoryReportType.AllInventory && loadingInventory) return true;
   };
 
   return (
@@ -268,7 +273,7 @@ export const InventoryReports = () => {
                     options={generateReportRange(totalReports)}
                     isRequired={isFieldRequiredBasedOnReportType([InventoryReportType.ByType])}
                     error={errors.range?.message as string}
-                    isDisabled={!inventoryType || !organizationUnit || loadingInventory}
+                    isDisabled={!inventoryType || !organizationUnit || loadingInventoryOverview}
                   />
                 )}
               />
