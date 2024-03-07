@@ -44,6 +44,7 @@ const InventoryOverview = ({context, type}: InventoryProps) => {
         : null,
   });
 
+  console.log(debouncedFilterValues.source_type, 'debouncedFilterValues.source_type');
   const onPageChange = (page: number) => {
     setPage(page);
   };
