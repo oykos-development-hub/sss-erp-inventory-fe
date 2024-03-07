@@ -36,7 +36,12 @@ const InventoryOverview = ({context, type}: InventoryProps) => {
     depreciation_type_id: debouncedFilterValues.depreciation_type_id?.id,
     organization_unit_id: organizationID,
     type_of_immovable_property: debouncedFilterValues.type_of_immovable_property?.id,
-    is_external_donation: debouncedFilterValues.source_type?.title === movableTypeOptions[2].title ? false : true,
+    is_external_donation:
+      debouncedFilterValues.source_type?.title === movableTypeOptions[2].title
+        ? false
+        : debouncedFilterValues.source_type?.title === movableTypeOptions[3].title
+        ? true
+        : null,
   });
 
   const onPageChange = (page: number) => {
