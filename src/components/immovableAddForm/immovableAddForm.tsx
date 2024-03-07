@@ -1,11 +1,6 @@
 import {Button, Dropdown, Input} from 'client-library';
 import {Controller, useForm} from 'react-hook-form';
-import {
-  donationOptions,
-  propertyDocumentOptions,
-  realEstateTypeOptions,
-  restrictionOptions,
-} from '../../screens/inventoryAdd/constants';
+import {donationOptions, propertyDocumentOptions, restrictionOptions} from '../../screens/inventoryAdd/constants';
 import {ButtonContainer} from '../../screens/inventoryAdd/styles';
 import useInventoryInsert from '../../services/graphQL/inventoryInsert/useInventoryInsert';
 import {FieldsContainer, Form, FormRow} from '../../shared/formStyles';
@@ -32,6 +27,8 @@ const ImmovableAddForm = ({context}: {context: MicroserviceProps}) => {
   } = context;
 
   const {options: amortizationGroupOptions} = useGetSettings({entity: 'deprecation_types'});
+  const {options: realEstateTypeOptions} = useGetSettings({entity: 'real_estate_types'});
+
   const {mutate, loading} = useInventoryInsert();
 
   const propertyDocument = watch('property_document');
