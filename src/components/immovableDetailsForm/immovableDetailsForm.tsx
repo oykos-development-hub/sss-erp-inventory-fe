@@ -7,7 +7,7 @@ import useInventoryInsert from '../../services/graphQL/inventoryInsert/useInvent
 import {InventoryTypeEnum} from '../../types/inventoryType';
 import {parseDateForBackend} from '../../utils/dateUtils';
 import {ButtonWrapper} from '../movableDetailsForm/style';
-import {depreciationTypeOptions, initialValues, ownershipTypeOptions} from './constants';
+import {depreciationTypeOptions, initialValues} from './constants';
 import {ImmovableDetailsFormWrapper, ImmovableDetailsInputWrapper} from './style';
 import {ImmovableDetailsFormProps} from './types';
 import useGetSettings from '../../services/graphQL/getSettings/useGetSettings';
@@ -30,6 +30,7 @@ const ImmovableDetailsForm = ({context, data, refetch, inventoryId}: DetailsForm
 
   const {data: depreciationTypes} = useGetSettings({entity: 'deprecation_types'});
   const {limitation, is_external_donation} = watch();
+  const {options: realEstateTypeOptions} = useGetSettings({entity: 'real_estate_types'});
 
   useEffect(() => {
     if (data) {
@@ -37,7 +38,7 @@ const ImmovableDetailsForm = ({context, data, refetch, inventoryId}: DetailsForm
 
       const currentValues = {
         ...data,
-        type: ownershipTypeOptions.find(option => option.id === data?.real_estate?.type_id),
+        type: data.type,
         land_serial_number: data.real_estate?.land_serial_number,
         property_document: data.real_estate?.property_document,
         ownership_scope: data?.real_estate?.ownership_scope,
@@ -49,6 +50,7 @@ const ImmovableDetailsForm = ({context, data, refetch, inventoryId}: DetailsForm
         depreciation_rate: data.depreciation_rate,
         is_external_donation: donationOptions.find(option => option.id === data?.is_external_donation),
         owner: data?.owner,
+        type_id: realEstateTypeOptions.find(option => option.title === data?.real_estate?.type_id),
       };
 
       reset(currentValues as any);
@@ -79,7 +81,7 @@ const ImmovableDetailsForm = ({context, data, refetch, inventoryId}: DetailsForm
           ownership_investment_scope: values?.ownership_investment_scope || '',
           limitations_description: values?.limitations_description || '',
           file_id: 0,
-          type_id: values?.type?.id || '',
+          type_id: values?.type_id?.title || '',
           property_document: values?.property_document || '',
           limitation_id: values?.limitation?.id || false,
           document: values?.document || '',
@@ -111,18 +113,18 @@ const ImmovableDetailsForm = ({context, data, refetch, inventoryId}: DetailsForm
     <ImmovableDetailsFormWrapper>
       <ImmovableDetailsInputWrapper>
         <Controller
-          name="type"
+          name="type_id"
           rules={{required: 'Ovo polje je obavezno'}}
           control={control}
           render={({field: {name, value, onChange}}) => (
             <Dropdown
               name={name}
-              value={value}
+              value={value as any}
               onChange={onChange}
-              options={ownershipTypeOptions}
+              options={realEstateTypeOptions}
               label="VRSTA NEPOKRETNOSTI:"
               isRequired
-              error={errors.type?.message}
+              error={errors?.type_id?.message}
             />
           )}
         />

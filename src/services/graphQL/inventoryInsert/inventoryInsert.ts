@@ -2,6 +2,7 @@ const inventoryInsert = `mutation($data: [BasicInventoryInsertMutation!]) {
     basicInventory_Insert(data: $data) {
         status 
         message
+        data
         validator {
             entity
             value
@@ -42,6 +43,7 @@ const inventoryInsert = `mutation($data: [BasicInventoryInsertMutation!]) {
                 ownership_investment_scope
                 limitations_description
                 file_id
+                type_id
             }
             serial_number
             inventory_number

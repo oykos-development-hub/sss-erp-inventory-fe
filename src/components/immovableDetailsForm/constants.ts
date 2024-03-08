@@ -46,14 +46,8 @@ export const initialValues: ImmovableDetailsFormProps = {
   depreciation_rate: 0,
   is_external_donation: null,
   owner: '',
+  type_id: {id: '', title: ''},
 };
-
-export const ownershipTypeOptions = [
-  {id: 'Zemljište', title: 'Zemljište'},
-  {id: 'Stambena zgrada', title: 'Stambena zgrada'},
-  {id: 'Stambeni prostor', title: 'Stambeni prostor'},
-  {id: 'Poslovni prostor', title: 'Poslovni prostor'},
-];
 
 export const locationOptions = [
   {id: 1, title: 'location 1'},

@@ -16,4 +16,5 @@ export interface ImmovableAddFormProps {
   document: string;
   is_external_donation: DropdownDataBoolean | null;
   owner: string;
+  type_id: DropdownDataString;
 }

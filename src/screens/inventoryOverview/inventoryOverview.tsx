@@ -35,7 +35,7 @@ const InventoryOverview = ({context, type}: InventoryProps) => {
     office_id: debouncedFilterValues.office_id?.id,
     depreciation_type_id: debouncedFilterValues.depreciation_type_id?.id,
     organization_unit_id: organizationID,
-    type_of_immovable_property: debouncedFilterValues.type_of_immovable_property?.id,
+    type_of_immovable_property: debouncedFilterValues.type_of_immovable_property?.title,
     is_external_donation:
       debouncedFilterValues.source_type?.title === movableTypeOptions[2].title
         ? false

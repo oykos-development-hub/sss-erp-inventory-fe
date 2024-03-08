@@ -1,9 +1,8 @@
-import {Button, DownloadIcon, Table, TableHead, Theme} from 'client-library';
+import {Button, DownloadIcon, Table, TableHead, Theme, Typography} from 'client-library';
 import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {StatusesForMovableInventory} from '../../constants.ts';
 import useAppContext from '../../context/useAppContext';
 import {
-  immovableInventoryTableHeads,
   immovableTypeOptions,
   movableInventoryTableHeads,
   movableTypeOptions,
@@ -28,11 +27,11 @@ import {MicroserviceProps} from '../../types/micro-service-props';
 import {parseDateForBackend} from '../../utils/dateUtils';
 import AssessmentModal from '../assessmentModal/assessmentModal';
 import DeactivateModal from '../deactivateModal/deactivateModal';
-import {ownershipTypeOptions} from '../immovableDetailsForm/constants.ts';
 import {filterExpireOptions, filterStatusOptions} from '../movementModal/constants';
 import MovementModal from '../movementModal/movementModal';
 import ReceiveInventoryModal from '../receiveInventoryModal/receiveInventoryModal';
 import {FilterDropdown, FilterInput, Filters, ReversButtonContainer} from './styles';
+import {DropdownDataNumber} from '../../types/dropdownData.ts';
 
 interface InventoryListProps {
   context: MicroserviceProps;
@@ -87,6 +86,37 @@ const InventoryList = ({
 
   const {options: classTypeOptions} = useGetSettings({entity: 'inventory_class_type'});
   const {mutate: deactivate, loading: loadingDeactivate} = useInventoryDeactivate();
+  const {options: realEstateTypeOptions} = useGetSettings({entity: 'real_estate_types'});
+
+  const immovableInventoryTableHeads: TableHead[] = [
+    {title: 'Tip', accessor: 'source_type'},
+    {
+      title: 'Vrsta nepokretnosti',
+      accessor: 'real_estate',
+      type: 'custom',
+      renderContents: (real_estate: any, item: InventoryItem) => <Typography content={real_estate.type_id} />,
+    },
+    {
+      title: 'Površina m2',
+      accessor: '',
+      type: 'custom',
+      renderContents: (_: any, item: InventoryItem) => <Typography content={item.real_estate?.square_area} />,
+    },
+    {
+      title: 'Amortizaciona grupa',
+      accessor: 'depreciation_type',
+      type: 'custom',
+      renderContents: (value: DropdownDataNumber) => <Typography content={value.title} />,
+    },
+    {
+      title: 'Lokacija',
+      accessor: 'location',
+    },
+    {
+      title: 'Status',
+      accessor: 'status',
+    },
+  ];
 
   const {
     navigation: {navigate},
@@ -163,7 +193,7 @@ const InventoryList = ({
         name="type_of_immovable_property"
         value={filterValues.type_of_immovable_property}
         onChange={value => onFilter(value, 'type_of_immovable_property')}
-        options={[{id: '', title: 'Sve vrste nepokretnosti'}, ...ownershipTypeOptions]}
+        options={[{id: '', title: 'Sve vrste nepokretnosti'}, ...realEstateTypeOptions]}
         placeholder="Odaberi vrstu nepokretnosti"
         label="VRSTA NEPOKRETNOSTI:"
       />

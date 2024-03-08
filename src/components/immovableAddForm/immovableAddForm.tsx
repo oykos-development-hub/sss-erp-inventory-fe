@@ -59,7 +59,7 @@ const ImmovableAddForm = ({context}: {context: MicroserviceProps}) => {
             ownership_investment_scope: values?.ownership_investment_scope || '',
             limitations_description: values?.limitations_description || '',
             file_id: 0,
-            type_id: values?.type?.id || '',
+            type_id: values?.type_id?.title || '',
             property_document: values?.property_document?.id || '',
             limitation_id: values?.limitation?.id || false,
             document: values?.document || '',
@@ -92,18 +92,18 @@ const ImmovableAddForm = ({context}: {context: MicroserviceProps}) => {
       <FieldsContainer style={{gap: '10px'}}>
         <FormRow>
           <Controller
-            name="type"
+            name="type_id"
             rules={{required: 'Ovo polje je obavezno'}}
             control={control}
             render={({field: {name, value, onChange}}) => (
               <Dropdown
                 name={name}
-                value={value}
+                value={value as any}
                 onChange={onChange}
                 label="VRSTA NEPOKRETNOSTI:"
                 options={realEstateTypeOptions}
                 isRequired
-                error={errors.type?.message}
+                error={errors?.type_id?.message}
               />
             )}
           />

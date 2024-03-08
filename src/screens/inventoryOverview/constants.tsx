@@ -2,7 +2,6 @@ import {DropdownDataNumber, DropdownDataString} from '../../types/dropdownData';
 import {InventoryItem} from '../../types/graphQL/inventoryOverview';
 import {InventoryTypeEnum} from '../../types/inventoryType';
 import {parseDate} from '../../utils/dateUtils';
-import {realEstateTypeOptions} from '../inventoryAdd/constants';
 import {InventoryFilters, InventoryFiltersEnum} from './types';
 import {TableHead, Typography} from 'client-library';
 
@@ -119,43 +118,6 @@ export const movableInventoryTableHeads: TableHead[] = [
     type: 'custom',
     renderContents: date_of_assessments =>
       date_of_assessments ? <Typography content={parseDate(date_of_assessments)} /> : '',
-  },
-  {
-    title: 'Status',
-    accessor: 'status',
-  },
-];
-
-export const immovableInventoryTableHeads: TableHead[] = [
-  {title: 'Tip', accessor: 'source_type'},
-  {
-    title: 'Vrsta nepokretnosti',
-    accessor: '',
-    type: 'custom',
-    renderContents: (_: any, item: InventoryItem) => (
-      <Typography
-        content={
-          realEstateTypeOptions.find(option => option.id === item.real_estate?.type_id)?.title ??
-          item.real_estate?.type_id
-        }
-      />
-    ),
-  },
-  {
-    title: 'Površina m2',
-    accessor: '',
-    type: 'custom',
-    renderContents: (_: any, item: InventoryItem) => <Typography content={item.real_estate?.square_area} />,
-  },
-  {
-    title: 'Amortizaciona grupa',
-    accessor: 'depreciation_type',
-    type: 'custom',
-    renderContents: (value: DropdownDataNumber) => <Typography content={value.title} />,
-  },
-  {
-    title: 'Lokacija',
-    accessor: 'location',
   },
   {
     title: 'Status',

@@ -72,13 +72,6 @@ export const rightPropertyOptions = [
   {id: '1/50', title: '1/50'},
 ];
 
-export const realEstateTypeOptions = [
-  {id: 'Zemljište', title: 'Zemljište'},
-  {id: 'Stambena zgrada', title: 'Stambena zgrada'},
-  {id: 'Stambeni prostor', title: 'Stambeni prostor'},
-  {id: 'Poslovni prostor', title: 'Poslovni prostor'},
-];
-
 export const restrictionOptions = [
   {id: true, title: 'Da'},
   {id: false, title: 'Ne'},
