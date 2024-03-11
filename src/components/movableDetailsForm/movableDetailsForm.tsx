@@ -172,16 +172,10 @@ const MovableDetailsForm = ({data, context, inventoryType, refetch, inventoryId}
           label="TRENUTNA CIJENA:"
           disabled={true}
           rightContent={<div>€</div>}
-          value={price.toFixed(2)}
         />
         <Input {...register('lifetime_of_assessment_in_months')} label="VIJEK TRAJANJA:" disabled={true} />
         <Input {...register('depreciation_rate')} label="AMORTIZACIONA STOPA:" disabled={true} />
-        <Input
-          {...register('amortization_value')}
-          label="VRIJEDNOST AMORTIZACIJE:"
-          disabled={true}
-          value={amortizationValue?.toFixed(2)}
-        />
+        <Input {...register('amortization_value')} label="VRIJEDNOST AMORTIZACIJE:" disabled={true} />
       </InputWrapper>
 
       <InputWrapper>
