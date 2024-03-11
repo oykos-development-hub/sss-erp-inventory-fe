@@ -76,8 +76,6 @@ const InventoryDetails = ({context, type}: InventoryProps) => {
     return false;
   };
 
-  console.log('data', data?.items.assessments);
-
   return (
     <ScreenWrapper>
       <SectionBox>

@@ -88,7 +88,17 @@ const MovableDetailsForm = ({data, context, inventoryType, refetch, inventoryId}
     );
   };
 
-  const price = watch('purchase_gross_price');
+  const price: number = watch('gross_price') || 0;
+  const amortizationValue: number = watch('amortization_value') || 0;
+
+  useEffect(() => {
+    const formattedAmortization = amortizationValue.toFixed(2);
+    const formattedPrice = price.toFixed(2);
+
+    setValue('amortization_value', Number(formattedAmortization));
+    setValue('gross_price', Number(formattedPrice));
+  }, [amortizationValue, price, setValue]);
+
   return (
     <FormWrapper>
       <InputWrapper>
@@ -162,10 +172,16 @@ const MovableDetailsForm = ({data, context, inventoryType, refetch, inventoryId}
           label="TRENUTNA CIJENA:"
           disabled={true}
           rightContent={<div>€</div>}
+          value={price.toFixed(2)}
         />
         <Input {...register('lifetime_of_assessment_in_months')} label="VIJEK TRAJANJA:" disabled={true} />
         <Input {...register('depreciation_rate')} label="AMORTIZACIONA STOPA:" disabled={true} />
-        <Input {...register('amortization_value')} label="VRIJEDNOST AMORTIZACIJE:" disabled={true} />
+        <Input
+          {...register('amortization_value')}
+          label="VRIJEDNOST AMORTIZACIJE:"
+          disabled={true}
+          value={amortizationValue?.toFixed(2)}
+        />
       </InputWrapper>
 
       <InputWrapper>
