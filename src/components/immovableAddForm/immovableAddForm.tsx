@@ -37,6 +37,7 @@ const ImmovableAddForm = ({context}: {context: MicroserviceProps}) => {
   //handlers
 
   const addButtonClick = async (values: ImmovableAddFormProps) => {
+    if (loading) return;
     if (isValid) {
       const data = [
         {
@@ -242,7 +243,7 @@ const ImmovableAddForm = ({context}: {context: MicroserviceProps}) => {
 
       <ButtonContainer>
         <Button content="Odustani" onClick={() => reset()} />
-        <Button content="Sačuvaj" onClick={handleSubmit(addButtonClick)} variant="primary" loader={loading} />
+        <Button content="Sačuvaj" onClick={handleSubmit(addButtonClick)} variant="primary" isLoading={loading} />
       </ButtonContainer>
     </Form>
   );

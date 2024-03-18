@@ -360,7 +360,7 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
 
           <ButtonContainer>
             <Button content="Odustani" onClick={clearButtonClick} />
-            <Button content="Sačuvaj" onClick={handleSubmit(onSubmit)} variant="primary" loader={loading} />
+            <Button content="Sačuvaj" onClick={handleSubmit(onSubmit)} variant="primary" isLoading={loading} />
           </ButtonContainer>
         </>
       )}

@@ -242,7 +242,7 @@ const MovableDetailsForm = ({data, context, inventoryType, refetch, inventoryId}
 
       <ButtonWrapper>
         <Button content="Nazad" onClick={() => navigate(-1)} />
-        <Button content="Sačuvaj" onClick={handleSubmit(onSubmit)} loader={loading} />
+        <Button content="Sačuvaj" onClick={handleSubmit(onSubmit)} isLoading={loading} />
       </ButtonWrapper>
     </FormWrapper>
   );

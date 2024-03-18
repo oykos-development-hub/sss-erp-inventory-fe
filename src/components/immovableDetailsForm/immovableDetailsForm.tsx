@@ -250,7 +250,7 @@ const ImmovableDetailsForm = ({context, data, refetch, inventoryId}: DetailsForm
 
       <ButtonWrapper>
         <Button content="Odustani" onClick={() => navigate(-1)} />
-        <Button content="Sačuvaj" onClick={handleSubmit(onSubmit)} loader={loading} />
+        <Button content="Sačuvaj" onClick={handleSubmit(onSubmit)} isLoading={loading} />
       </ButtonWrapper>
     </ImmovableDetailsFormWrapper>
   );
