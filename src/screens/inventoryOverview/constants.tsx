@@ -98,13 +98,13 @@ export const movableInventoryTableHeads: TableHead[] = [
     title: 'Nabavna cijena',
     accessor: 'purchase_gross_price',
     type: 'custom',
-    renderContents: data => <Typography content={`${data || '0'}€`} />,
+    renderContents: data => <Typography content={`${data.toFixed(2) || '0'}€`} />,
   },
   {
     title: 'Trenutna cijena',
     accessor: 'gross_price',
     type: 'custom',
-    renderContents: data => <Typography content={`${data || '0'}€`} />,
+    renderContents: data => <Typography content={`${data.toFixed(2) || '0'}€`} />,
   },
   {
     title: 'Obračun amortizacije',
