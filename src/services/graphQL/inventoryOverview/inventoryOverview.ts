@@ -101,6 +101,7 @@ const inventoryOverview = `query BasicInventoryOverview(
             address
             amortization_value
             inactive
+            description
         }
     }
 }`;
