@@ -37,7 +37,7 @@ const InventoryDispatchList = ({
     contextMain: {organization_unit},
   } = useAppContext();
 
-  const isManager = organization_unit?.id === 3;
+  const isCurrentOuSss = organization_unit?.title?.toLowerCase() === 'sekretarijat sudskog savjeta';
 
   const {fetchDispatch} = useInventoryDispatchDetails();
 
@@ -109,7 +109,7 @@ const InventoryDispatchList = ({
           placeholder="Odaberi status"
         />
 
-        {isManager && (
+        {isCurrentOuSss && (
           <FilterDropdown
             label="ORGANIZACIONA JEDINICA:"
             options={locationOptions}

@@ -23,7 +23,7 @@ import {MovableAddFormProps} from './types';
 
 const MovableAddForm = ({
   onFormSubmit,
-  context,
+  // context,
   selectedArticles,
   donationFiles,
   handleUpload,
@@ -82,18 +82,20 @@ const MovableAddForm = ({
       await onFormSubmit(values);
     }
   };
-  const orgUnitId = context.contextMain.organization_unit.id;
-  const {options: locationOptions} = useOrgUnitOfficesGet({
-    page: 1,
-    size: 1000,
-    organization_unit_id: Number(orgUnitId),
-  });
-
   const {
     spreadsheetService: {openImportModal, closeImportModal},
     alert,
-    contextMain: {token},
+    contextMain: {token, organization_unit},
   } = useAppContext();
+
+  // TODO replace this condition when isSSS param gets added to OU on BE
+  const isCurrentOuSss = organization_unit?.title?.toLowerCase() === 'sekretarijat sudskog savjeta';
+
+  const {options: locationOptions} = useOrgUnitOfficesGet({
+    page: 1,
+    size: 1000,
+    organization_unit_id: Number(organization_unit.id),
+  });
 
   const {
     data: contracts,
@@ -101,6 +103,7 @@ const MovableAddForm = ({
     fetch: fetchContracts,
     cleanData: cleanDataContracts,
   } = usePublicProcurementContracts();
+
   const {
     data: articles,
     options: articlesOptions,
@@ -108,6 +111,7 @@ const MovableAddForm = ({
     useArticle,
     cleanData: cleanDataArticles,
   } = useProcurementContractArticles();
+
   const {donors} = useGetDonors();
 
   useEffect(() => {
@@ -195,8 +199,8 @@ const MovableAddForm = ({
   };
 
   const isDonation = type === 2;
-  const isInvoice = type === 1 || (orgUnitId !== 3 && type === undefined);
-  const isContract = type === 0 || (orgUnitId === 3 && type === undefined);
+  const isInvoice = type === 1 || (!isCurrentOuSss && type === undefined);
+  const isContract = type === 0 || (isCurrentOuSss && type === undefined);
 
   return (
     <>
@@ -207,12 +211,12 @@ const MovableAddForm = ({
             rules={{required: 'Ovo polje je obavezno'}}
             control={control}
             render={({field: {name, value, onChange}}) => {
-              const optionsWithoutFirst = orgUnitId !== 3 ? Type.slice(1) : Type;
+              const dropdownOptions = !isCurrentOuSss ? Type.slice(1) : Type;
               return (
                 <Dropdown
                   name={name}
                   value={value}
-                  options={optionsWithoutFirst}
+                  options={dropdownOptions}
                   onChange={onChange}
                   label="TIP:"
                   isRequired

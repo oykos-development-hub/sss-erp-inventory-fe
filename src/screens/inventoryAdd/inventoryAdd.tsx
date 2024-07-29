@@ -20,7 +20,6 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
   const [isOrderListSelected, setIsOrderListSelected] = useState(false);
   const [donationFiles, setDonationFiles] = useState<FileList | null>(null);
   const isImmovable = type === 'immovable';
-  const orgUnitId = context.contextMain.organization_unit.id;
 
   const {
     fileService: {uploadFile},
@@ -93,7 +92,7 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
               return (
                 <Input
                   key={item.id}
-                  type={head.accessor === 'gross_price' ? 'number' : 'text'}
+                  type={head.accessor === 'gross_price' ? 'number' : undefined}
                   {...register(`items.${index}.${head.accessor}` as InputName, {
                     required: head.accessor === 'serial_number' ? 'Ovo polje je obavezno' : false,
                     pattern:

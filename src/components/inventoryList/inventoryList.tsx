@@ -27,7 +27,7 @@ import {MicroserviceProps} from '../../types/micro-service-props';
 import {parseDateForBackend} from '../../utils/dateUtils';
 import AssessmentModal from '../assessmentModal/assessmentModal';
 import DeactivateModal from '../deactivateModal/deactivateModal';
-import {filterExpireOptions, filterStatusOptions} from '../movementModal/constants';
+import {filterStatusOptions} from '../movementModal/constants';
 import MovementModal from '../movementModal/movementModal';
 import ReceiveInventoryModal from '../receiveInventoryModal/receiveInventoryModal';
 import {FilterDropdown, FilterInput, Filters, ReversButtonContainer} from './styles';
@@ -68,16 +68,26 @@ const InventoryList = ({
   const prevStateRef = useRef<number[]>(selectedRows);
   const orgUnitId = context?.contextMain?.organization_unit?.id;
 
-  const {options: officeOptions} = useOrgUnitOfficesGet({page: 1, size: 1000, organization_unit_id: Number(orgUnitId)});
+  const {
+    reportService: {generatePdf},
+    spreadsheetService: {openImportModal},
+    contextMain: {token, id: user_profile_id, organization_unit},
+    navigation: {navigate},
+    alert,
+  } = useAppContext();
+
+  // TODO replace this condition when isSSS param gets added to OU on BE
+  const isCurrentOuSss = organization_unit?.title?.toLowerCase() === 'sekretarijat sudskog savjeta';
+
+  const {options: officeOptions} = useOrgUnitOfficesGet({
+    page: 1,
+    size: 1000,
+    organization_unit_id: Number(organization_unit.id),
+  });
   const {options: organizationUnits} = useOrganizationUnits(true);
 
   const {mutate: mutateAssessmentArray, loading: isSavingAssessmentArray} = useAssessmentArrayInsert();
 
-  const {
-    reportService: {generatePdf},
-    spreadsheetService: {openImportModal},
-    contextMain: {token, id: user_profile_id},
-  } = useAppContext();
   const {refetch: fetchDetails} = useInventoryDetails();
 
   const {options: amortizationGroupOptions} = useGetSettings({
@@ -117,11 +127,6 @@ const InventoryList = ({
       accessor: 'status',
     },
   ];
-
-  const {
-    navigation: {navigate},
-    alert,
-  } = context;
 
   //todo: add useMemo
   const renderFilters = {
@@ -165,19 +170,18 @@ const InventoryList = ({
         label="LOKACIJA:"
       />
     ),
-    organization_unit:
-      orgUnitId === 3 ? (
-        <FilterDropdown
-          name="organization_unit_id"
-          value={filterValues.organization_unit_id}
-          onChange={value => onFilter(value, 'organization_unit_id')}
-          options={[{id: 0, title: 'Sve organizacione jedinice'}, ...organizationUnits]}
-          placeholder="Odaberi organizacionu jedinicu"
-          label="ORGANIZACIONA JEDINICA:"
-        />
-      ) : (
-        <></>
-      ),
+    organization_unit: isCurrentOuSss ? (
+      <FilterDropdown
+        name="organization_unit_id"
+        value={filterValues.organization_unit_id}
+        onChange={value => onFilter(value, 'organization_unit_id')}
+        options={[{id: 0, title: 'Sve organizacione jedinice'}, ...organizationUnits]}
+        placeholder="Odaberi organizacionu jedinicu"
+        label="ORGANIZACIONA JEDINICA:"
+      />
+    ) : (
+      <></>
+    ),
     status: (
       <FilterDropdown
         name="status"
@@ -365,14 +369,14 @@ const InventoryList = ({
     if (
       isReversDone(row) ||
       !row.active ||
-      (row?.target_organization_unit?.id && row?.target_organization_unit?.id !== orgUnitId) ||
+      (row?.target_organization_unit?.id && row?.target_organization_unit?.id !== organization_unit?.id) ||
       row.status == StatusesForMovableInventory.POVRACAJ ||
       row.status == StatusesForMovableInventory.ZADUZENO
     ) {
       return true;
     }
 
-    if (row.status === 'Revers' && row?.target_organization_unit?.id !== orgUnitId) return true;
+    if (row.status === 'Revers' && row?.target_organization_unit?.id !== organization_unit?.id) return true;
 
     if (selectedRows.length && sourceType) {
       if (row.source_type.includes('2') && sourceType?.includes('2')) {
@@ -446,7 +450,7 @@ const InventoryList = ({
                   name: 'Alokacija',
                   onClick: row => onAddMovement(row),
                   disabled: (item: InventoryItem) =>
-                    (item.target_organization_unit.id && orgUnitId !== item.target_organization_unit.id) ||
+                    (item.target_organization_unit.id && organization_unit?.id !== item.target_organization_unit.id) ||
                     !item.active ||
                     item.status === StatusesForMovableInventory.POSLATO ||
                     item.status === StatusesForMovableInventory.PRIHVACENO ||
@@ -459,7 +463,7 @@ const InventoryList = ({
                   onClick: row => onAddEstimation(row),
                   shouldRender: (item: any) => item.source_type?.includes('1'),
                   disabled: (item: InventoryItem) =>
-                    (item.target_organization_unit.id && orgUnitId !== item.target_organization_unit.id) ||
+                    (item.target_organization_unit.id && organization_unit?.id !== item.target_organization_unit.id) ||
                     !item.active,
                 },
                 {
@@ -472,7 +476,7 @@ const InventoryList = ({
                     type === InventoryTypeEnum.IMMOVABLE ||
                     item.source_type?.includes('2') ||
                     item.status !== StatusesForMovableInventory.NEZADUZENO ||
-                    (item.target_organization_unit.id && orgUnitId !== item.target_organization_unit.id) ||
+                    (item.target_organization_unit.id && organization_unit?.id !== item.target_organization_unit.id) ||
                     !item.active,
                 },
               ]
@@ -485,7 +489,8 @@ const InventoryList = ({
                 {
                   name: 'Alokacija',
                   onClick: row => onAddMovement(row),
-                  disabled: (item: InventoryItem) => orgUnitId !== item.target_organization_unit.id || !item.active,
+                  disabled: (item: InventoryItem) =>
+                    organization_unit?.id !== item.target_organization_unit.id || !item.active,
                 },
                 {
                   name: 'Otpis',
@@ -496,7 +501,7 @@ const InventoryList = ({
                   disabled: (item: InventoryItem) =>
                     item.source_type?.includes('2') ||
                     item.status !== 'Nezaduženo' ||
-                    orgUnitId !== item.target_organization_unit.id ||
+                    organization_unit?.id !== item.target_organization_unit.id ||
                     !item.active,
                 },
               ]
