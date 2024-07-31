@@ -1,8 +1,8 @@
 import {Pagination} from 'client-library';
 import {ChangeEvent, useEffect, useState} from 'react';
 import InventoryList from '../../components/inventoryList/inventoryList';
-import {PAGE_SIZE} from '../../constants';
 import useInventoryOverview from '../../services/graphQL/inventoryOverview/useInventoryOverview';
+import {PAGE_SIZE} from '../../constants';
 import {InventoryProps} from '../../types/inventoryProps';
 import {initialInventoryFilters, inventoryFilters, movableTypeOptions} from './constants';
 import {useDebounce} from '../../utils/useDebounce.ts';
