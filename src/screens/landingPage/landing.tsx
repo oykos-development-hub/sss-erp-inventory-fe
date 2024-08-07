@@ -5,10 +5,6 @@ import useAppContext from '../../context/useAppContext';
 import ScreenWrapper from '../../shared/screenWrapper';
 import {checkActionRoutePermissions} from '../../services/checkRoutePermissions.ts';
 
-// <BuildingsIcon {...args} />
-//       <ShapesIcon {...args} />
-//       <ECommerceIcon {...args} />
-
 const INVENTORY: React.FC = () => {
   const {
     navigation: {navigate},
@@ -16,7 +12,7 @@ const INVENTORY: React.FC = () => {
     contextMain: {permissions},
   } = useAppContext();
 
-  const updatePermittedRoutes = checkActionRoutePermissions(permissions, 'update');
+  const readPermittedRoutes = checkActionRoutePermissions(permissions, 'read');
 
   return (
     <ScreenWrapper showBreadcrumbs={false}>
@@ -25,43 +21,49 @@ const INVENTORY: React.FC = () => {
           <Typography variant="bodyLarge" style={{fontWeight: 600}} content="OSNOVNA SREDSTVA" />
         </LandingPageTitle>
         <Container>
-          <ContentBox
-            onClick={() => {
-              navigate('/inventory/movable-inventory');
-              breadcrumbs.add({name: 'Pokretna Sredstva', path: '/inventory/movable-inventory'});
-            }}>
-            <TitleWrapper>
-              <Title variant="bodyLarge" content="Pokretna Sredstva" />
-            </TitleWrapper>
-            <IconWrapper>
-              <ECommerceIcon />
-            </IconWrapper>
-          </ContentBox>
-          <ContentBox
-            onClick={() => {
-              navigate('/inventory/immovable-inventory');
-              breadcrumbs.add({name: 'Nepokretna Sredstva', path: '/inventory/immovable-inventory'});
-            }}>
-            <TitleWrapper>
-              <Title variant="bodyLarge" content="Nepokretna Sredstva" />
-            </TitleWrapper>
-            <IconWrapper>
-              <BuildingsIcon />
-            </IconWrapper>
-          </ContentBox>
-          <ContentBox
-            onClick={() => {
-              navigate('/inventory/small-inventory');
-              breadcrumbs.add({name: 'Sitan Inventar', path: '/inventory/small-inventory'});
-            }}>
-            <TitleWrapper>
-              <Title variant="bodyLarge" content="Sitan Inventar" />
-            </TitleWrapper>
-            <IconWrapper>
-              <ShapesIcon />
-            </IconWrapper>
-          </ContentBox>
-          {updatePermittedRoutes.includes('/inventory/reports') && (
+          {readPermittedRoutes.includes('/inventory/movable-inventory') && (
+            <ContentBox
+              onClick={() => {
+                navigate('/inventory/movable-inventory');
+                breadcrumbs.add({name: 'Pokretna Sredstva', path: '/inventory/movable-inventory'});
+              }}>
+              <TitleWrapper>
+                <Title variant="bodyLarge" content="Pokretna Sredstva" />
+              </TitleWrapper>
+              <IconWrapper>
+                <ECommerceIcon />
+              </IconWrapper>
+            </ContentBox>
+          )}
+          {readPermittedRoutes.includes('/inventory/immovable-inventory') && (
+            <ContentBox
+              onClick={() => {
+                navigate('/inventory/immovable-inventory');
+                breadcrumbs.add({name: 'Nepokretna Sredstva', path: '/inventory/immovable-inventory'});
+              }}>
+              <TitleWrapper>
+                <Title variant="bodyLarge" content="Nepokretna Sredstva" />
+              </TitleWrapper>
+              <IconWrapper>
+                <BuildingsIcon />
+              </IconWrapper>
+            </ContentBox>
+          )}
+          {readPermittedRoutes.includes('/inventory/small-inventory') && (
+            <ContentBox
+              onClick={() => {
+                navigate('/inventory/small-inventory');
+                breadcrumbs.add({name: 'Sitan Inventar', path: '/inventory/small-inventory'});
+              }}>
+              <TitleWrapper>
+                <Title variant="bodyLarge" content="Sitan Inventar" />
+              </TitleWrapper>
+              <IconWrapper>
+                <ShapesIcon />
+              </IconWrapper>
+            </ContentBox>
+          )}
+          {readPermittedRoutes.includes('/inventory/reports') && (
             <ContentBox
               onClick={() => {
                 navigate('/inventory/reports');
