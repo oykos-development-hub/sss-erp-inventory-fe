@@ -23,6 +23,7 @@ import useInventoryDispatchDetails from '../../services/graphQL/inventoryDispatc
 import useAppContext from '../../context/useAppContext';
 import {InventoryTypeEnum} from '../../types/inventoryType';
 import {StatusesForMovableInventory} from '../../constants';
+import {checkActionRoutePermissions} from '../../services/checkRoutePermissions.ts';
 
 const InventoryDetails = ({context, type}: InventoryProps) => {
   const [assessmentModal, setAssessmentModal] = useState(false);
@@ -34,7 +35,11 @@ const InventoryDetails = ({context, type}: InventoryProps) => {
 
   const {
     reportService: {generatePdf},
+    contextMain: {permissions},
   } = useAppContext();
+
+  const updatePermittedRoutes = checkActionRoutePermissions(permissions, 'update');
+  const updatePermission = updatePermittedRoutes.includes(`/inventory/${type}-inventory`);
 
   const fetchPDFUrl = (id: number) => {
     fetchDispatch(id, data => {
@@ -117,7 +122,9 @@ const InventoryDetails = ({context, type}: InventoryProps) => {
             <div>
               <TableHeader>
                 <Typography variant="caption" content="kretanje sredstva" />
-                <PlusButton disabled={checkSetMovementModal()} onClick={() => setMovementModal(true)} />
+                {updatePermission && (
+                  <PlusButton disabled={checkSetMovementModal()} onClick={() => setMovementModal(true)} />
+                )}
               </TableHeader>
               {data?.items.deactivation_description !== '' && (
                 <DescriptionWrapper>
@@ -163,20 +170,22 @@ const InventoryDetails = ({context, type}: InventoryProps) => {
             <div>
               <TableHeader>
                 <Typography variant="caption" content="procjene" />
-                <PlusButton
-                  disabled={
-                    data?.items.source_type?.includes('2') ||
-                    data?.items.status === StatusesForMovableInventory.OTPISANO ||
-                    data?.items.status === StatusesForMovableInventory.ARHIVA
-                  }
-                  onClick={() => setAssessmentModal(true)}
-                />
+                {updatePermission && (
+                  <PlusButton
+                    disabled={
+                      data?.items.source_type?.includes('2') ||
+                      data?.items.status === StatusesForMovableInventory.OTPISANO ||
+                      data?.items.status === StatusesForMovableInventory.ARHIVA
+                    }
+                    onClick={() => setAssessmentModal(true)}
+                  />
+                )}
               </TableHeader>
               <Table tableHeads={getUpdatedTableHeads} data={data?.items.assessments || []} isLoading={loading} />
             </div>
           )}
           {fileToView && <FileModalView file={fileToView} onClose={() => setFileToView(undefined)} />}
-          {assessmentModal && (
+          {updatePermission && assessmentModal && (
             <AssessmentModal
               refetch={refetch}
               onClose={() => setAssessmentModal(false)}
@@ -185,7 +194,7 @@ const InventoryDetails = ({context, type}: InventoryProps) => {
               depreciation_type_id={data?.items.depreciation_type?.id || 0}
             />
           )}
-          {movementModal && (
+          {updatePermission && movementModal && (
             <MovementModal
               context={context}
               onClose={onCloseMovementModal}
@@ -202,7 +211,7 @@ const InventoryDetails = ({context, type}: InventoryProps) => {
               minDate={data?.items?.movements && data?.items?.movements[0] ? data?.items?.movements[0].date : undefined}
             />
           )}
-          {receiveModal && currentId && (
+          {updatePermission && receiveModal && currentId && (
             <ReceiveInventoryModal
               refetch={refetch}
               context={context}

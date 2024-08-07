@@ -11,6 +11,7 @@ import {depreciationTypeOptions, initialValues} from './constants';
 import {ImmovableDetailsFormWrapper, ImmovableDetailsInputWrapper} from './style';
 import {ImmovableDetailsFormProps} from './types';
 import useGetSettings from '../../services/graphQL/getSettings/useGetSettings';
+import {checkActionRoutePermissions} from '../../services/checkRoutePermissions.ts';
 
 const ImmovableDetailsForm = ({context, data, refetch, inventoryId}: DetailsFormProps) => {
   const {
@@ -25,7 +26,12 @@ const ImmovableDetailsForm = ({context, data, refetch, inventoryId}: DetailsForm
   const {
     alert,
     navigation: {navigate},
+    contextMain: {permissions},
   } = context;
+
+  const updatePermittedRoutes = checkActionRoutePermissions(permissions, 'update');
+  const updatePermission = updatePermittedRoutes.includes('/inventory/movable-inventory');
+
   const {mutate, loading} = useInventoryInsert();
 
   const {data: depreciationTypes} = useGetSettings({entity: 'deprecation_types'});
@@ -125,6 +131,7 @@ const ImmovableDetailsForm = ({context, data, refetch, inventoryId}: DetailsForm
               label="VRSTA NEPOKRETNOSTI:"
               isRequired
               error={errors?.type_id?.message}
+              isDisabled={!updatePermission}
             />
           )}
         />
@@ -135,24 +142,28 @@ const ImmovableDetailsForm = ({context, data, refetch, inventoryId}: DetailsForm
           isRequired
           error={errors.square_area?.message}
           label="POVRŠINA M2:"
+          disabled={!updatePermission}
         />
         <Input
           {...register('land_serial_number', {required: 'Ovo polje je obavezno'})}
           error={errors.land_serial_number?.message}
           isRequired
           label="BROJ KATASTARSKE PARCELE:"
+          disabled={!updatePermission}
         />
         <Input
           {...register('property_document', {required: 'Ovo polje je obavezno'})}
           error={errors.property_document?.message}
           isRequired
           label="ISPRAVE O SVOJINI:"
+          disabled={!updatePermission}
         />
       </ImmovableDetailsInputWrapper>
       <ImmovableDetailsInputWrapper>
         <Input
           {...register('ownership_scope', {required: 'Ovo polje je obavezno'})}
           label="OBIM PRAVA:"
+          disabled={!updatePermission}
           isRequired
           error={errors.ownership_scope?.message}
         />
@@ -160,12 +171,14 @@ const ImmovableDetailsForm = ({context, data, refetch, inventoryId}: DetailsForm
           {...register('ownership_investment_scope', {required: 'Ovo polje je obavezno'})}
           error={errors.ownership_investment_scope?.message}
           isRequired
+          disabled={!updatePermission}
           label="OBIM PRAVA ZA IMOVINU STEČENU ZAJEDNIČKIM ULAGANJEM:"
         />
         <Input
           {...register('document', {required: 'Ovo polje je obavezno'})}
           isRequired
           error={errors.document?.message}
+          disabled={!updatePermission}
           label="LIST NEPOKRETNOSTI:"
         />
       </ImmovableDetailsInputWrapper>
@@ -191,6 +204,7 @@ const ImmovableDetailsForm = ({context, data, refetch, inventoryId}: DetailsForm
               error={errors.limitation?.message}
               isRequired
               label="TERETI OGRANIČENJA:"
+              isDisabled={!updatePermission}
             />
           )}
         />
@@ -198,7 +212,7 @@ const ImmovableDetailsForm = ({context, data, refetch, inventoryId}: DetailsForm
         <Input
           {...register('limitations_description')}
           error={errors.limitations_description?.message}
-          disabled={!limitation?.id}
+          disabled={!updatePermission || !limitation?.id}
           isRequired
           label="OPIS TERETA OGRANIČENJA:"
         />
@@ -233,7 +247,7 @@ const ImmovableDetailsForm = ({context, data, refetch, inventoryId}: DetailsForm
               onChange={onChange}
               options={donationOptions}
               label="TIP SREDSTVA:"
-              isDisabled
+              isDisabled={!updatePermission}
               isRequired
               error={errors.is_external_donation?.message}
             />
@@ -242,7 +256,7 @@ const ImmovableDetailsForm = ({context, data, refetch, inventoryId}: DetailsForm
         <Input
           {...register('owner')}
           label="VLASNIK:"
-          disabled={is_external_donation ? true : false}
+          disabled={!!(updatePermission || is_external_donation)}
           isRequired
           error={errors.owner?.message}
         />
@@ -250,7 +264,7 @@ const ImmovableDetailsForm = ({context, data, refetch, inventoryId}: DetailsForm
 
       <ButtonWrapper>
         <Button content="Odustani" onClick={() => navigate(-1)} />
-        <Button content="Sačuvaj" onClick={handleSubmit(onSubmit)} isLoading={loading} />
+        {updatePermission && <Button content="Sačuvaj" onClick={handleSubmit(onSubmit)} isLoading={loading} />}
       </ButtonWrapper>
     </ImmovableDetailsFormWrapper>
   );

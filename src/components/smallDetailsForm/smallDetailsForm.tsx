@@ -17,6 +17,7 @@ import {
 } from './style';
 import {SmallDetailsFormProps} from './types';
 import useSuppliersOverview from '../../services/graphQL/getSuppliers/useGetSuppliers';
+import {checkActionRoutePermissions} from '../../services/checkRoutePermissions.ts';
 
 const SmallDetailsForm = ({context, data, inventoryType, refetch, inventoryId}: DetailsFormProps) => {
   const {
@@ -32,7 +33,11 @@ const SmallDetailsForm = ({context, data, inventoryType, refetch, inventoryId}: 
   const {
     alert,
     navigation: {navigate},
+    contextMain: {permissions},
   } = context;
+
+  const updatePermittedRoutes = checkActionRoutePermissions(permissions, 'update');
+  const updatePermission = updatePermittedRoutes.includes('/inventory/movable-inventory');
 
   const {mutate, loading} = useInventoryInsert();
 
@@ -103,11 +108,13 @@ const SmallDetailsForm = ({context, data, inventoryType, refetch, inventoryId}: 
           {...register('title', {required: 'Ovo polje je obavezno'})}
           error={errors.title?.message}
           isRequired
+          disabled={!updatePermission}
           label="NAZIV:"
         />
         <Controller
           name="supplier"
           control={control}
+          disabled={!updatePermission}
           render={({field: {name, value, onChange}}) => (
             <LocationDropdown name={name} value={value} onChange={onChange} options={suppliers} label="DOBAVLJAČ" />
           )}
@@ -127,11 +134,6 @@ const SmallDetailsForm = ({context, data, inventoryType, refetch, inventoryId}: 
             />
           )}
         />
-        {/* 
-       
-       
-
-         */}
       </SmallDetailsInputWrapper>
       <SmallDetailsInputWrapper>
         <Input
@@ -139,10 +141,12 @@ const SmallDetailsForm = ({context, data, inventoryType, refetch, inventoryId}: 
           error={errors.invoice_number?.message}
           isRequired
           label="BROJ RAČUNA NABAVKE:"
+          disabled={!updatePermission}
         />
         <Controller
           name="date_of_purchase"
           control={control}
+          disabled={!updatePermission}
           render={({field: {name, value, onChange}}) => (
             <Datepicker
               name={name}
@@ -156,11 +160,13 @@ const SmallDetailsForm = ({context, data, inventoryType, refetch, inventoryId}: 
         <Controller
           name="source"
           control={control}
+          disabled={!updatePermission}
           render={({field: {name, value, onChange}}) => (
             <Dropdown
               name={name}
               value={value}
               onChange={onChange}
+              isDisabled={!updatePermission}
               options={inventorySourceOptions}
               label="IZVOR SREDSTAVA:"
             />
@@ -185,6 +191,7 @@ const SmallDetailsForm = ({context, data, inventoryType, refetch, inventoryId}: 
         <Controller
           name="unit"
           control={control}
+          disabled={!updatePermission}
           render={({field: {name, value, onChange}}) => (
             <Dropdown name={name} value={value} onChange={onChange} options={unitOptions} label="JEDINICA MJERE:" />
           )}
@@ -193,6 +200,7 @@ const SmallDetailsForm = ({context, data, inventoryType, refetch, inventoryId}: 
           {...register('amount', {required: 'Ovo polje je obavezno'})}
           type="number"
           isRequired
+          disabled={!updatePermission}
           error={errors.amount?.message}
           label="KOLIČINA:"
         />
@@ -203,7 +211,7 @@ const SmallDetailsForm = ({context, data, inventoryType, refetch, inventoryId}: 
 
       <ButtonWrapper>
         <Button content="Nazad" onClick={() => navigate(-1)} />
-        <Button content="Sačuvaj" onClick={handleSubmit(onSubmit)} isLoading={loading} />
+        {updatePermission && <Button content="Sačuvaj" onClick={handleSubmit(onSubmit)} isLoading={loading} />}
       </ButtonWrapper>
     </SmallDetailsFormWrapper>
   );

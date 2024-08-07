@@ -2,10 +2,10 @@ import {Tab} from '@oykos-development/devkit-react-ts-styled-components';
 import {InventoryTypeEnum} from './types/inventoryType';
 import {DropdownDataString} from './types/dropdownData';
 
-interface ExtendedTab extends Tab {
+export interface ExtendedTab extends Tab {
   routeName: string;
 }
-export const inventoryTabs: ExtendedTab[] = [
+export const initialInventoryTabs: ExtendedTab[] = [
   {id: 1, title: 'Pregled sredstava', routeName: '', disabled: false},
   {id: 2, title: 'Dodaj sredstvo', routeName: 'add-inventory', disabled: false},
   {id: 3, title: 'Primi sredstvo', routeName: 'receive-inventory', disabled: false},

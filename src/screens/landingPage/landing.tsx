@@ -3,6 +3,7 @@ import React from 'react';
 import {Container, ContentBox, IconWrapper, LandingPageTitle, Title, TitleWrapper} from './styles';
 import useAppContext from '../../context/useAppContext';
 import ScreenWrapper from '../../shared/screenWrapper';
+import {checkActionRoutePermissions} from '../../services/checkRoutePermissions.ts';
 
 // <BuildingsIcon {...args} />
 //       <ShapesIcon {...args} />
@@ -12,7 +13,11 @@ const INVENTORY: React.FC = () => {
   const {
     navigation: {navigate},
     breadcrumbs,
+    contextMain: {permissions},
   } = useAppContext();
+
+  const updatePermittedRoutes = checkActionRoutePermissions(permissions, 'update');
+
   return (
     <ScreenWrapper showBreadcrumbs={false}>
       <div>
@@ -56,18 +61,20 @@ const INVENTORY: React.FC = () => {
               <ShapesIcon />
             </IconWrapper>
           </ContentBox>
-          <ContentBox
-            onClick={() => {
-              navigate('/inventory/reports');
-              breadcrumbs.add({name: 'Izvještaji', path: '/inventory/reports'});
-            }}>
-            <TitleWrapper>
-              <Title variant="bodyLarge" content="Izvještaji" />
-            </TitleWrapper>
-            <IconWrapper>
-              <ReportIcon />
-            </IconWrapper>
-          </ContentBox>
+          {updatePermittedRoutes.includes('/inventory/reports') && (
+            <ContentBox
+              onClick={() => {
+                navigate('/inventory/reports');
+                breadcrumbs.add({name: 'Izvještaji', path: '/inventory/reports'});
+              }}>
+              <TitleWrapper>
+                <Title variant="bodyLarge" content="Izvještaji" />
+              </TitleWrapper>
+              <IconWrapper>
+                <ReportIcon />
+              </IconWrapper>
+            </ContentBox>
+          )}
         </Container>
       </div>
     </ScreenWrapper>

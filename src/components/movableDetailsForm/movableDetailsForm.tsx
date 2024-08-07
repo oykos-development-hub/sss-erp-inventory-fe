@@ -11,6 +11,7 @@ import {ButtonWrapper, FormWrapper, InputWrapper, OfficeDropdown, SupplierDropdo
 import {MovableDetailsFormProps} from './types';
 import FileList from '../fileList/fileList';
 import {StatusesForMovableInventory} from '../../constants';
+import {checkActionRoutePermissions} from '../../services/checkRoutePermissions.ts';
 
 const MovableDetailsForm = ({data, context, inventoryType, refetch, inventoryId}: DetailsFormProps) => {
   const {
@@ -28,7 +29,11 @@ const MovableDetailsForm = ({data, context, inventoryType, refetch, inventoryId}
   const {
     alert,
     navigation: {navigate},
+    contextMain: {permissions},
   } = context;
+
+  const updatePermittedRoutes = checkActionRoutePermissions(permissions, 'update');
+  const updatePermission = updatePermittedRoutes.includes('/inventory/movable-inventory');
 
   const {mutate, loading} = useInventoryInsert();
 
@@ -110,6 +115,7 @@ const MovableDetailsForm = ({data, context, inventoryType, refetch, inventoryId}
               message: 'Dozvoljen je samo unos brojeva.',
             },
           })}
+          disabled={!updatePermission}
           isRequired
           error={errors.inventory_number?.message}
           label="INV. BROJ:"
@@ -126,6 +132,7 @@ const MovableDetailsForm = ({data, context, inventoryType, refetch, inventoryId}
           isRequired
           error={errors.serial_number?.message}
           label="SERIJSKI BR:"
+          disabled={!updatePermission}
         />
         <Controller
           name="class_type"
@@ -209,7 +216,7 @@ const MovableDetailsForm = ({data, context, inventoryType, refetch, inventoryId}
           )}
         />
 
-        <Input {...register('description')} label="NAPOMENA:" />
+        <Input {...register('description')} label="NAPOMENA:" disabled={!updatePermission} />
         <Input {...register('residual_price')} disabled={true} label="REZIDUALNA VRIJEDNOST:" />
         <Controller
           name="date_of_purchase"
@@ -235,6 +242,7 @@ const MovableDetailsForm = ({data, context, inventoryType, refetch, inventoryId}
             {...register('donation_description')}
             label="NAPOMENA ZA DONACIJU:"
             style={{marginBlock: 15}}
+            disabled={!updatePermission}
           />
           <FileList files={data?.donation_files || []} />
         </div>
@@ -242,7 +250,7 @@ const MovableDetailsForm = ({data, context, inventoryType, refetch, inventoryId}
 
       <ButtonWrapper>
         <Button content="Nazad" onClick={() => navigate(-1)} />
-        <Button content="Sačuvaj" onClick={handleSubmit(onSubmit)} isLoading={loading} />
+        {updatePermission && <Button content="Sačuvaj" onClick={handleSubmit(onSubmit)} isLoading={loading} />}
       </ButtonWrapper>
     </FormWrapper>
   );

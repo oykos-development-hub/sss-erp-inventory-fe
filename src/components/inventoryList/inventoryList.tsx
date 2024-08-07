@@ -32,6 +32,7 @@ import MovementModal from '../movementModal/movementModal';
 import ReceiveInventoryModal from '../receiveInventoryModal/receiveInventoryModal';
 import {FilterDropdown, FilterInput, Filters, ReversButtonContainer} from './styles';
 import {DropdownDataNumber} from '../../types/dropdownData.ts';
+import {checkActionRoutePermissions} from '../../services/checkRoutePermissions.ts';
 
 interface InventoryListProps {
   context: MicroserviceProps;
@@ -71,10 +72,13 @@ const InventoryList = ({
   const {
     reportService: {generatePdf},
     spreadsheetService: {openImportModal},
-    contextMain: {token, id: user_profile_id, organization_unit},
+    contextMain: {token, id: user_profile_id, organization_unit, permissions},
     navigation: {navigate},
     alert,
   } = useAppContext();
+
+  const updatePermittedRoutes = checkActionRoutePermissions(permissions, 'update');
+  const updatePermission = updatePermittedRoutes.includes(`/inventory/${type}-inventory`);
 
   // TODO replace this condition when isSSS param gets added to OU on BE
   const isCurrentOuSss = organization_unit?.title?.toLowerCase() === 'sekretarijat sudskog savjeta';
@@ -408,11 +412,11 @@ const InventoryList = ({
     <div>
       <Filters>{filters.map(filter => React.cloneElement(renderFilters[filter], {key: filter}))}</Filters>
       <ReversButtonContainer>
-        {type !== InventoryTypeEnum.SMALL && (
+        {updatePermission && type !== InventoryTypeEnum.SMALL && (
           <Button content={'Amortizacija'} variant="primary" size="sm" onClick={onDispatchClick} />
         )}
 
-        {type === InventoryTypeEnum.MOVABLE && (
+        {updatePermission && type === InventoryTypeEnum.MOVABLE && (
           <Button
             content={
               filterValues.source_type?.title.includes('Donacije')
@@ -456,15 +460,16 @@ const InventoryList = ({
                     item.status === StatusesForMovableInventory.PRIHVACENO ||
                     item.status === StatusesForMovableInventory.ARHIVA ||
                     item.status === StatusesForMovableInventory.POVRACAJ,
-                  shouldRender: (item: InventoryItem) => item.type !== InventoryTypeEnum.IMMOVABLE,
+                  shouldRender: (item: InventoryItem) => updatePermission && item.type !== InventoryTypeEnum.IMMOVABLE,
                 },
                 {
                   name: 'Dodaj procjenu',
                   onClick: row => onAddEstimation(row),
                   shouldRender: (item: any) => item.source_type?.includes('1'),
                   disabled: (item: InventoryItem) =>
-                    (item.target_organization_unit.id && organization_unit?.id !== item.target_organization_unit.id) ||
-                    !item.active,
+                    updatePermission &&
+                    ((item.target_organization_unit.id && organization_unit?.id !== item.target_organization_unit.id) ||
+                      !item.active),
                 },
                 {
                   name: 'Otpis',
@@ -473,11 +478,13 @@ const InventoryList = ({
                     setDeactivateModal(true);
                   },
                   disabled: (item: InventoryItem) =>
-                    type === InventoryTypeEnum.IMMOVABLE ||
-                    item.source_type?.includes('2') ||
-                    item.status !== StatusesForMovableInventory.NEZADUZENO ||
-                    (item.target_organization_unit.id && organization_unit?.id !== item.target_organization_unit.id) ||
-                    !item.active,
+                    updatePermission &&
+                    (type === InventoryTypeEnum.IMMOVABLE ||
+                      item.source_type?.includes('2') ||
+                      item.status !== StatusesForMovableInventory.NEZADUZENO ||
+                      (item.target_organization_unit.id &&
+                        organization_unit?.id !== item.target_organization_unit.id) ||
+                      !item.active),
                 },
               ]
             : [
@@ -490,7 +497,7 @@ const InventoryList = ({
                   name: 'Alokacija',
                   onClick: row => onAddMovement(row),
                   disabled: (item: InventoryItem) =>
-                    organization_unit?.id !== item.target_organization_unit.id || !item.active,
+                    updatePermission && (organization_unit?.id !== item.target_organization_unit.id || !item.active),
                 },
                 {
                   name: 'Otpis',
@@ -499,10 +506,11 @@ const InventoryList = ({
                     setDeactivateModal(true);
                   },
                   disabled: (item: InventoryItem) =>
-                    item.source_type?.includes('2') ||
-                    item.status !== 'Nezaduženo' ||
-                    organization_unit?.id !== item.target_organization_unit.id ||
-                    !item.active,
+                    updatePermission &&
+                    (item.source_type?.includes('2') ||
+                      item.status !== 'Nezaduženo' ||
+                      organization_unit?.id !== item.target_organization_unit.id ||
+                      !item.active),
                 },
               ]
         }
@@ -515,8 +523,7 @@ const InventoryList = ({
         }}
         disabledCheckbox={isCheckboxDisabled}
       />
-      {/* //TODO ID 1 IS ONLY FOR TESTING, REMOVE LATER */}
-      {deactivateModal && (
+      {updatePermission && deactivateModal && (
         <DeactivateModal
           onClose={() => setDeactivateModal(false)}
           loading={loadingDeactivate}
@@ -536,7 +543,7 @@ const InventoryList = ({
           id={0}
         />
       )}
-      {movementModal && (
+      {updatePermission && movementModal && (
         <MovementModal
           context={context}
           initialDispatchType={movementType}
@@ -554,7 +561,7 @@ const InventoryList = ({
           }}
         />
       )}
-      {estimationModal && (
+      {updatePermission && estimationModal && (
         <AssessmentModal
           context={context}
           onClose={() => setEstimationModal(false)}
@@ -563,7 +570,7 @@ const InventoryList = ({
         />
       )}
 
-      {receiveModal && currentId && (
+      {updatePermission && receiveModal && currentId && (
         <ReceiveInventoryModal
           refetch={refetch}
           context={context}
