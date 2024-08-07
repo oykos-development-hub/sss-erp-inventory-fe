@@ -316,6 +316,7 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
         selectedArticles={fields}
         donationFiles={donationFiles}
         handleUpload={handleDonationFilesUpload}
+        removeArticles={() => remove()}
       />
     ),
     immovable: <ImmovableAddForm context={context} />,

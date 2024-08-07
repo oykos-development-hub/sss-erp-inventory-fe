@@ -17,9 +17,11 @@ import {DropdownDataNumber} from '../../types/dropdownData';
 import {InventoryDonationItem} from '../../types/files';
 import {PublicProcurementContracts} from '../../types/graphQL/publicProcurmentContract';
 import {PublicProcurementContractArticles} from '../../types/graphQL/publicProcurmentContractArticles';
-import {Type} from './constants';
+import {MovableAddFormType, Type} from './constants';
 import {ButtonWrapper, LeftWrapper, Links, TooltipWrapper, TypeWrapper} from './styles';
 import {MovableAddFormProps} from './types';
+import useGetInvoicesForInventory from '../../services/graphQL/getInvoicesForInventory/useGetInvoicesForInventory.ts';
+import {OrderListArticleType} from '../../types/graphQL/orderListTypes.ts';
 
 const MovableAddForm = ({
   onFormSubmit,
@@ -27,9 +29,11 @@ const MovableAddForm = ({
   selectedArticles,
   donationFiles,
   handleUpload,
+  removeArticles,
 }: AddInventoryFormProps & {
   donationFiles: FileList | null;
   handleUpload: (files: FileList) => void;
+  removeArticles: () => void;
 }) => {
   const {
     handleSubmit,
@@ -38,9 +42,9 @@ const MovableAddForm = ({
     setValue,
     formState: {errors},
     register,
+    reset,
   } = useFormContext<MovableAddFormProps>();
   const [article, setArticle] = useState<DropdownDataNumber>({id: 0, title: ''});
-
   const {
     date_of_purchase,
     office,
@@ -50,20 +54,48 @@ const MovableAddForm = ({
     donation_files,
     is_external_donation,
     invoice_number,
+    type,
   } = watch();
+
+  const {
+    spreadsheetService: {openImportModal, closeImportModal},
+    alert,
+    contextMain: {token, organization_unit},
+  } = useAppContext();
+
+  // TODO replace this condition when isSSS param gets added to OU on BE
+  const isCurrentOuSss = organization_unit?.title?.toLowerCase() === 'sekretarijat sudskog savjeta';
+
+  const isDonation = type?.id === MovableAddFormType.DONATION;
+  const isInvoice = type?.id === MovableAddFormType.INVOICE || (!isCurrentOuSss && type === undefined);
+  const isContract = type?.id === MovableAddFormType.CONTRACT || (isCurrentOuSss && type === undefined);
 
   const onSubmit = async (values: MovableAddFormProps) => {
     if (values.all_items) {
-      for (const article of articles.items) {
-        values.articles = {
-          id: article.public_procurement_article.id,
-          title: article.public_procurement_article.title,
-          gross_value: article.gross_value,
-          amount: article.amount,
-        };
-        useArticle(article.id, article.amount);
-        setArticle({id: 0, title: ''});
-        await onFormSubmit(values);
+      if (isInvoice && selectedInvoice) {
+        for (const article of selectedInvoice.articles) {
+          values.articles = {
+            id: article.id,
+            title: article.title,
+            gross_value: article.net_price,
+            amount: article.amount,
+          };
+          useArticle(article.id, article.amount);
+          setArticle({id: 0, title: ''});
+          await onFormSubmit(values);
+        }
+      } else {
+        for (const article of articles.items) {
+          values.articles = {
+            id: article.public_procurement_article.id,
+            title: article.public_procurement_article.title,
+            gross_value: article.gross_value,
+            amount: article.amount,
+          };
+          useArticle(article.id, article.amount);
+          setArticle({id: 0, title: ''});
+          await onFormSubmit(values);
+        }
       }
     } else {
       const articleFind = articles.items.find((item: PublicProcurementContractArticles) => item.id === article?.id);
@@ -82,14 +114,6 @@ const MovableAddForm = ({
       await onFormSubmit(values);
     }
   };
-  const {
-    spreadsheetService: {openImportModal, closeImportModal},
-    alert,
-    contextMain: {token, organization_unit},
-  } = useAppContext();
-
-  // TODO replace this condition when isSSS param gets added to OU on BE
-  const isCurrentOuSss = organization_unit?.title?.toLowerCase() === 'sekretarijat sudskog savjeta';
 
   const {options: locationOptions} = useOrgUnitOfficesGet({
     page: 1,
@@ -103,6 +127,15 @@ const MovableAddForm = ({
     fetch: fetchContracts,
     cleanData: cleanDataContracts,
   } = usePublicProcurementContracts();
+
+  const {data: invoices} = useGetInvoicesForInventory(organization_unit.id, supplier?.id || 0);
+  const invoiceOptions = invoices.map((item: any) => ({id: item.id, title: item.invoice_number}));
+  const selectedInvoice = invoices.find((item: any) => item.id === invoice_number);
+
+  useEffect(() => {
+    if (!selectedInvoice) return;
+    setValue('date_of_contract_signing', new Date(selectedInvoice.date_of_invoice));
+  }, [selectedInvoice]);
 
   const {
     data: articles,
@@ -119,6 +152,12 @@ const MovableAddForm = ({
     cleanDataArticles();
     cleanDataContracts();
   }, [supplier]);
+
+  useEffect(() => {
+    setArticle({id: 0, title: ''});
+    cleanDataArticles();
+    cleanDataContracts();
+  }, [type]);
 
   useEffect(() => {
     if (locationOptions?.length > 0) {
@@ -173,7 +212,12 @@ const MovableAddForm = ({
   const contractId = contract?.id.toString() || '';
 
   const handleUploadTable = async (files: FileList) => {
-    const response = await uploadDonateInventoryXls(files[0], type === 2, token, contractId);
+    const response = await uploadDonateInventoryXls(
+      files[0],
+      type?.id === MovableAddFormType.DONATION,
+      token,
+      contractId,
+    );
 
     if (response?.status === REQUEST_STATUSES.success) {
       if (response?.data?.length) {
@@ -185,22 +229,20 @@ const MovableAddForm = ({
     }
   };
 
-  const type = watch('type')?.id;
-
   const openDonationTableUpload = () => {
     const props = {
       type: 'IMPORT_INVENTORIES',
       content: 'Tabela',
-      data: {items: contract?.id ? articles.items : [], isDonating: type === 2, contractId},
+      data: {
+        items: contract?.id ? articles.items : [],
+        isDonating: type?.id === MovableAddFormType.DONATION,
+        contractId,
+      },
       onSubmit: onSubmitUploadedTable,
       handleUpload: handleUploadTable,
     };
     openImportModal(props);
   };
-
-  const isDonation = type === 2;
-  const isInvoice = type === 1 || (!isCurrentOuSss && type === undefined);
-  const isContract = type === 0 || (isCurrentOuSss && type === undefined);
 
   return (
     <>
@@ -217,7 +259,10 @@ const MovableAddForm = ({
                   name={name}
                   value={value}
                   options={dropdownOptions}
-                  onChange={onChange}
+                  onChange={e => {
+                    reset({type: e as DropdownDataNumber});
+                    removeArticles();
+                  }}
                   label="TIP:"
                   isRequired
                 />
@@ -282,7 +327,31 @@ const MovableAddForm = ({
                   />
                 )}
               />
-              {!isContract && <Input {...register('invoice_number')} label="FAKTURA:" />}
+              {/*For donation, 'faktura' is an input*/}
+              {isDonation && <Input {...register('invoice_number')} label="FAKTURA:" />}
+
+              {/*For invoice, 'faktura' is a dropdown,options based on selected supplier */}
+              {isInvoice && (
+                <Controller
+                  name="invoice_number"
+                  rules={{required: 'Ovo polje je obavezno'}}
+                  control={control}
+                  render={({field: {name, value, onChange}}) => (
+                    <Dropdown
+                      name={name}
+                      value={invoiceOptions?.find((item: any) => item.id === value)}
+                      options={invoiceOptions}
+                      onChange={e => {
+                        onChange(e.id);
+                      }}
+                      label="FAKTURA:"
+                      isRequired
+                      error={errors.contract?.message}
+                      isDisabled={!supplier}
+                    />
+                  )}
+                />
+              )}
               {isContract && (
                 <>
                   <Controller
@@ -382,6 +451,7 @@ const MovableAddForm = ({
                       label="DATUM FAKTURE:"
                       isRequired
                       error={errors.date_of_contract_signing?.message}
+                      disabled={isInvoice}
                     />
                   )}
                 />
@@ -453,12 +523,16 @@ const MovableAddForm = ({
                   onChange={item => {
                     setArticle({id: Number(item.id), title: item.title?.toString() || ''});
                   }}
-                  options={articlesOptions || []}
+                  options={selectedInvoice ? selectedInvoice?.articles : articlesOptions || []}
                   placeholder="Izaberi artikal"
                   label="Artikli"
                   value={article}
                   error={errors.source?.message}
-                  isDisabled={!articlesOptions || articlesOptions.length == 0}
+                  isDisabled={
+                    isContract
+                      ? !articlesOptions || articlesOptions.length == 0
+                      : !selectedInvoice || selectedInvoice?.articles?.length === 0
+                  }
                   className="width200"
                 />
                 {contract && contract.id !== 0 ? (
@@ -468,13 +542,13 @@ const MovableAddForm = ({
                     style={{width: '200px'}}
                     variant="filled"
                     position="topLeft"
-                    content={'Funkcionalnost će biti omogućena nakon odabira ugovora.'}>
+                    content={`Funkcionalnost će biti omogućena nakon odabira ${isContract ? 'ugovora' : 'fakture'}.`}>
                     <PlusButton
                       onClick={handleSubmit(values => {
                         values.all_items = false;
                         onSubmit(values);
                       })}
-                      disabled={!!contract && contract?.id !== 0}
+                      disabled={isContract ? !!contract && contract?.id !== 0 : !invoice_number}
                     />
                   </Tooltip>
                 )}

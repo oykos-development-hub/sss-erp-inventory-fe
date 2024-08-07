@@ -14,8 +14,14 @@ export const initialValues: Omit<MovableAddFormProps, 'is_external_donation'> & 
   invoice_id: 0,
 };
 
+export enum MovableAddFormType {
+  'CONTRACT' = 0,
+  'INVOICE' = 1,
+  'DONATION' = 2,
+}
+
 export const Type = [
-  {id: 0, title: 'Ugovor'},
-  {id: 1, title: 'Faktura'},
-  {id: 2, title: 'Donacija'},
+  {id: MovableAddFormType.CONTRACT, title: 'Ugovor'},
+  {id: MovableAddFormType.INVOICE, title: 'Faktura'},
+  {id: MovableAddFormType.DONATION, title: 'Donacija'},
 ];

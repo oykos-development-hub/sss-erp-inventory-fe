@@ -18,6 +18,7 @@ import getPublicProcurementContractArticles from './publicProcurementContractArt
 import assessmentInsertArray from './assessmentInsertArray/assessmentInsertArray';
 import getReportInventoryList from './reportInventoryList/getReportInventoryList';
 import getReportInventoryListByClass from './reportInventoryList/getReportInventoryListByClass';
+import getInvoicesForInventory from './getInvoicesForInventory/getInvoicesForInventory.ts';
 
 export const BFF_URL = {
   local: 'http://localhost:8080',
@@ -46,4 +47,5 @@ export const GraphQL = {
   getPublicProcurementContractArticles: getPublicProcurementContractArticles,
   getReportInventoryList: getReportInventoryList,
   getReportInventoryListByClass: getReportInventoryListByClass,
+  getInvoicesForInventory: getInvoicesForInventory,
 };
