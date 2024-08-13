@@ -7,7 +7,7 @@ export const uploadExpireInventoryXls = async (
   const formData = new FormData();
   formData.append('file', file);
 
-  const response = await fetch('https://sss-erp-bff.oykos.me/files/read-expire-inventories', {
+  const response = await fetch(`${import.meta.env.VITE_FILES_URL}/read-expire-inventories`, {
     method: 'POST',
     headers: {
       ...(token && {Authorization: `Bearer ${token}`}),

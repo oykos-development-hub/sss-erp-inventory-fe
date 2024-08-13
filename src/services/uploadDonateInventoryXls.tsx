@@ -11,7 +11,7 @@ export const uploadDonateInventoryXls = async (
   formData.append('contract_id', contract_id);
 
   const response = await fetch(
-    `https://sss-erp-bff.oykos.me/files/${isDonation ? 'read-articles-donation' : 'read-articles-inventory'}`,
+    `${import.meta.env.VITE_FILES_URL}/${isDonation ? 'read-articles-donation' : 'read-articles-inventory'}`,
     {
       method: 'POST',
       headers: {

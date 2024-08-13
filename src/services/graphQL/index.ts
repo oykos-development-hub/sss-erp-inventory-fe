@@ -1,4 +1,3 @@
-import {getEnvironment} from '../get-environment';
 import assessmentInsert from './assessmentInsert/assessmentInsert';
 import dispatchInsert from './dispatchInsert/dispatchInsert';
 import getOrderList from './getOrderList/getOrderList';
@@ -19,13 +18,6 @@ import assessmentInsertArray from './assessmentInsertArray/assessmentInsertArray
 import getReportInventoryList from './reportInventoryList/getReportInventoryList';
 import getReportInventoryListByClass from './reportInventoryList/getReportInventoryListByClass';
 import getInvoicesForInventory from './getInvoicesForInventory/getInvoicesForInventory.ts';
-
-export const BFF_URL = {
-  local: 'http://localhost:8080',
-  development: 'https://sss-erp-bff.oykos.me',
-  staging: 'http://localhost:8080',
-  production: 'http://localhost:8080',
-};
 
 export const GraphQL = {
   inventoryOverview: inventoryOverview,

@@ -67,8 +67,8 @@ const MovableAddForm = ({
   const isCurrentOuSss = organization_unit?.title?.toLowerCase() === 'sekretarijat sudskog savjeta';
 
   const isDonation = type?.id === MovableAddFormType.DONATION;
-  const isInvoice = type?.id === MovableAddFormType.INVOICE || (!isCurrentOuSss && type === undefined);
   const isContract = type?.id === MovableAddFormType.CONTRACT || (isCurrentOuSss && type === undefined);
+  const isInvoice = type?.id === MovableAddFormType.INVOICE || (!isCurrentOuSss && type === undefined);
 
   const onSubmit = async (values: MovableAddFormProps) => {
     if (values.all_items) {
