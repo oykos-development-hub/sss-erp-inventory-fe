@@ -5,7 +5,7 @@ export interface InvoiceForInventory {
   articles: Article[];
 }
 
-type Article = {
+export type Article = {
   id: number;
   title: string;
   net_price: number;
