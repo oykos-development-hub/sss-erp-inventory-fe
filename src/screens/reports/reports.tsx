@@ -15,6 +15,7 @@ import useInventoriesExpireOverview from '../../services/graphQL/inventoryOvervi
 import {ReportInventoryClassResponse} from '../../types/graphQL/reportInventory';
 import useClassInventoriesValue from '../../services/graphQL/classInventoriesValue/useClassInventoriesValue';
 import {useEffect} from 'react';
+import {checkActionRoutePermissions} from '../../services/checkRoutePermissions.ts';
 
 export const InventoryReports = () => {
   const {
@@ -22,6 +23,7 @@ export const InventoryReports = () => {
     watch,
     formState: {errors},
     handleSubmit,
+    setValue,
   } = useForm();
 
   const {
@@ -30,10 +32,16 @@ export const InventoryReports = () => {
     alert,
   } = useAppContext();
 
-  const orgUnitId = contextMain?.organization_unit?.id;
+  const reportType = watch('report_type')?.id;
+  const inventoryType = watch('inventory_type')?.id;
+  const organizationUnit = watch('organization_unit');
+  const classID = watch('class')?.id;
+  const office = watch('office');
+  const date = watch('date');
+  const range = watch('range')?.id;
 
   const {options: organizationUnits} = useOrganizationUnits(true);
-  const {options: officeOptions} = useOrgUnitOfficesGet({organization_unit_id: orgUnitId});
+  const {options: officeOptions} = useOrgUnitOfficesGet({organization_unit_id: organizationUnit?.id});
   const {data} = useGetSettings({entity: 'inventory_class_type'});
   const {fetch: fetchInventoriesExpire} = useInventoriesExpireOverview();
 
@@ -49,14 +57,6 @@ export const InventoryReports = () => {
   } = useGetReportInventoryListBasic();
   // 1, 5
   const {fetchClassInventoriesValue, loading: loadingClass} = useClassInventoriesValue();
-
-  const reportType = watch('report_type')?.id;
-  const inventoryType = watch('inventory_type')?.id;
-  const organizationUnit = watch('organization_unit');
-  const classID = watch('class')?.id;
-  const officeID = watch('office')?.id;
-  const date = watch('date');
-  const range = watch('range')?.id;
 
   useEffect(() => {
     if (!inventoryType || !organizationUnit) return;
@@ -97,8 +97,9 @@ export const InventoryReports = () => {
 
   const generateOffice = (data: any) => {
     const date = parseDateForBackend(data?.date) || '';
+    const is_lager = office?.title.toLowerCase() === 'lager';
     fetchReportInventory(
-      {organization_unit_id: data.organization_unit.id, office_id: officeID, date: date},
+      {organization_unit_id: data.organization_unit.id, office_id: office?.id, date, is_lager},
       reportInventory => {
         const reportData = {
           report: data.report_type,
@@ -187,6 +188,17 @@ export const InventoryReports = () => {
     if (reportType === InventoryReportType.AllInventory && loadingInventory) return true;
   };
 
+  const isSSS =
+    checkActionRoutePermissions(contextMain?.permissions, 'create').includes('/inventory') &&
+    contextMain?.organization_unit?.title?.toLowerCase() === 'sekretarijat sudskog savjeta';
+
+  useEffect(() => {
+    if (!contextMain || isSSS) return;
+
+    // admin can choose any organization unit, OU manager can choose only his OU
+    const {id, title} = contextMain.organization_unit;
+    setValue('organization_unit', {id, title});
+  }, [contextMain, isSSS]);
   return (
     <ScreenWrapper>
       <FormContainer onSubmit={handleSubmit(getReportData)}>
@@ -231,6 +243,7 @@ export const InventoryReports = () => {
                     InventoryReportType.AllInventory,
                   ])}
                   error={errors.organization_unit?.message as string}
+                  isDisabled={!isSSS}
                 />
               )}
             />

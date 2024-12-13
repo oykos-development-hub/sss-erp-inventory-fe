@@ -10,8 +10,8 @@ import {initialValues, optionsOne, optionsThree, optionsTwo} from './constants';
 import {ButtonWrapper, FormWrapper, InputWrapper, OfficeDropdown, SupplierDropdown} from './style';
 import {MovableDetailsFormProps} from './types';
 import FileList from '../fileList/fileList';
-import {StatusesForMovableInventory} from '../../constants';
 import {checkActionRoutePermissions} from '../../services/checkRoutePermissions.ts';
+import {InventoryInsertResponse} from '../../types/graphQL/inventoryInsert.ts';
 
 const MovableDetailsForm = ({data, context, inventoryType, refetch, inventoryId}: DetailsFormProps) => {
   const {
@@ -22,6 +22,7 @@ const MovableDetailsForm = ({data, context, inventoryType, refetch, inventoryId}
     formState: {errors},
     watch,
     setValue,
+    setError,
   } = useForm<MovableDetailsFormProps>({defaultValues: initialValues});
 
   const {suppliers} = useSuppliersOverview();
@@ -89,8 +90,27 @@ const MovableDetailsForm = ({data, context, inventoryType, refetch, inventoryId}
         refetch && refetch();
         navigate(-1);
       },
-      erroMessage => alert.error(erroMessage),
+      (response: InventoryInsertResponse) => {
+        if (response?.validator?.length) {
+          setDuplicateErrors(response.validator);
+          return;
+        }
+        alert.error('Neuspješno dodavanje osnovnih sredstava');
+      },
     );
+  };
+
+  const setDuplicateErrors = (validator: InventoryInsertResponse['validator']) => {
+    if (validator.length) {
+      validator.forEach(item => {
+        if (item.entity === 'inventory_number') {
+          setError('inventory_number', {message: 'Inventarski broj već postoji'});
+        }
+        if (item.entity === 'serial_number') {
+          setError('serial_number', {message: 'Serijski broj već postoji'});
+        }
+      });
+    }
   };
 
   const price: number = watch('gross_price') || 0;

@@ -14,11 +14,12 @@ const useOrgUnitOfficesGet = ({page, size, id, organization_unit_id}: OfficePara
   const {fetch} = useAppContext();
 
   const fetchOrganizationUnitOffices = async () => {
+    if (!organization_unit_id) return;
+
     setLoading(true);
 
     try {
       const response = await fetch(GraphQL.organizationUnitOfficesGet, {page, size, id, organization_unit_id});
-
       const options = createDropdownOptions(response?.officesOfOrganizationUnits_Overview?.items || []);
       setOptions(options);
 

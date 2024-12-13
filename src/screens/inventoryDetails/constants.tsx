@@ -68,12 +68,21 @@ export const movementsTableHeads: TableHead[] = [
     title: 'Lokacija',
     accessor: '',
     type: 'custom',
-    renderContents: (_: any, item: InventoryDispatch) => (
-      <Typography
-        variant="bodyMedium"
-        content={item.type === 'revers' ? item?.target_organization_unit?.title : item?.office?.title}
-      />
-    ),
+    renderContents: (_: any, item: InventoryDispatch) => {
+      let location = '';
+      switch (item.type) {
+        case DispatchType.returnRevers:
+          location = item?.source_organization_unit?.title;
+          break;
+        case DispatchType.revers:
+          location = item?.target_organization_unit?.title;
+          break;
+        default:
+          location = item?.office?.title ?? '';
+          break;
+      }
+      return <Typography variant="bodyMedium" content={location} />;
+    },
   },
   {
     title: 'Korisnik sredstva',

@@ -4,7 +4,7 @@ import useAppContext from '../../../context/useAppContext';
 import {InventoryItem} from '../../../types/graphQL/inventoryOverview';
 
 const useInventoriesExpireOverview = () => {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const {fetch} = useAppContext();
   const fetchInventoryOverview = async (
     type: 'movable' | 'immovable',
@@ -22,10 +22,10 @@ const useInventoriesExpireOverview = () => {
         organization_unit_id,
       });
       onSuccess(response?.basicInventory_Overview?.items);
-      setLoading(false);
     } catch (err) {
       console.log(err);
     }
+    setLoading(false);
   };
 
   return {fetch: fetchInventoryOverview, loading};

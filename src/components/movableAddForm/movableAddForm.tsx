@@ -21,11 +21,10 @@ import {MovableAddFormType, Type} from './constants';
 import {ButtonWrapper, LeftWrapper, Links, TooltipWrapper, TypeWrapper} from './styles';
 import {MovableAddFormProps} from './types';
 import useGetInvoicesForInventory from '../../services/graphQL/getInvoicesForInventory/useGetInvoicesForInventory.ts';
-import {OrderListArticleType} from '../../types/graphQL/orderListTypes.ts';
+import {Article} from '../../types/graphQL/invoiceForInventory.ts';
 
 const MovableAddForm = ({
   onFormSubmit,
-  // context,
   selectedArticles,
   donationFiles,
   handleUpload,
@@ -44,7 +43,9 @@ const MovableAddForm = ({
     register,
     reset,
   } = useFormContext<MovableAddFormProps>();
+
   const [article, setArticle] = useState<DropdownDataNumber>({id: 0, title: ''});
+
   const {
     date_of_purchase,
     office,
@@ -79,7 +80,9 @@ const MovableAddForm = ({
             title: article.title,
             gross_value: article.net_price,
             amount: article.amount,
+            invoice_article_id: isInvoice ? article?.id : undefined,
           };
+          values.date_of_purchase = values.date_of_contract_signing;
           useArticle(article.id, article.amount);
           setArticle({id: 0, title: ''});
           await onFormSubmit(values);
@@ -98,17 +101,35 @@ const MovableAddForm = ({
         }
       }
     } else {
-      const articleFind = articles.items.find((item: PublicProcurementContractArticles) => item.id === article?.id);
+      if (selectedInvoice) {
+        const articleFind = selectedInvoice.articles.find((item: Article) => item.id === article?.id);
 
-      if (articleFind) {
-        values.articles = {
-          id: articleFind.public_procurement_article.id,
-          title: articleFind.public_procurement_article.title,
-          gross_value: articleFind.gross_value,
-          amount: 1,
-        };
-        useArticle(articleFind.id, 1);
-        setArticle({id: 0, title: ''});
+        if (articleFind) {
+          values.articles = {
+            id: articleFind.id,
+            title: articleFind.title,
+            gross_value: articleFind.net_price,
+            amount: articleFind.amount,
+            invoice_article_id: isInvoice ? article?.id : undefined,
+          };
+          values.date_of_purchase = values.date_of_contract_signing;
+
+          useArticle(articleFind.id, 1);
+          setArticle({id: 0, title: ''});
+        }
+      } else {
+        const articleFind = articles.items.find((item: PublicProcurementContractArticles) => item.id === article?.id);
+
+        if (articleFind) {
+          values.articles = {
+            id: articleFind.public_procurement_article.id,
+            title: articleFind.public_procurement_article.title,
+            gross_value: articleFind.gross_value,
+            amount: 1,
+          };
+          useArticle(articleFind.id, 1);
+          setArticle({id: 0, title: ''});
+        }
       }
 
       await onFormSubmit(values);
@@ -128,7 +149,7 @@ const MovableAddForm = ({
     cleanData: cleanDataContracts,
   } = usePublicProcurementContracts();
 
-  const {data: invoices} = useGetInvoicesForInventory(organization_unit.id, supplier?.id || 0);
+  const {data: invoices} = useGetInvoicesForInventory(supplier?.id || 0);
   const invoiceOptions = invoices.map((item: any) => ({id: item.id, title: item.invoice_number}));
   const selectedInvoice = invoices.find((item: any) => item.id === invoice_number);
 

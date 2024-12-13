@@ -34,13 +34,13 @@ const InventoryDispatch = ({context}: InventoryProps) => {
       <InventoryDispatchList
         refetch={refetch}
         context={context}
-        tableData={data.items}
+        tableData={data?.items}
         loading={loading}
         onFilter={onFilter}
         filterValues={filterValues}
       />
       <Pagination
-        pageCount={data.total! / PAGE_SIZE}
+        pageCount={data?.total ? data?.total / PAGE_SIZE : 0}
         onChange={onPageChange}
         variant="filled"
         itemsPerPage={PAGE_SIZE}

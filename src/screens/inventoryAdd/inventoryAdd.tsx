@@ -164,6 +164,7 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
         file_id: 0,
         contract_id: movableValues?.contract?.id,
         contract_article_id: item?.contract_article_id,
+        invoice_article_id: item?.invoice_article_id,
       }));
 
       // In the case of donations we can have files which need to be uploaded first to get the ids
@@ -185,7 +186,6 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
             ...item,
             donation_files: updatedDonationFiles,
           }));
-
           mutateInventoryItems(updatedData);
         });
       } else {
@@ -263,8 +263,10 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
             gross_price: values.articles?.gross_value?.toString(),
             description: values?.articles?.description,
             contract_article_id: values?.articles?.id,
+            invoice_article_id: values?.articles?.id,
           });
         } else if (values?.articles?.amount && values?.articles?.amount > 1) {
+          setMovableValues({...values});
           for (let i = 0; i < values?.articles?.amount; i++) {
             append({
               id: Math.floor(Math.random() * 1000),
@@ -274,6 +276,7 @@ const InventoryAdd = ({context, type}: InventoryProps) => {
               gross_price: values.articles?.gross_value?.toString(),
               description: values?.articles?.description,
               contract_article_id: values?.articles?.id,
+              invoice_article_id: values?.articles?.id,
             });
           }
         }

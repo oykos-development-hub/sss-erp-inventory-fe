@@ -30,6 +30,7 @@ export interface OrderListArticleType {
   serial_number?: string;
   available?: number;
   article_id?: number;
+  invoice_article_id?: number;
 }
 
 export interface GetOrderListParams {

@@ -6,21 +6,21 @@ import {InventoryDetails} from '../../../types/graphQL/inventoryDetails';
 
 const useInventoryDetails = (id?: number) => {
   const [data, setData] = useState<GraphQLResponse['data']['basicInventory_Details']>();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const {fetch} = useAppContext();
   const fetchInventoryDetails = async (rowId?: number, onSuccess?: (data: InventoryDetails) => void) => {
-    setLoading(true);
     if (!id && !rowId) return;
     try {
+      setLoading(true);
       const response = await fetch(GraphQL.inventoryDetailsGet, {id: id || rowId});
       if (response?.basicInventory_Details?.items?.assessments.length > 0)
         response?.basicInventory_Details?.items.assessments.pop();
       onSuccess && onSuccess(response?.basicInventory_Details?.items);
       setData(response?.basicInventory_Details);
-      setLoading(false);
     } catch (err) {
       console.log(err);
     }
+    setLoading(false);
   };
 
   useEffect(() => {

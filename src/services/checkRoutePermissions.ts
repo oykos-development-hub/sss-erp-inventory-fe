@@ -32,3 +32,16 @@ export function checkActionRoutePermissions(permissions: RoutePermission[], acti
 
   return allowedRoutes;
 }
+// TODO check if there is a way to create this function only based on permissions
+// export function hasFullAccess(permissions: RoutePermission[], route: string): boolean {
+//   // Find the permission object for the given route
+//   const routePermission = permissions.find(permission => permission.route === route);
+//
+//   // Check if all actions are true
+//   if (routePermission) {
+//     return permissionActions.every(action => routePermission[action]);
+//   }
+//
+//   // Return false if the route doesn't exist in permissions
+//   return false;
+// }

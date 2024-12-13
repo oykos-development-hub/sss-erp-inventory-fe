@@ -225,7 +225,7 @@ const InventoryList = ({
     }
   };
 
-  const {fetch: fetchInventoriesExpire} = useInventoriesExpireOverview();
+  const {fetch: fetchInventoriesExpire, loading: inventoriesExpireLoading} = useInventoriesExpireOverview();
 
   const fetchPDFUrl = (id: number) => {
     fetchDetails(id, data => {
@@ -413,7 +413,14 @@ const InventoryList = ({
       <Filters>{filters.map(filter => React.cloneElement(renderFilters[filter], {key: filter}))}</Filters>
       <ReversButtonContainer>
         {updatePermission && type !== InventoryTypeEnum.SMALL && (
-          <Button content={'Amortizacija'} variant="primary" size="sm" onClick={onDispatchClick} />
+          <Button
+            content={'Amortizacija'}
+            variant="primary"
+            size="sm"
+            onClick={onDispatchClick}
+            isLoading={inventoriesExpireLoading}
+            disabled={inventoriesExpireLoading}
+          />
         )}
 
         {updatePermission && type === InventoryTypeEnum.MOVABLE && (

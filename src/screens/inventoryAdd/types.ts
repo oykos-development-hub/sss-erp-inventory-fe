@@ -13,6 +13,7 @@ export interface TableItemValues {
   gross_price?: string;
   description?: string;
   contract_article_id?: number;
+  invoice_article_id?: number;
 }
 
 export type TableValues = {

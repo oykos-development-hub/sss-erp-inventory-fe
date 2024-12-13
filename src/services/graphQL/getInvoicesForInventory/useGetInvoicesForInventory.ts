@@ -3,7 +3,7 @@ import useAppContext from '../../../context/useAppContext.ts';
 import {InvoiceForInventory} from '../../../types/graphQL/invoiceForInventory.ts';
 import {GraphQL} from '../index.ts';
 
-const useGetInvoicesForInventory = (organization_unit_id: number, supplier_id: number) => {
+const useGetInvoicesForInventory = (supplier_id: number) => {
   const [data, setData] = useState<InvoiceForInventory[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -13,7 +13,7 @@ const useGetInvoicesForInventory = (organization_unit_id: number, supplier_id: n
     setLoading(true);
 
     try {
-      const response = await fetch(GraphQL.getInvoicesForInventory, {organization_unit_id, supplier_id});
+      const response = await fetch(GraphQL.getInvoicesForInventory, {supplier_id});
       setData(response.invoicesForInventory_Overview.items);
       setLoading(false);
     } catch (err) {
@@ -22,7 +22,7 @@ const useGetInvoicesForInventory = (organization_unit_id: number, supplier_id: n
   };
   useEffect(() => {
     getInvoicesForInventory();
-  }, [organization_unit_id, supplier_id]);
+  }, [supplier_id]);
 
   return {data, loading, refetch: getInvoicesForInventory};
 };
